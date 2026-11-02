@@ -11,36 +11,21 @@ using System;using System.Runtime.InteropServices;
 public static class WinBridge {
   [StructLayout(LayoutKind.Sequential)] public struct KBD { public int vk; public int scan; public int flags; public int time; public IntPtr extra; }
   delegate IntPtr Proc(int nCode, IntPtr wParam, IntPtr lParam);
-  delegate bool EnumProc(IntPtr h, IntPtr l);
   static Proc proc; static IntPtr hook;
   [DllImport("user32.dll")] static extern IntPtr SetWindowsHookEx(int id, Proc p, IntPtr hMod, uint tid);
   [DllImport("user32.dll")] static extern bool UnhookWindowsHookEx(IntPtr h);
   [DllImport("user32.dll")] static extern IntPtr CallNextHookEx(IntPtr h, int n, IntPtr w, IntPtr l);
   [DllImport("kernel32.dll")] static extern IntPtr GetModuleHandle(string name);
+  [DllImport("user32.dll")] public static extern IntPtr GetForegroundWindow();
   [DllImport("user32.dll")] public static extern bool IsWindowVisible(IntPtr h);
   [DllImport("user32.dll")] public static extern bool IsWindow(IntPtr h);
-  [DllImport("user32.dll")] public static extern bool ShowWindow(IntPtr h, int cmd);
-  [DllImport("user32.dll")] public static extern bool SetForegroundWindow(IntPtr h);
-  [DllImport("user32.dll")] static extern bool EnumWindows(EnumProc cb, IntPtr l);
   [DllImport("user32.dll")] static extern uint GetWindowThreadProcessId(IntPtr h, out uint pid);
-  [DllImport("user32.dll")] static extern int GetWindowTextLength(IntPtr h);
-  static IntPtr found;
-  public static IntPtr FindByPid(int pid) {
-    found = IntPtr.Zero;
-    EnumWindows((h, l) => {
-      uint p; GetWindowThreadProcessId(h, out p);
-      if (p == (uint)pid) {
-        if (IsWindowVisible(h) && GetWindowTextLength(h) > 0) { found = h; return false; }
-        if (found == IntPtr.Zero) found = h;
-      }
-      return true;
-    }, IntPtr.Zero);
-    return found;
-  }
+  public static string ProcessOf(IntPtr h) { uint pid; GetWindowThreadProcessId(h, out pid); try { return System.Diagnostics.Process.GetProcessById((int)pid).ProcessName; } catch { return ""; } }
+  static System.Collections.Concurrent.ConcurrentQueue<string> q = new System.Collections.Concurrent.ConcurrentQueue<string>();
+  public static string Take() { string s; return q.TryDequeue(out s) ? s : null; }
   public static bool Start() { proc = Cb; hook = SetWindowsHookEx(13, proc, GetModuleHandle(null), 0); return hook != IntPtr.Zero; }
   public static void Stop() { if (hook != IntPtr.Zero) { UnhookWindowsHookEx(hook); hook = IntPtr.Zero; } }
   static bool winDown = false; static DateTime winDownAt; static bool otherKey = false;
-  public static event Action<string> OnEvent;
   static IntPtr Cb(int n, IntPtr wp, IntPtr lp) {
     if (n >= 0) {
       var d = (KBD)Marshal.PtrToStructure(lp, typeof(KBD));
@@ -52,7 +37,7 @@ public static class WinBridge {
         else if (winDown) {
           var dur = (DateTime.Now - winDownAt).TotalMilliseconds;
           winDown = false;
-          if (!otherKey && dur < 700 && OnEvent != null) OnEvent("bare-win");
+          if (!otherKey && dur < 700) q.Enqueue("bare-win");
         }
       } else if (down && winDown) { otherKey = true; }
     }
@@ -63,55 +48,34 @@ public static class WinBridge {
 
 if (-not [WinBridge]::Start()) { Write-Host '安装键盘钩子失败' -ForegroundColor Red; exit 1 }
 
-function Get-RaycastWindow {
-    $p = Get-Process Raycast -ErrorAction SilentlyContinue | Select-Object -First 1
-    if (-not $p) { return [IntPtr]::Zero }
-    if ($p.MainWindowHandle -ne 0) { return [IntPtr]$p.MainWindowHandle }
-    return [WinBridge]::FindByPid($p.Id)
-}
+$script:launcherHwnd = [IntPtr]::Zero
 
-$script:hidden = $false
-$script:handler = {
-    param($what)
-    try {
-        $h = Get-RaycastWindow
-        if ($script:hidden) {
-            if ($h -ne [IntPtr]::Zero -and [WinBridge]::IsWindow($h)) {
-                [WinBridge]::ShowWindow($h, 5) | Out-Null
-                [WinBridge]::SetForegroundWindow($h) | Out-Null
-                $script:hidden = $false
-                Add-Content -Path $log -Value ("{0}  裸Win -> 重新显示 Raycast" -f (Get-Date -Format 'HH:mm:ss.fff'))
-                return
-            }
-            $script:hidden = $false
-        }
-        if ($h -ne [IntPtr]::Zero -and [WinBridge]::IsWindow($h)) {
-            if ([WinBridge]::IsWindowVisible($h)) {
-                [WinBridge]::ShowWindow($h, 0) | Out-Null
-                $script:hidden = $true
-                Add-Content -Path $log -Value ("{0}  裸Win -> 隐藏 Raycast" -f (Get-Date -Format 'HH:mm:ss.fff'))
-            } else {
-                [WinBridge]::ShowWindow($h, 5) | Out-Null
-                [WinBridge]::SetForegroundWindow($h) | Out-Null
-                Add-Content -Path $log -Value ("{0}  裸Win -> 显示 Raycast" -f (Get-Date -Format 'HH:mm:ss.fff'))
-            }
-        } else {
-            Start-Process 'raycast://'
-            Start-Sleep -Milliseconds 400
-            $h2 = Get-RaycastWindow
-            if ($h2 -ne [IntPtr]::Zero) { [WinBridge]::SetForegroundWindow($h2) | Out-Null }
-            Add-Content -Path $log -Value ("{0}  裸Win -> 唤起 Raycast" -f (Get-Date -Format 'HH:mm:ss.fff'))
-        }
-    } catch {
-        Add-Content -Path $log -Value ("{0}  失败: {1}" -f (Get-Date -Format 'HH:mm:ss.fff'), $_.Exception.Message)
+function Invoke-BareWin {
+    $h = $script:launcherHwnd
+    if ($h -ne [IntPtr]::Zero -and [WinBridge]::IsWindow($h) -and [WinBridge]::IsWindowVisible($h)) {
+        Add-Content -Path $log -Value ("{0}  裸Win -> Launcher 已打开，忽略" -f (Get-Date -Format 'HH:mm:ss.fff'))
+        return
+    }
+    Start-Process 'raycast://'
+    Start-Sleep -Milliseconds 700
+    $fg = [WinBridge]::GetForegroundWindow()
+    if ([WinBridge]::ProcessOf($fg) -eq 'Raycast') {
+        $script:launcherHwnd = $fg
+        Add-Content -Path $log -Value ("{0}  裸Win -> 打开 Launcher (hwnd={1})" -f (Get-Date -Format 'HH:mm:ss.fff'), $fg)
+    } else {
+        Add-Content -Path $log -Value ("{0}  裸Win -> 打开失败，前台={1}" -f (Get-Date -Format 'HH:mm:ss.fff'), [WinBridge]::ProcessOf($fg))
     }
 }
-Register-ObjectEvent -InputObject ([WinBridge]) -EventName OnEvent -Action $script:handler | Out-Null
 
-Write-Host 'Win 键桥接已启动（仅响应远程注入的裸 Win）。Ctrl+C 退出。' -ForegroundColor Green
+Write-Host 'Win 键桥接（仅打开 launcher）已启动；关闭请用触控板点一下别处。Ctrl+C 退出。' -ForegroundColor Green
 Write-Host "日志：$log"
 try {
-    while ($true) { [System.Windows.Forms.Application]::DoEvents(); Start-Sleep -Milliseconds 50 }
+    while ($true) {
+        [System.Windows.Forms.Application]::DoEvents()
+        $ev = [WinBridge]::Take()
+        while ($ev) { Invoke-BareWin; $ev = [WinBridge]::Take() }
+        Start-Sleep -Milliseconds 30
+    }
 } finally {
     [WinBridge]::Stop()
 }

@@ -51,7 +51,7 @@ OPPO 互联 主进程日志（`%APPDATA%\O+Connect\devicespace\*_main.log`）里
 创建虚拟屏后，Windows 默认是「扩展」。远程时希望客户端只看到一块屏，因此：
 
 - 用 `SetDisplayConfig` 只保留虚拟屏的 path（`仅虚拟屏`）；
-- 远程结束后用 `SDC_TOPOLOGY_INTERNAL` 恢复「仅内屏」。
+- 远程开始时保存一份显示配置快照（活动显示器、模式、位置），结束时用 `SetDisplayConfig` 恢复原布局（拓展/复制/单屏）；随后移除虚拟屏。
 
 关键坑：**拓扑标志不能与 `SDC_ALLOW_CHANGES` 一起用**，否则返回 `ERROR_INVALID_PARAMETER (87)`。
 正确写法：

@@ -41,7 +41,9 @@ via `scripts/devices.json` without touching code.
    - `stop remote control: ...`
 2. On session start it calls OPPO's bundled `OPDisplayDriverTool.exe` to create a virtual display at the device's native resolution.
 3. The same watcher switches the display topology to **"show only on the virtual display"**, so the remote side only sees one screen.
-4. 10 seconds after the session ends it switches back to "internal display only", and removes the virtual display after a 90-second grace period (to avoid rebuild loops when the client briefly reconnects).
+4. When the session ends it restores the exact layout you had before connecting (extend / duplicate / single screen), then removes the virtual display.
+
+Ordinary device connect/disconnect does not trigger any switching; only a remote-control session does.
 
 The tool only reads log files — it does not inject into or modify OPPO Connect.
 
@@ -97,7 +99,7 @@ cd oppo-remote-screenfit
 
 - **Idle**: both guards only read logs; they never touch the display.
 - **Remote session starts**: within ~10–20 seconds the virtual display is created and activated at the device's native resolution.
-- **Session ends**: internal display restored after 10 seconds, virtual display removed after 90 seconds.
+- **Session ends**: the previous layout is restored within about a second, then the virtual display is removed.
 
 ### Manual mode
 

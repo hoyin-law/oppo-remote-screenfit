@@ -1,11 +1,13 @@
 <#
-  Watcher.ps1 —— 由计划任务以最高权限运行。
-  作用：检测 OPPO 互联 的「远程控制」会话，在会话开始时为平板/折叠屏创建对应分辨率的虚拟屏，
-        会话结束宽限 90 秒后拆除。显示拓扑切换由 TopologyGuard.ps1（用户级）负责。
-  触发依据（读取 OPPO 互联 自己的日志，不注入进程）：
-    start remote control: {... "deviceName":"OPPO Find N6" ...}
-    stop  remote control: {...}
+  Watcher.ps1 —— OPPO 互联 远程控制屏幕自适应（由计划任务以最高权限运行，登录自启）。
+
+  行为：
+    - 只在检测到 OPPO 互联「远程控制」会话开始时才建虚拟屏并切换；
+    - 设备普通连接/断开不会自动切换屏幕（避免日常打扰）；
+    - 远程开始时保存“连接前”的屏幕布局（扩展/复制/仅某屏），退出时原样恢复；
+    - 切换后校验确实只剩一块活动屏，失败自动重试/重建。
 #>
+
 
 $ErrorActionPreference = 'SilentlyContinue'
 if (Test-Path (Join-Path (Split-Path -Parent $PSCommandPath) 'STOP.txt')) { exit }
@@ -15,14 +17,14 @@ $LogDir = Join-Path $Root 'logs'
 New-Item -ItemType Directory -Force $LogDir | Out-Null
 $LogFile = Join-Path $LogDir 'watcher.log'
 $StateFile = Join-Path $LogDir 'state.txt'
-$OppLogDir = Join-Path $env:APPDATA 'O+Connect\devicespace'
 $Tool = Join-Path $env:LOCALAPPDATA 'DeviceSpace\ext-service\OPVirtualDisplayDriver\OPDisplayDriverTool.exe'
-$PollSec = 2
+$PollSec = 1
 $GraceSec = 90
+$SnapshotFile = Join-Path $LogDir 'topology.snapshot'
 
 Add-Type -TypeDefinition @'
 using System;using System.Runtime.InteropServices;
-public static class ScreenFitDisplay {
+public static class WR3 {
   [StructLayout(LayoutKind.Sequential, CharSet=CharSet.Auto)] public struct DEVMODE {
     [MarshalAs(UnmanagedType.ByValTStr, SizeConst=32)] public string dmDeviceName;
     public short dmSpecVersion, dmDriverVersion, dmSize, dmDriverExtra; public int dmFields;
@@ -44,94 +46,83 @@ public static class ScreenFitDisplay {
 }
 '@
 
-function Write-Log($m) {
+function WLog($m) {
     $line = "{0}  {1}" -f (Get-Date -Format 'yyyy-MM-dd HH:mm:ss'), $m
     Add-Content -Path $LogFile -Value $line -Encoding UTF8
 }
 
-function Get-RemoteSession {
-    $main = Get-ChildItem (Join-Path $OppLogDir '*_main.log') -ErrorAction SilentlyContinue |
-        Sort-Object LastWriteTime -Descending | Select-Object -First 1
-    if (-not $main) { return @{ Active = $false; Device = $null } }
-    $lines = Get-Content $main.FullName -Tail 8000
-    $lastStart = -1; $lastStop = -1; $dev = $null
+function Get-Session {
+    $main = Get-ChildItem (Join-Path $env:APPDATA 'O+Connect\devicespace\*_main.log') | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+    if (-not $main) { return @{ Active = $false; Device = $null; StartTs = $null } }
+    $lines = Get-Content $main.FullName -Tail 4000
+    $lastStart = -1; $lastStop = -1; $dev = $null; $startTs = $null
     for ($i = 0; $i -lt $lines.Count; $i++) {
-        if ($lines[$i] -match 'start remote control:') {
+        $l = $lines[$i]
+        if ($l -match 'start remote control:') {
             $lastStart = $i
-            $m = [regex]::Match($lines[$i], '"deviceName":"([^"]+)"')
+            $m = [regex]::Match($l, '"deviceName":"([^"]+)"')
             if ($m.Success) { $dev = $m.Groups[1].Value }
-        } elseif ($lines[$i] -match 'stop remote control:') { $lastStop = $i }
+            if ($l -match '(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})') { $startTs = [datetime]::ParseExact($matches[1], 'yyyy-MM-dd HH:mm:ss', $null) }
+        } elseif ($l -match 'stop remote control:') { $lastStop = $i }
     }
-    return @{ Active = ($lastStart -ge 0 -and $lastStart -gt $lastStop); Device = $dev }
+    return @{ Active = ($lastStart -ge 0 -and $lastStart -gt $lastStop); Device = $dev; StartTs = $startTs }
 }
 
 $DeviceMap = @(
-    @{ Match = @('Pad 5 Pro');    W = 3392; H = 2400; Label = 'OPPO Pad 5 Pro' },
-    @{ Match = @('Pad 4 Pro');    W = 3392; H = 2400; Label = 'OPPO Pad 4 Pro' },
-    @{ Match = @('Pad 3 Pro');    W = 3000; H = 2120; Label = 'OPPO Pad 3 Pro' },
-    @{ Match = @('Pad 5');        W = 3000; H = 2120; Label = 'OPPO Pad 5' },
-    @{ Match = @('Pad 3');        W = 2800; H = 2000; Label = 'OPPO Pad 3' },
-    @{ Match = @('Pad mini', 'Pad Mini'); W = 2520; H = 1680; Label = 'OPPO Pad Mini' },
-    @{ Match = @('Pad Air5');     W = 2800; H = 1980; Label = 'OPPO Pad Air5' },
-    @{ Match = @('Find N6');      W = 2480; H = 2248; Label = 'OPPO Find N6 (inner)' },
-    @{ Match = @('OnePlus Pad 3 Pro', '一加平板 3 Pro'); W = 3392; H = 2400; Label = 'OnePlus Pad 3 Pro' },
-    @{ Match = @('OnePlus Pad 2 Pro', '一加平板 2 Pro'); W = 3392; H = 2400; Label = 'OnePlus Pad 2 Pro' },
-    @{ Match = @('OnePlus Pad Pro', '一加平板 Pro');     W = 3000; H = 2120; Label = 'OnePlus Pad Pro' },
-    @{ Match = @('OnePlus Pad 2', '一加平板 2');         W = 3000; H = 2120; Label = 'OnePlus Pad 2' },
-    @{ Match = @('OnePlus Pad', '一加平板');             W = 2800; H = 2000; Label = 'OnePlus Pad' }
+    @{ Match = @('Pad 5 Pro');    W = 3392; H = 2400 },
+    @{ Match = @('Pad 4 Pro');    W = 3392; H = 2400 },
+    @{ Match = @('Pad 3 Pro');    W = 3000; H = 2120 },
+    @{ Match = @('Pad 5');        W = 3000; H = 2120 },
+    @{ Match = @('Pad 3');        W = 2800; H = 2000 },
+    @{ Match = @('Pad mini', 'Pad Mini'); W = 2520; H = 1680 },
+    @{ Match = @('Pad Air5');     W = 2800; H = 1980 },
+    @{ Match = @('Find N6');      W = 2480; H = 2248 },
+    @{ Match = @('OnePlus Pad 3 Pro', '一加平板 3 Pro'); W = 3392; H = 2400 },
+    @{ Match = @('OnePlus Pad 2 Pro', '一加平板 2 Pro'); W = 3392; H = 2400 },
+    @{ Match = @('OnePlus Pad Pro', '一加平板 Pro');     W = 3000; H = 2120 },
+    @{ Match = @('OnePlus Pad 2', '一加平板 2');         W = 3000; H = 2120 },
+    @{ Match = @('OnePlus Pad', '一加平板');             W = 2800; H = 2000 }
 )
 
-# 可选扩展：在 scripts\devices.json 里追加设备（数组，元素形如
-# {"match":["Pad 6"],"w":3000,"h":2120,"label":"OPPO Pad 6"}）
-$DeviceCfg = Join-Path $Root 'devices.json'
-if (Test-Path $DeviceCfg) {
-    try {
-        $extra = Get-Content $DeviceCfg -Raw | ConvertFrom-Json
-        foreach ($e in $extra) {
-            $DeviceMap = @(@{ Match = @($e.match); W = [int]$e.w; H = [int]$e.h; Label = "$($e.label)" }) + $DeviceMap
-        }
-    } catch { Write-Log ('devices.json 解析失败: ' + $_.Exception.Message) }
-}
-
-function Get-TargetSize($dev) {
+function Desired($dev) {
     foreach ($entry in $DeviceMap) {
         foreach ($pat in $entry.Match) {
-            if ($dev -like "*$pat*") { return @{ W = $entry.W; H = $entry.H; Label = $entry.Label } }
+            if ($dev -like "*$pat*") { return @{ W = $entry.W; H = $entry.H } }
         }
     }
     return $null
 }
 
-function Remove-VirtualDisplay {
+function KillTools {
     Get-Process OPDisplayDriverTool -ErrorAction SilentlyContinue | ForEach-Object { Stop-Process -Id $_.Id -Force -ErrorAction SilentlyContinue }
     Start-Sleep -Seconds 2
+}
+
+function CleanDevice {
+    KillTools
     & pnputil /remove-device "SWD\OPDISPLAYDRIVER\OPDISPLAYDRIVER" 2>$null | Out-Null
     Start-Sleep -Seconds 3
 }
 
-function Test-Resolution($w, $h) { return ([ScreenFitDisplay]::All() -match ("{0}x{1}" -f $w, $h)) }
+function HasRes($w, $h) { return ([WR3]::All() -match ("{0}x{1}" -f $w, $h)) }
 
-function New-VirtualDisplay($w, $h) {
+function CreateDisplay($w, $h) {
     $out = Join-Path $LogDir ("tool_{0}.out" -f (Get-Date -Format 'HHmmssfff'))
-    Start-Process -FilePath $Tool -ArgumentList @('--operation','create','--width',"$w",'--height',"$h",'--freq','60') `
-        -WindowStyle Hidden -RedirectStandardOutput $out -RedirectStandardError "$out.err" | Out-Null
+    Start-Process -FilePath $Tool -ArgumentList @('--operation','create','--width',"$w",'--height',"$h",'--freq','60') -WindowStyle Hidden -RedirectStandardOutput $out -RedirectStandardError "$out.err" | Out-Null
     for ($i = 0; $i -lt 12; $i++) {
         Start-Sleep -Seconds 2
-        if (Test-Resolution $w $h) { return $true }
-        if ((Get-Content $out -Raw -ErrorAction SilentlyContinue) -match 'CreateSuccess') {
-            Start-Sleep -Seconds 2
-            if (Test-Resolution $w $h) { return $true }
-        }
+        if (HasRes $w $h) { return $true }
+        if ((Get-Content $out -Raw -ErrorAction SilentlyContinue) -match 'CreateSuccess') { Start-Sleep -Seconds 2; if (HasRes $w $h) { return $true } }
     }
-    Write-Log ('   建屏失败，工具输出: ' + ((Get-Content $out -Tail 8 -ErrorAction SilentlyContinue) -join ' | '))
+    WLog ('   建屏失败，工具输出: ' + ((Get-Content $out -Tail 8 -ErrorAction SilentlyContinue) -join ' | '))
     return $false
 }
 
-function Get-State { if (Test-Path $StateFile) { (Get-Content $StateFile -Raw).Trim() } else { 'off' } }
-function Set-State($s) { Set-Content -Path $StateFile -Value $s -Encoding UTF8 }
+function GetState { if (Test-Path $StateFile) { (Get-Content $StateFile -Raw).Trim() } else { 'off' } }
+function SetState($s) { Set-Content -Path $StateFile -Value $s -Encoding UTF8 }
 
 
-# ---- 显示拓扑切换（合并进 watcher，单进程负责建屏 + 切屏）----
+# ---- 显示拓扑切换（直接由 watcher 完成）----
 Add-Type -TypeDefinition @'
 using System;using System.Runtime.InteropServices;
 public static class ScreenFitTopo {
@@ -140,7 +131,16 @@ public static class ScreenFitTopo {
   [StructLayout(LayoutKind.Sequential)] public struct SRC { public LUID adapterId; public uint id; public uint modeInfoIdx; public uint statusFlags; }
   [StructLayout(LayoutKind.Sequential)] public struct TGT { public LUID adapterId; public uint id; public uint modeInfoIdx; public uint outputTechnology; public uint rotation; public uint scaling; public RAT refreshRate; public uint scanLineOrdering; public int targetAvailable; public uint statusFlags; }
   [StructLayout(LayoutKind.Sequential)] public struct PATH { public SRC sourceInfo; public TGT targetInfo; public uint flags; }
-  [StructLayout(LayoutKind.Sequential)] public struct MODE { public uint infoType; public uint id; public LUID adapterId; public uint a,b,c,d,e,f,g,h,i,j; }
+  [StructLayout(LayoutKind.Explicit, Size=64)] public struct MODE {
+    [FieldOffset(0)] public uint infoType;
+    [FieldOffset(4)] public uint id;
+    [FieldOffset(8)] public LUID adapterId;
+    [FieldOffset(16)] public uint width;
+    [FieldOffset(20)] public uint height;
+    [FieldOffset(24)] public uint pixelFormat;
+    [FieldOffset(28)] public int posX;
+    [FieldOffset(32)] public int posY;
+  }
   [StructLayout(LayoutKind.Sequential)] public struct HDR { public uint type; public uint size; public LUID adapterId; public uint id; }
   [StructLayout(LayoutKind.Sequential, CharSet=CharSet.Unicode)] public struct TDN {
     public HDR header; public uint flags; public uint outputTechnology; public ushort mfg; public ushort prod; public uint connector;
@@ -179,57 +179,266 @@ public static class ScreenFitTopo {
   public static string OnlyInternal() {
     return "err=" + SetDisplayConfig(0, null, 0, null, APPLY | INTERNAL);
   }
+  static bool IsVirtualPath(PATH p) {
+    var n = Name(p);
+    return n.IndexOf("OPExtScreen", StringComparison.OrdinalIgnoreCase) >= 0 ||
+           n.IndexOf("OPDisplayDriver", StringComparison.OrdinalIgnoreCase) >= 0 ||
+           n.IndexOf("DELD0E6", StringComparison.OrdinalIgnoreCase) >= 0;
+  }
+  public static bool VirtualPathExists() {
+    foreach (var p in Query()) { if (IsVirtualPath(p)) return true; }
+    return false;
+  }
+  static PATH[] QueryActive() {
+    uint np, nm; int e = GetDisplayConfigBufferSizes(2, out np, out nm); if (e != 0) throw new Exception("buf=" + e);
+    var p = new PATH[np]; var m = new MODE[nm];
+    e = QueryDisplayConfig(2, ref np, p, ref nm, m, IntPtr.Zero); if (e != 0) throw new Exception("query=" + e);
+    var r = new PATH[np]; Array.Copy(p, r, np); return r;
+  }
+  public static bool VirtualActive() {
+    foreach (var p in QueryActive()) { if (IsVirtualPath(p)) return true; }
+    return false;
+  }
+  public static int ActiveCount() { return QueryActive().Length; }
+  public static string Extend() {
+    return "err=" + SetDisplayConfig(0, null, 0, null, APPLY | 0x8);
+  }
+  public static string DeactivateVirtual() {
+    uint np, nm; int e = GetDisplayConfigBufferSizes(2, out np, out nm); if (e != 0) return "buf=" + e;
+    var paths = new PATH[np]; var modes = new MODE[nm];
+    e = QueryDisplayConfig(2, ref np, paths, ref nm, modes, IntPtr.Zero); if (e != 0) return "query=" + e;
+    var kept = new System.Collections.Generic.List<PATH>();
+    for (int i = 0; i < np; i++) { if (!IsVirtualPath(paths[i])) kept.Add(paths[i]); }
+    if (kept.Count == 0) return "no-physical";
+    int minX = int.MaxValue, minY = int.MaxValue;
+    foreach (var p in kept) {
+      if (p.sourceInfo.modeInfoIdx != INVALID) {
+        var m = modes[p.sourceInfo.modeInfoIdx];
+        if (m.infoType == 1) { if (m.posX < minX) minX = m.posX; if (m.posY < minY) minY = m.posY; }
+      }
+    }
+    if (minX == int.MaxValue) { minX = 0; minY = 0; }
+    var keepP = new System.Collections.Generic.List<PATH>();
+    var keepM = new System.Collections.Generic.List<MODE>();
+    foreach (var q0 in kept) {
+      var q = q0;
+      if (q.sourceInfo.modeInfoIdx != INVALID) {
+        var m = modes[q.sourceInfo.modeInfoIdx];
+        if (m.infoType == 1) { m.posX -= minX; m.posY -= minY; }
+        keepM.Add(m); q.sourceInfo.modeInfoIdx = (uint)(keepM.Count - 1);
+      }
+      if (q.targetInfo.modeInfoIdx != INVALID) {
+        keepM.Add(modes[q.targetInfo.modeInfoIdx]); q.targetInfo.modeInfoIdx = (uint)(keepM.Count - 1);
+      }
+      keepP.Add(q);
+    }
+    return "err=" + SetDisplayConfig((uint)keepP.Count, keepP.ToArray(), (uint)keepM.Count, keepM.ToArray(), USE | APPLY);
+  }
+  static PATH[] sPaths = null;
+  static byte[] sModes = null;
+  static uint sNp = 0, sNm = 0;
+  public static bool HasSnapshot() { return sPaths != null; }
+  public static string SaveSnapshot(string file) {
+    uint np, nm; int e = GetDisplayConfigBufferSizes(2, out np, out nm); if (e != 0) return "buf=" + e;
+    var paths = new PATH[np]; var modes = new MODE[nm];
+    e = QueryDisplayConfig(2, ref np, paths, ref nm, modes, IntPtr.Zero); if (e != 0) return "query=" + e;
+    var keepP = new System.Collections.Generic.List<PATH>();
+    var keepM = new System.Collections.Generic.List<MODE>();
+    for (int i = 0; i < np; i++) {
+      var q = paths[i];
+      if (IsVirtualPath(q)) continue;
+      if (q.sourceInfo.modeInfoIdx != INVALID) { keepM.Add(modes[q.sourceInfo.modeInfoIdx]); q.sourceInfo.modeInfoIdx = (uint)(keepM.Count - 1); }
+      if (q.targetInfo.modeInfoIdx != INVALID) { keepM.Add(modes[q.targetInfo.modeInfoIdx]); q.targetInfo.modeInfoIdx = (uint)(keepM.Count - 1); }
+      keepP.Add(q);
+    }
+    if (keepP.Count == 0) return "only-virtual";
+    sNp = (uint)keepP.Count; sNm = (uint)keepM.Count;
+    sPaths = keepP.ToArray();
+    int msz = Marshal.SizeOf(typeof(MODE));
+    sModes = new byte[msz * (int)sNm];
+    if (sNm > 0) {
+      IntPtr p = Marshal.AllocHGlobal(msz * (int)sNm);
+      for (int i = 0; i < sNm; i++) Marshal.StructureToPtr(keepM[i], IntPtr.Add(p, i * msz), false);
+      Marshal.Copy(p, sModes, 0, sModes.Length); Marshal.FreeHGlobal(p);
+    }
+    try {
+      int psz = Marshal.SizeOf(typeof(PATH));
+      using (var fs = new System.IO.FileStream(file, System.IO.FileMode.Create))
+      using (var bw = new System.IO.BinaryWriter(fs)) {
+        bw.Write(sNp); bw.Write(sNm); bw.Write(psz); bw.Write(msz);
+        IntPtr pp = Marshal.AllocHGlobal(psz * (int)sNp);
+        for (int i = 0; i < sNp; i++) Marshal.StructureToPtr(sPaths[i], IntPtr.Add(pp, i * psz), false);
+        var pb = new byte[psz * (int)sNp]; Marshal.Copy(pp, pb, 0, pb.Length); Marshal.FreeHGlobal(pp);
+        bw.Write(pb); bw.Write(sModes);
+      }
+    } catch { }
+    return "saved np=" + sNp + " nm=" + sNm;
+  }
+  public static string LoadSnapshot(string file) {
+    try {
+      using (var fs = new System.IO.FileStream(file, System.IO.FileMode.Open))
+      using (var br = new System.IO.BinaryReader(fs)) {
+        sNp = br.ReadUInt32(); sNm = br.ReadUInt32(); int psz = br.ReadInt32(); int msz = br.ReadInt32();
+        var pb = br.ReadBytes(psz * (int)sNp); var mb = br.ReadBytes(msz * (int)sNm);
+        sPaths = new PATH[sNp];
+        IntPtr pp = Marshal.AllocHGlobal(pb.Length);
+        Marshal.Copy(pb, 0, pp, pb.Length);
+        for (int i = 0; i < sNp; i++) sPaths[i] = (PATH)Marshal.PtrToStructure(IntPtr.Add(pp, i * psz), typeof(PATH));
+        Marshal.FreeHGlobal(pp); sModes = mb;
+      }
+      return "loaded np=" + sNp + " nm=" + sNm;
+    } catch (Exception ex) { return "load-fail:" + ex.Message; }
+  }
+  public static string RestoreSnapshot() {
+    if (sPaths == null) return "no-snapshot";
+    int msz = Marshal.SizeOf(typeof(MODE));
+    var modes = new MODE[sNm];
+    if (sNm > 0) {
+      IntPtr p = Marshal.AllocHGlobal(msz * (int)sNm);
+      Marshal.Copy(sModes, 0, p, sModes.Length);
+      for (int i = 0; i < sNm; i++) modes[i] = (MODE)Marshal.PtrToStructure(IntPtr.Add(p, i * msz), typeof(MODE));
+      Marshal.FreeHGlobal(p);
+    }
+    int e = SetDisplayConfig(sNp, sPaths, sNm, modes, USE | APPLY);
+    sPaths = null; sModes = null;
+    return "err=" + e;
+  }
+
 }
 '@
 
 $topoState = ''
 function Set-OnlyVirtual {
-    if ($script:topoState -eq 'virtual') { return }
+    $script:topoResult = 'ok'
     $r = [ScreenFitTopo]::OnlyVirtual()
-    if ($r -eq 'err=0') { Write-Log "切到仅在虚拟屏: $r"; $script:topoState = 'virtual' }
-    elseif ($r -ne 'no-match') { Write-Log "切虚拟屏失败: $r（下轮重试）" }
+    if ($r -eq 'err=0') { WLog "切到仅在虚拟屏: $r"; $script:topoState = 'virtual'; $script:topoResult = 'ok' }
+    else { $script:topoResult = $r; WLog "切虚拟屏失败: $r（下轮重试）" }
 }
 function Set-OnlyInternal {
     if ($script:topoState -eq 'internal') { return }
     $r = [ScreenFitTopo]::OnlyInternal()
-    if ($r -eq 'err=0') { Write-Log "恢复仅内屏: $r"; $script:topoState = 'internal' }
+    if ($r -eq 'err=0') { WLog "恢复仅内屏: $r"; $script:topoState = 'internal' }
 }
 
-Write-Log 'watcher 启动（远程会话触发）'
-$lastActive = Get-Date
-if ((Get-State) -eq 'on') {
-    $s0 = Get-RemoteSession
-    if (-not $s0.Active) { Write-Log '启动清理：上次遗留'; Remove-VirtualDisplay; Set-State 'off'; $lastActive = Get-Date }
+$prebuildStableSec = 20
+$lastPrebuildTry = [datetime]::MinValue
+$devConnectedSince = $null
+
+
+function Get-ActiveCount {
+    $a = [WR3]::All()
+    if (-not $a) { return 0 }
+    return (($a.Trim(';')) -split ';').Count
 }
 
-$lastTry = [datetime]::MinValue
+function Ensure-OnlyVirtual {
+    for ($i = 0; $i -lt 8; $i++) {
+        if ([ScreenFitTopo]::VirtualActive()) {
+            Set-OnlyVirtual
+            if ($script:topoResult -eq 'ok' -and ((Get-ActiveCount) -eq 1)) { return $true }
+        } else {
+            [ScreenFitTopo]::Extend() | Out-Null
+        }
+        Start-Sleep -Milliseconds 300
+    }
+    return $false
+}
+
+function Start-Create($w, $h) {
+    $out = Join-Path $LogDir ("tool_{0}.out" -f (Get-Date -Format 'HHmmssfff'))
+    Start-Process -FilePath $Tool -ArgumentList @('--operation','create','--width',"$w",'--height',"$h",'--freq','60') `
+        -WindowStyle Hidden -RedirectStandardOutput $out -RedirectStandardError "$out.err" | Out-Null
+    return $out
+}
+
+function Wait-VirtualPath($timeoutSec) {
+    $deadline = (Get-Date).AddSeconds($timeoutSec)
+    while ((Get-Date) -lt $deadline) {
+        if ([ScreenFitTopo]::VirtualPathExists()) { return $true }
+        Start-Sleep -Milliseconds 250
+    }
+    return $false
+}
+
+$lastCreateTry = [datetime]::MinValue
+$script:snapshotTried = $false
+WLog 'watcher-run 启动（仅远程信号触发 + 退出恢复布局）'
+
+# 空闲启动：恢复残留快照，清理虚拟屏，保持用户原布局
+$s0 = Get-Session
+if (-not $s0.Active) {
+    if (Test-Path $SnapshotFile) {
+        [ScreenFitTopo]::LoadSnapshot($SnapshotFile) | Out-Null
+        $r = [ScreenFitTopo]::RestoreSnapshot()
+        WLog ("启动恢复上次屏幕布局: " + $r)
+        Remove-Item $SnapshotFile -Force -ErrorAction SilentlyContinue
+    }
+    if ([ScreenFitTopo]::VirtualPathExists()) { CleanDevice }
+    SetState 'off'
+}
+
 while ($true) {
-    $s = Get-RemoteSession
+    $s = Get-Session
     if ($s.Active) {
-        $lastActive = Get-Date
-        $t = Get-TargetSize $s.Device
+        # 已经是“仅虚拟屏且只有 1 块屏”时直接跳过，避免反复调用
+        if ((GetState) -eq 'on' -and [ScreenFitTopo]::VirtualActive() -and ((Get-ActiveCount) -eq 1)) {
+            Start-Sleep -Milliseconds 500
+            continue
+        }
+        $t = Desired $s.Device
         if ($t) {
-            if (-not (Test-Resolution $t.W $t.H)) {
-                if (((Get-Date) - $lastTry).TotalSeconds -ge 30) {
-                    $lastTry = Get-Date
-                    Write-Log ('远程会话开始 -> 建屏 ' + $s.Device + ' ' + $t.W + 'x' + $t.H + '（当前: ' + [ScreenFitDisplay]::All() + '）')
-                    Remove-VirtualDisplay
-                    if (-not (New-VirtualDisplay $t.W $t.H)) {
-                        Write-Log '   第一次失败，重试'; Remove-VirtualDisplay; New-VirtualDisplay $t.W $t.H | Out-Null
-                    }
+            if (-not [ScreenFitTopo]::HasSnapshot() -and -not $script:snapshotTried) {
+                $script:snapshotTried = $true
+                $r = [ScreenFitTopo]::SaveSnapshot($SnapshotFile)
+                WLog ("保存连接前屏幕布局: " + $r)
+            }
+            $t0 = Get-Date
+            if (-not [ScreenFitTopo]::VirtualActive()) {
+                if ([ScreenFitTopo]::VirtualPathExists()) {
+                    [ScreenFitTopo]::Extend() | Out-Null
+                } elseif (((Get-Date) - $lastCreateTry).TotalSeconds -ge 15) {
+                    $lastCreateTry = Get-Date
+                    WLog ('检测到远程会话 -> 建屏 ' + $s.Device + ' ' + $t.W + 'x' + $t.H)
+                    CleanDevice
+                    Start-Create $t.W $t.H | Out-Null
+                    Wait-VirtualPath 10 | Out-Null
                 }
             }
-            if ((Get-State) -ne 'on' -and (Test-Resolution $t.W $t.H)) { Set-State 'on'; Write-Log ('虚拟屏就绪: ' + [ScreenFitDisplay]::All()) }
-            if (Test-Resolution $t.W $t.H) { Set-OnlyVirtual }
+            $switched = $false
+            if ([ScreenFitTopo]::VirtualActive()) { $switched = Ensure-OnlyVirtual }
+            if (-not $switched) {
+                if (((Get-Date) - $lastCreateTry).TotalSeconds -ge 15) {
+                    $lastCreateTry = Get-Date
+                    WLog '切换失败，重建虚拟屏后重试'
+                    CleanDevice
+                    Start-Create $t.W $t.H | Out-Null
+                    if (Wait-VirtualPath 10) { $switched = Ensure-OnlyVirtual }
+                }
+            }
+            if ($switched) {
+                if ((GetState) -ne 'on') {
+                    SetState 'on'
+                    WLog ("已切到 " + $t.W + "x" + $t.H + " 仅虚拟屏（" + [math]::Round(((Get-Date) - $t0).TotalSeconds,1) + " 秒）")
+                }
+            } elseif ((Get-ActiveCount) -gt 1) {
+                Ensure-OnlyVirtual | Out-Null
+            }
         }
     } else {
-        if ((Get-State) -eq 'on') { Set-OnlyInternal }
-        if ((Get-State) -eq 'on' -and ((Get-Date) - $lastActive).TotalSeconds -ge $GraceSec) {
-            Write-Log '远程结束满 90 秒 -> 拆虚拟屏'
-            Remove-VirtualDisplay
-            Set-State 'off'; $topoState = ''
+        if ([ScreenFitTopo]::HasSnapshot()) {
+            $r = [ScreenFitTopo]::RestoreSnapshot()
+            Remove-Item $SnapshotFile -Force -ErrorAction SilentlyContinue
+            WLog ("远程结束 -> 恢复连接前屏幕布局: " + $r)
+            SetState 'off'
+            if ([ScreenFitTopo]::VirtualPathExists()) { CleanDevice }
+        } elseif ((GetState) -eq 'on' -or $script:topoState -eq 'virtual') {
+            Set-OnlyInternal
+            SetState 'off'
+            Remove-Item $SnapshotFile -Force -ErrorAction SilentlyContinue
+            if ([ScreenFitTopo]::VirtualPathExists()) { CleanDevice }
         }
+        $script:snapshotTried = $false
     }
-    Start-Sleep -Seconds $PollSec
+    Start-Sleep -Milliseconds 500
 }
 

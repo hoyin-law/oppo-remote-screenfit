@@ -140,6 +140,13 @@ OPPO 互联 的远程控制内核不会按接收端自适应分辨率：它抓�
 
 ---
 
+## macOS
+
+OPPO 互联 也支持「远控 Mac」（OPPO Pad 4 Pro 起）。macOS 版不能直接复用 Windows 驱动，
+需要用 CGVirtualDisplay / BetterDisplay 等方案重建虚拟屏，并用 displayplacer 切换分辨率。
+
+可行性分析、技术路线与「在 Mac 上一键收集信息」的脚本见 [macos/README.md](macos/README.md)。
+
 ## License
 
 [MIT](LICENSE)

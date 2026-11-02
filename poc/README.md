@@ -43,3 +43,16 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\InputDiagnose.ps1
 ## 隐私
 
 只记录硬件事件码（vk/scan/鼠标坐标），不记录输入的文字内容，不联网上传。
+
+## Raycast Win 键桥接（可选，默认关闭）
+
+`poc\raycast-bridge.json`：
+
+``json
+{ "enabled": false, "uri": "raycast://" }
+``
+
+- `enabled=false`（默认）：桥接不启动，Win 键保持系统开始菜单，绝不影响其他用户；
+- `enabled=true` 且本机有 Raycast 进程：裸 Win 打开 Raycast launcher；
+- `uri` 可换成其他启动器协议（如后续适配 PowerToys Run）；
+- 关闭 launcher 用触控板点击别处（真实点击会使其失焦关闭）。

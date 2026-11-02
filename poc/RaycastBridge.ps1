@@ -1,10 +1,29 @@
 param(
-    [string]$LogDir = (Join-Path $PSScriptRoot 'logs')
+    [string]$LogDir = (Join-Path $PSScriptRoot 'logs'),
+    [string]$ConfigPath = (Join-Path $PSScriptRoot 'raycast-bridge.json')
 )
 $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName System.Windows.Forms
 New-Item -ItemType Directory -Force $LogDir | Out-Null
 $log = Join-Path $LogDir 'raycast-bridge.log'
+
+# ---- 配置：默认关闭，绝不硬编码劫持 Win 键 ----
+if (-not (Test-Path $ConfigPath)) {
+    @{ enabled = $false; uri = 'raycast://' } | ConvertTo-Json | Set-Content -Path $ConfigPath -Encoding UTF8
+    Write-Host "未找到配置，已生成默认配置（enabled=false）：$ConfigPath" -ForegroundColor Yellow
+    Write-Host '未启用：Win 键保持系统开始菜单行为。' -ForegroundColor Yellow
+    exit 0
+}
+$cfg = Get-Content $ConfigPath -Raw | ConvertFrom-Json
+if (-not $cfg.enabled) {
+    Write-Host 'Raycast 桥接未启用（配置 enabled=false）：Win 键保持系统开始菜单行为。' -ForegroundColor Yellow
+    exit 0
+}
+$uri = if ($cfg.uri) { [string]$cfg.uri } else { 'raycast://' }
+if (-not (Get-Process Raycast -ErrorAction SilentlyContinue)) {
+    Write-Host '未检测到 Raycast 进程，为避免吞掉 Win 键，桥接不启动。' -ForegroundColor Yellow
+    exit 0
+}
 
 Add-Type -TypeDefinition @'
 using System;using System.Runtime.InteropServices;
@@ -17,12 +36,10 @@ public static class WinBridge {
   [DllImport("user32.dll")] static extern IntPtr CallNextHookEx(IntPtr h, int n, IntPtr w, IntPtr l);
   [DllImport("kernel32.dll")] static extern IntPtr GetModuleHandle(string name);
   [DllImport("user32.dll")] public static extern IntPtr GetForegroundWindow();
-  [DllImport("user32.dll")] public static extern bool IsWindowVisible(IntPtr h);
-  [DllImport("user32.dll")] public static extern bool IsWindow(IntPtr h);
   [DllImport("user32.dll")] static extern uint GetWindowThreadProcessId(IntPtr h, out uint pid);
   public static string ProcessOf(IntPtr h) { uint pid; GetWindowThreadProcessId(h, out pid); try { return System.Diagnostics.Process.GetProcessById((int)pid).ProcessName; } catch { return ""; } }
-  static System.Collections.Concurrent.ConcurrentQueue<string> q = new System.Collections.Concurrent.ConcurrentQueue<string>();
-  public static string Take() { string s; return q.TryDequeue(out s) ? s : null; }
+  static System.Collections.Concurrent.ConcurrentQueue<long> q = new System.Collections.Concurrent.ConcurrentQueue<long>();
+  public static long TakeTicks() { long t; return q.TryDequeue(out t) ? t : 0; }
   public static bool Start() { proc = Cb; hook = SetWindowsHookEx(13, proc, GetModuleHandle(null), 0); return hook != IntPtr.Zero; }
   public static void Stop() { if (hook != IntPtr.Zero) { UnhookWindowsHookEx(hook); hook = IntPtr.Zero; } }
   static bool winDown = false; static DateTime winDownAt; static bool otherKey = false;
@@ -37,7 +54,7 @@ public static class WinBridge {
         else if (winDown) {
           var dur = (DateTime.Now - winDownAt).TotalMilliseconds;
           winDown = false;
-          if (!otherKey && dur < 700) q.Enqueue("bare-win");
+          if (!otherKey && dur < 700) q.Enqueue(DateTime.UtcNow.Ticks);
         }
       } else if (down && winDown) { otherKey = true; }
     }
@@ -48,37 +65,36 @@ public static class WinBridge {
 
 if (-not [WinBridge]::Start()) { Write-Host '安装键盘钩子失败' -ForegroundColor Red; exit 1 }
 
-$script:launcherHwnd = [IntPtr]::Zero
-
-function Invoke-BareWin {
+function Invoke-BareWin([long]$ticks) {
     $fgNow = [WinBridge]::GetForegroundWindow()
     if ([WinBridge]::ProcessOf($fgNow) -eq 'Raycast') {
         Add-Content -Path $log -Value ("{0}  裸Win -> Launcher 在前台，忽略" -f (Get-Date -Format 'HH:mm:ss.fff'))
         return
     }
-    Start-Process 'raycast://'
+    $t0 = Get-Date
+    Start-Process $uri
     $fg = [IntPtr]::Zero
     for ($i = 0; $i -lt 12; $i++) {
-        Start-Sleep -Milliseconds 200
+        Start-Sleep -Milliseconds 150
         $fg = [WinBridge]::GetForegroundWindow()
         if ([WinBridge]::ProcessOf($fg) -eq 'Raycast') { break }
     }
+    $ms = [math]::Round(((Get-Date) - $t0).TotalMilliseconds)
     if ([WinBridge]::ProcessOf($fg) -eq 'Raycast') {
-        $script:launcherHwnd = $fg
-        Add-Content -Path $log -Value ("{0}  裸Win -> 打开 Launcher (hwnd={1})" -f (Get-Date -Format 'HH:mm:ss.fff'), $fg)
+        Add-Content -Path $log -Value ("{0}  裸Win -> 打开 Launcher (hwnd={1}, 启动耗时 {2}ms)" -f (Get-Date -Format 'HH:mm:ss.fff'), $fg, $ms)
     } else {
         Add-Content -Path $log -Value ("{0}  裸Win -> 打开失败，前台={1}" -f (Get-Date -Format 'HH:mm:ss.fff'), [WinBridge]::ProcessOf($fg))
     }
 }
 
-Write-Host 'Win 键桥接（仅打开 launcher）已启动；关闭请用触控板点一下别处。Ctrl+C 退出。' -ForegroundColor Green
+Write-Host "Win 键桥接已启用（配置：$ConfigPath，目标：$uri）。Ctrl+C 退出。" -ForegroundColor Green
 Write-Host "日志：$log"
 try {
     while ($true) {
         [System.Windows.Forms.Application]::DoEvents()
-        $ev = [WinBridge]::Take()
-        while ($ev) { Invoke-BareWin; $ev = [WinBridge]::Take() }
-        Start-Sleep -Milliseconds 30
+        $ticks = [WinBridge]::TakeTicks()
+        while ($ticks -ne 0) { Invoke-BareWin $ticks; $ticks = [WinBridge]::TakeTicks() }
+        Start-Sleep -Milliseconds 10
     }
 } finally {
     [WinBridge]::Stop()

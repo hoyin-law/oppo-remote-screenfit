@@ -40,7 +40,7 @@ via `scripts/devices.json` without touching code.
    - `start remote control: ... "deviceName":"OPPO Find N6" ...`
    - `stop remote control: ...`
 2. On session start it calls OPPO's bundled `OPDisplayDriverTool.exe` to create a virtual display at the device's native resolution.
-3. The same watcher switches the display topology to **"show only on the virtual display"**, so the remote side only sees one screen.
+3. The same watcher switches the display topology to **"show only on the virtual display"**, so the remote side only sees one screen; it keeps checking and re-applies within 2 seconds if a physical display comes back, and moves stranded windows onto the virtual screen.
 4. When the session ends it restores the exact layout you had before connecting (extend / duplicate / single screen), then removes the virtual display.
 
 Ordinary device connect/disconnect does not trigger any switching; only a remote-control session does.

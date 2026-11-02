@@ -104,7 +104,10 @@ function CleanDevice {
     Start-Sleep -Seconds 3
 }
 
-function HasRes($w, $h) { return ([WR3]::All() -match ("{0}x{1}" -f $w, $h)) }
+function HasRes($w, $h) {
+    $b = [ScreenFitTopo]::ActiveBounds()
+    return ($b -like ("$w,$h,*"))
+}
 
 function CreateDisplay($w, $h) {
     $out = Join-Path $LogDir ("tool_{0}.out" -f (Get-Date -Format 'HHmmssfff'))
@@ -200,6 +203,17 @@ public static class ScreenFitTopo {
     return false;
   }
   public static int ActiveCount() { return QueryActive().Length; }
+  public static string ActiveBounds() {
+    uint np, nm; int e = GetDisplayConfigBufferSizes(2, out np, out nm); if (e != 0) return "";
+    var paths = new PATH[np]; var modes = new MODE[nm];
+    e = QueryDisplayConfig(2, ref np, paths, ref nm, modes, IntPtr.Zero); if (e != 0) return "";
+    for (int i = 0; i < np; i++) {
+      if (paths[i].sourceInfo.modeInfoIdx == INVALID) continue;
+      var m = modes[paths[i].sourceInfo.modeInfoIdx];
+      if (m.infoType == 1) return m.width + "," + m.height + "," + m.posX + "," + m.posY;
+    }
+    return "";
+  }
   public static string Extend() {
     return "err=" + SetDisplayConfig(0, null, 0, null, APPLY | 0x8);
   }
@@ -308,6 +322,106 @@ public static class ScreenFitTopo {
 '@
 
 $topoState = ''
+# ---- 把遗留在已关闭显示器上的窗口移回虚拟屏 ----
+Add-Type -TypeDefinition @'
+using System;using System.Runtime.InteropServices;using System.Text;
+public static class WindowMover {
+  [StructLayout(LayoutKind.Sequential)] public struct RECT { public int Left, Top, Right, Bottom; }
+  [StructLayout(LayoutKind.Sequential)] public struct POINT { public int X, Y; }
+  [StructLayout(LayoutKind.Sequential)] public struct WINDOWPLACEMENT {
+    public int length; public int flags; public int showCmd;
+    public POINT ptMinPosition; public POINT ptMaxPosition; public RECT rcNormalPosition; }
+  delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
+  [DllImport("user32.dll")] static extern bool EnumWindows(EnumWindowsProc cb, IntPtr lParam);
+  [DllImport("user32.dll")] static extern bool IsWindowVisible(IntPtr h);
+  [DllImport("user32.dll")] static extern bool IsIconic(IntPtr h);
+  [DllImport("user32.dll")] static extern bool IsZoomed(IntPtr h);
+  [DllImport("user32.dll")] static extern bool GetWindowRect(IntPtr h, out RECT r);
+  [DllImport("user32.dll")] static extern int GetWindowLong(IntPtr h, int idx);
+  [DllImport("user32.dll")] static extern int GetWindowTextLength(IntPtr h);
+  [DllImport("user32.dll", CharSet=CharSet.Unicode)] static extern int GetClassName(IntPtr h, StringBuilder sb, int max);
+  [DllImport("user32.dll")] static extern bool GetWindowPlacement(IntPtr h, ref WINDOWPLACEMENT p);
+  [DllImport("user32.dll")] static extern bool SetWindowPlacement(IntPtr h, ref WINDOWPLACEMENT p);
+  [DllImport("user32.dll")] static extern bool SetWindowPos(IntPtr h, IntPtr after, int x, int y, int cx, int cy, uint flags);
+  [DllImport("user32.dll")] static extern bool ShowWindow(IntPtr h, int cmd);
+  [DllImport("user32.dll")] static extern int GetSystemMetrics(int i);
+  [DllImport("dwmapi.dll")] static extern int DwmGetWindowAttribute(IntPtr h, int attr, out int val, int size);
+  [StructLayout(LayoutKind.Sequential)] public struct RECT2 { public int Left, Top, Right, Bottom; }
+  [DllImport("dwmapi.dll")] static extern int DwmGetWindowAttribute(IntPtr h, int attr, out RECT2 val, int size);
+  [DllImport("user32.dll")] static extern bool SetProcessDpiAwarenessContext(IntPtr ctx);
+  public static void InitDpi() { try { SetProcessDpiAwarenessContext(new IntPtr(-4)); } catch { } }
+  const int DWMWA_EXTENDED_FRAME_BOUNDS = 9;
+  static bool GetPhysicalRect(IntPtr h, out RECT r) {
+    RECT2 r2;
+    if (DwmGetWindowAttribute(h, DWMWA_EXTENDED_FRAME_BOUNDS, out r2, Marshal.SizeOf(typeof(RECT2))) == 0 && r2.Right > r2.Left) {
+      r = new RECT { Left = r2.Left, Top = r2.Top, Right = r2.Right, Bottom = r2.Bottom }; return true;
+    }
+    return GetWindowRect(h, out r);
+  }
+  const int GWL_EXSTYLE = -20, WS_EX_TOOLWINDOW = 0x80, DWMWA_CLOAKED = 14;
+  const uint SWP_NOZORDER = 0x4, SWP_NOACTIVATE = 0x10;
+  const int SW_RESTORE = 9, SW_MAXIMIZE = 3, SW_SHOWMINIMIZED = 2;
+  static bool SkipClass(string c) {
+    return c == "Progman" || c == "WorkerW" || c == "Shell_TrayWnd" || c == "Shell_SecondaryTrayWnd" ||
+           c == "Windows.UI.Core.CoreWindow" || c == "ApplicationFrameWindow";
+  }
+  public static int MoveAll(int sw, int sh) {
+    if (sw <= 0 || sh <= 0) return 0;
+    int moved = 0;
+    EnumWindows((h, l) => {
+      if (!IsWindowVisible(h)) return true;
+      int cloak = 0;
+      try { DwmGetWindowAttribute(h, DWMWA_CLOAKED, out cloak, 4); } catch { }
+      if (cloak != 0) return true;
+      if ((GetWindowLong(h, GWL_EXSTYLE) & WS_EX_TOOLWINDOW) != 0) return true;
+      if (GetWindowTextLength(h) == 0) return true;
+      var cls = new StringBuilder(256); GetClassName(h, cls, 256);
+      if (SkipClass(cls.ToString())) return true;
+      RECT r; if (!GetPhysicalRect(h, out r)) return true;
+      int w = r.Right - r.Left, hh = r.Bottom - r.Top;
+      bool intersects = r.Right > 0 && r.Left < sw && r.Bottom > 0 && r.Top < sh;
+      if (intersects && w > 0 && hh > 0) {
+        int ix = Math.Max(0, Math.Min(r.Right, sw) - Math.Max(r.Left, 0));
+        int iy = Math.Max(0, Math.Min(r.Bottom, sh) - Math.Max(r.Top, 0));
+        if ((double)ix * iy / ((double)w * hh) >= 0.35) return true;
+      }
+      var wp = new WINDOWPLACEMENT(); wp.length = Marshal.SizeOf(typeof(WINDOWPLACEMENT));
+      bool hasWp = GetWindowPlacement(h, ref wp);
+      bool min = IsIconic(h);
+      bool max = IsZoomed(h);
+      if (w <= 0 || hh <= 0) {
+        if (hasWp) { w = wp.rcNormalPosition.Right - wp.rcNormalPosition.Left; hh = wp.rcNormalPosition.Bottom - wp.rcNormalPosition.Top; }
+      }
+      if (w <= 0) w = 800; if (hh <= 0) hh = 600;
+      if (w > sw) w = sw; if (hh > sh) hh = sh;
+      int x = Math.Max(0, (sw - w) / 2), y = Math.Max(0, (sh - hh) / 2);
+      if (min && hasWp) {
+        wp.rcNormalPosition = new RECT { Left = x, Top = y, Right = x + w, Bottom = y + hh };
+        wp.showCmd = SW_SHOWMINIMIZED;
+        SetWindowPlacement(h, ref wp); moved++; return true;
+      }
+      if (max) ShowWindow(h, SW_RESTORE);
+      SetWindowPos(h, IntPtr.Zero, x, y, w, hh, SWP_NOZORDER | SWP_NOACTIVATE);
+      if (max) ShowWindow(h, SW_MAXIMIZE);
+      moved++;
+      return true;
+    }, IntPtr.Zero);
+    return moved;
+  }
+}
+'@
+
+function Move-WindowsToVirtual {
+    try {
+        [WindowMover]::InitDpi()
+        $b = [ScreenFitTopo]::ActiveBounds()
+        $m = [regex]::Match($b, '^(\d+),(\d+),(\d+),(\d+)$')
+        if (-not $m.Success) { return 0 }
+        $w = [int]$m.Groups[1].Value; $h = [int]$m.Groups[2].Value
+        return [WindowMover]::MoveAll($w, $h)
+    } catch { return 0 }
+}
+
 function Set-OnlyVirtual {
     $script:topoResult = 'ok'
     $r = [ScreenFitTopo]::OnlyVirtual()
@@ -326,22 +440,17 @@ $devConnectedSince = $null
 
 
 function Get-ActiveCount {
-    $a = [WR3]::All()
-    if (-not $a) { return 0 }
-    return (($a.Trim(';')) -split ';').Count
+    try { return [ScreenFitTopo]::ActiveCount() } catch { return 99 }
 }
 
 function Ensure-OnlyVirtual {
-    for ($i = 0; $i -lt 8; $i++) {
-        if ([ScreenFitTopo]::VirtualActive()) {
-            Set-OnlyVirtual
-            if ($script:topoResult -eq 'ok' -and ((Get-ActiveCount) -eq 1)) { return $true }
-        } else {
-            [ScreenFitTopo]::Extend() | Out-Null
-        }
-        Start-Sleep -Milliseconds 300
+    if (-not [ScreenFitTopo]::VirtualActive()) {
+        [ScreenFitTopo]::Extend() | Out-Null
+        Start-Sleep -Milliseconds 400
     }
-    return $false
+    if (-not [ScreenFitTopo]::VirtualActive()) { return $false }
+    Set-OnlyVirtual
+    return ($script:topoResult -eq 'ok')
 }
 
 function Start-Create($w, $h) {
@@ -362,6 +471,19 @@ function Wait-VirtualPath($timeoutSec) {
 
 $lastCreateTry = [datetime]::MinValue
 $script:snapshotTried = $false
+$script:windowsMoved = $false
+$script:lastReapply = [datetime]::MinValue
+$script:reapplyFails = 0
+# 日志清理：只保留最近 40 个工具输出，watcher.log 超过 5MB 截断
+try {
+    Get-ChildItem $LogDir -Filter 'tool_*' | Sort-Object LastWriteTime -Descending |
+        Select-Object -Skip 40 | Remove-Item -Force -ErrorAction SilentlyContinue
+    if ((Get-Item $LogFile -ErrorAction SilentlyContinue).Length -gt 5MB) {
+        $tail = Get-Content $LogFile -Tail 2000
+        Set-Content -Path $LogFile -Value $tail -Encoding UTF8
+    }
+} catch { }
+
 WLog 'watcher-run 启动（仅远程信号触发 + 退出恢复布局）'
 
 # 空闲启动：恢复残留快照，清理虚拟屏，保持用户原布局
@@ -380,13 +502,49 @@ if (-not $s0.Active) {
 while ($true) {
     $s = Get-Session
     if ($s.Active) {
-        # 已经是“仅虚拟屏且只有 1 块屏”时直接跳过，避免反复调用
-        if ((GetState) -eq 'on' -and [ScreenFitTopo]::VirtualActive() -and ((Get-ActiveCount) -eq 1)) {
+        $t = Desired $s.Device
+        $bounds = [ScreenFitTopo]::ActiveBounds()
+        $resOk = ($t -and $bounds -like ("$($t.W),$($t.H),*"))
+        # 已经是“目标分辨率 + 仅虚拟屏 + 只有 1 块屏”时直接跳过
+        if ((GetState) -eq 'on' -and [ScreenFitTopo]::VirtualActive() -and ((Get-ActiveCount) -eq 1) -and $resOk) {
+            if (-not $script:windowsMoved) {
+                Start-Sleep -Milliseconds 300
+                $n = Move-WindowsToVirtual
+                WLog ("已把 $n 个窗口移回虚拟屏")
+                $script:windowsMoved = $true
+            }
+            $script:reapplyFails = 0
             Start-Sleep -Milliseconds 500
             continue
         }
-        $t = Desired $s.Device
+        if ((GetState) -eq 'on' -and [ScreenFitTopo]::VirtualActive() -and ((Get-ActiveCount) -gt 1)) {
+            if (((Get-Date) - $script:lastReapply).TotalSeconds -ge 2) {
+                $script:lastReapply = Get-Date
+                Set-OnlyVirtual
+                $script:windowsMoved = $false
+                $script:reapplyFails++
+                WLog ("检测到额外屏幕，重新切回仅虚拟屏（err=" + $script:topoResult + "，当前 " + (Get-ActiveCount) + " 块，第 " + $script:reapplyFails + " 次）")
+                if ($script:reapplyFails -ge 5) {
+                    [ScreenFitTopo]::OnlyInternal() | Out-Null
+                    Start-Sleep -Milliseconds 400
+                    Set-OnlyVirtual
+                    WLog ("额外屏反复恢复，已改用 internal->virtual 强制重切（err=" + $script:topoResult + "）")
+                }
+            }
+            Start-Sleep -Milliseconds 500
+            continue
+        }
         if ($t) {
+            # 分辨率与设备不符（例如会话中换了平板）→ 重建虚拟屏
+            if ([ScreenFitTopo]::VirtualActive() -and -not $resOk) {
+                if (((Get-Date) - $lastCreateTry).TotalSeconds -ge 15) {
+                    $lastCreateTry = Get-Date
+                    WLog ('设备分辨率变化 -> 重建虚拟屏 ' + $t.W + 'x' + $t.H)
+                    CleanDevice
+                    Start-Create $t.W $t.H | Out-Null
+                    Wait-VirtualPath 10 | Out-Null
+                }
+            }
             if (-not [ScreenFitTopo]::HasSnapshot() -and -not $script:snapshotTried) {
                 $script:snapshotTried = $true
                 $r = [ScreenFitTopo]::SaveSnapshot($SnapshotFile)
@@ -406,10 +564,10 @@ while ($true) {
             }
             $switched = $false
             if ([ScreenFitTopo]::VirtualActive()) { $switched = Ensure-OnlyVirtual }
-            if (-not $switched) {
+            if (-not $switched -and -not [ScreenFitTopo]::VirtualActive()) {
                 if (((Get-Date) - $lastCreateTry).TotalSeconds -ge 15) {
                     $lastCreateTry = Get-Date
-                    WLog '切换失败，重建虚拟屏后重试'
+                    WLog '虚拟屏未激活，重建后重试'
                     CleanDevice
                     Start-Create $t.W $t.H | Out-Null
                     if (Wait-VirtualPath 10) { $switched = Ensure-OnlyVirtual }
@@ -420,6 +578,12 @@ while ($true) {
                     SetState 'on'
                     WLog ("已切到 " + $t.W + "x" + $t.H + " 仅虚拟屏（" + [math]::Round(((Get-Date) - $t0).TotalSeconds,1) + " 秒）")
                 }
+                if (-not $script:windowsMoved) {
+                    Start-Sleep -Milliseconds 500
+                    $n = Move-WindowsToVirtual
+                    WLog ("已把 $n 个窗口移回虚拟屏")
+                    $script:windowsMoved = $true
+                }
             } elseif ((Get-ActiveCount) -gt 1) {
                 Ensure-OnlyVirtual | Out-Null
             }
@@ -429,6 +593,7 @@ while ($true) {
             $r = [ScreenFitTopo]::RestoreSnapshot()
             Remove-Item $SnapshotFile -Force -ErrorAction SilentlyContinue
             WLog ("远程结束 -> 恢复连接前屏幕布局: " + $r)
+            if ($r -ne 'err=0') { Set-OnlyInternal; WLog '   快照恢复失败，已兜底回到仅内屏' }
             SetState 'off'
             if ([ScreenFitTopo]::VirtualPathExists()) { CleanDevice }
         } elseif ((GetState) -eq 'on' -or $script:topoState -eq 'virtual') {
@@ -438,6 +603,7 @@ while ($true) {
             if ([ScreenFitTopo]::VirtualPathExists()) { CleanDevice }
         }
         $script:snapshotTried = $false
+        $script:windowsMoved = $false
     }
     Start-Sleep -Milliseconds 500
 }

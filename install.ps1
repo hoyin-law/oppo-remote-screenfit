@@ -10,7 +10,11 @@
 
 $ErrorActionPreference = 'Stop'
 $Repo = 'hoyin-law/oppo-remote-screenfit'
-$Asset = 'oppo-remote-screenfit-v1.2.0.zip'
+try {
+    $rel = Invoke-RestMethod -Uri "https://api.github.com/repos/$Repo/releases/latest" -Headers @{ 'User-Agent' = 'oppo-remote-screenfit' } -TimeoutSec 30
+    $Asset = ($rel.assets | Where-Object { $_.name -like '*.zip' } | Select-Object -First 1).name
+} catch { }
+if (-not $Asset) { Write-Host '无法获取最新 Release 资产，请到 Release 页面手动下载 zip。' -ForegroundColor Red; exit 1 }
 $Url = "https://github.com/$Repo/releases/latest/download/$Asset"
 $Zip = Join-Path $env:TEMP 'oppo-remote-screenfit.zip'
 $Dir = Join-Path $env:TEMP 'oppo-remote-screenfit-install'

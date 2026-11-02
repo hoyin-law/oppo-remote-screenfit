@@ -44,20 +44,22 @@ OPPO 互联 主进程日志（`%APPDATA%\O+Connect\devicespace\*_main.log`）里
 - 设备连接会抖动 → 每次重连都拆建一次 → 屏幕反复切换；
 - 用户日常只是把手机放旁边，电脑屏幕就被切走了。
 
-现在的策略是“**只认远程控制会话**”，代价是连接后 10–20 秒的切换窗口，但不会打扰日常使用。
+现在的策略是“**只认远程控制会话**”，实测切换约 1–8 秒（主要耗在建屏），但不会打扰日常使用。
 
 ## 4. 显示拓扑
 
 创建虚拟屏后，Windows 默认是「扩展」。远程时希望客户端只看到一块屏，因此：
 
-- 用 `SetDisplayConfig` 只保留虚拟屏的 path（`仅虚拟屏`）；
+- 用 `SetDisplayConfig` 只保留虚拟屏的 path（`仅虚拟屏`），并持续用 `QueryDisplayConfig` 校验活动屏数量；发现额外屏恢复就在 2 秒内重切，连续失败则先 `TOPOLOGY_INTERNAL` 再切虚拟屏；
+- 切换成功后枚举窗口，把遗留在已关闭显示器上的窗口移回虚拟屏（保留最大化/最小化状态）；
 - 远程开始时保存一份显示配置快照（活动显示器、模式、位置），结束时用 `SetDisplayConfig` 恢复原布局（拓展/复制/单屏）；随后移除虚拟屏。
 
 关键坑：**拓扑标志不能与 `SDC_ALLOW_CHANGES` 一起用**，否则返回 `ERROR_INVALID_PARAMETER (87)`。
 正确写法：
 
 ```csharp
-SetDisplayConfig(0, null, 0, null, SDC_APPLY | SDC_TOPOLOGY_INTERNAL);
+SetDisplayConfig(1, virtualPath, 0, null, SDC_USE_SUPPLIED_DISPLAY_CONFIG | SDC_APPLY);
+// 校验：QueryDisplayConfig(QDC_ONLY_ACTIVE_PATHS) 只应有 1 条 path
 ```
 
 ## 5. 显示器枚举：编号会一直涨
@@ -108,7 +110,7 @@ pnputil /remove-device "SWD\OPDISPLAYDRIVER\OPDISPLAYDRIVER"
 |---|---|---|
 | 轮询间隔 | 2 s | 响应速度 |
 | 建屏冷却 | 30 s | 失败后避免刷屏式重试 |
-| 拆除宽限 | 90 s | 客户端短暂重连不拆屏 |
+| 拆除时机 | 恢复布局后立即 | 避免虚拟屏残留 |
 | 切虚拟屏延迟 | 2 s | 滤掉瞬时 start/stop 抖动 |
 | 回内屏延迟 | 10 s | 结束远程后尽快恢复本地显示 |
 

@@ -1,5 +1,7 @@
 # oppo-remote-screenfit
 
+简体中文 | [English](README.en.md)
+
 > 让 **OPPO 互联** 远程控制电脑时，自动把电脑显示切换成 **OPPO Pad / Find N6 的原生分辨率**，画面不再被拉伸或上下留黑边。
 
 适用于 Windows 11 + OPPO 互联（O+ Connect）远程控制场景。已在 **OPPO Pad 5 Pro**、**OPPO Find N6** 上验证。

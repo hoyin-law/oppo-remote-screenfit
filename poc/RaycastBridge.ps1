@@ -4,6 +4,8 @@ param(
 )
 $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName System.Windows.Forms
+Add-Type -AssemblyName UIAutomationClient
+Add-Type -AssemblyName UIAutomationTypes
 New-Item -ItemType Directory -Force $LogDir | Out-Null
 $log = Join-Path $LogDir 'raycast-bridge.log'
 
@@ -36,7 +38,22 @@ public static class WinBridge {
   [DllImport("user32.dll")] static extern IntPtr CallNextHookEx(IntPtr h, int n, IntPtr w, IntPtr l);
   [DllImport("kernel32.dll")] static extern IntPtr GetModuleHandle(string name);
   [DllImport("user32.dll")] public static extern IntPtr GetForegroundWindow();
+  [DllImport("user32.dll")] public static extern bool IsWindow(IntPtr h);
+  [DllImport("user32.dll")] public static extern bool ShowWindow(IntPtr h, int cmd);
+  [DllImport("user32.dll")] static extern bool SetForegroundWindow(IntPtr h);
+  [DllImport("user32.dll")] static extern bool AttachThreadInput(uint a, uint b, bool attach);
+  [DllImport("kernel32.dll")] static extern uint GetCurrentThreadId();
   [DllImport("user32.dll")] static extern uint GetWindowThreadProcessId(IntPtr h, out uint pid);
+  public static bool FastShow(IntPtr h) {
+    ShowWindow(h, 5);
+    IntPtr fg = GetForegroundWindow(); uint p;
+    uint fgT = GetWindowThreadProcessId(fg, out p);
+    uint cur = GetCurrentThreadId();
+    AttachThreadInput(cur, fgT, true);
+    bool ok = SetForegroundWindow(h);
+    AttachThreadInput(cur, fgT, false);
+    return ok;
+  }
   public static string ProcessOf(IntPtr h) { uint pid; GetWindowThreadProcessId(h, out pid); try { return System.Diagnostics.Process.GetProcessById((int)pid).ProcessName; } catch { return ""; } }
   static System.Collections.Concurrent.ConcurrentQueue<long> q = new System.Collections.Concurrent.ConcurrentQueue<long>();
   public static long TakeTicks() { long t; return q.TryDequeue(out t) ? t : 0; }
@@ -65,13 +82,30 @@ public static class WinBridge {
 
 if (-not [WinBridge]::Start()) { Write-Host '安装键盘钩子失败' -ForegroundColor Red; exit 1 }
 
+$script:launcherHwnd = [IntPtr]::Zero
+
 function Invoke-BareWin([long]$ticks) {
     $fgNow = [WinBridge]::GetForegroundWindow()
     if ([WinBridge]::ProcessOf($fgNow) -eq 'Raycast') {
         Add-Content -Path $log -Value ("{0}  裸Win -> Launcher 在前台，忽略" -f (Get-Date -Format 'HH:mm:ss.fff'))
         return
     }
+    $hCache = $script:launcherHwnd
     $t0 = Get-Date
+    if ($hCache -ne [IntPtr]::Zero -and [WinBridge]::IsWindow($hCache)) {
+        [WinBridge]::FastShow($hCache) | Out-Null
+        try {
+            $ae = [System.Windows.Automation.AutomationElement]::FromHandle([IntPtr]$hCache)
+            if ($ae) { $ae.SetFocus() }
+        } catch { }
+        Start-Sleep -Milliseconds 80
+        if ([WinBridge]::ProcessOf([WinBridge]::GetForegroundWindow()) -eq 'Raycast') {
+            $ms = [math]::Round(((Get-Date) - $t0).TotalMilliseconds)
+            Add-Content -Path $log -Value ("{0}  裸Win -> 快速显示 Launcher (hwnd={1}, 耗时 {2}ms)" -f (Get-Date -Format 'HH:mm:ss.fff'), $hCache, $ms)
+            return
+        }
+        Add-Content -Path $log -Value ("{0}  裸Win -> 快速路径未获得前台，回退协议启动" -f (Get-Date -Format 'HH:mm:ss.fff'))
+    }
     Start-Process $uri
     $fg = [IntPtr]::Zero
     for ($i = 0; $i -lt 12; $i++) {
@@ -81,7 +115,8 @@ function Invoke-BareWin([long]$ticks) {
     }
     $ms = [math]::Round(((Get-Date) - $t0).TotalMilliseconds)
     if ([WinBridge]::ProcessOf($fg) -eq 'Raycast') {
-        Add-Content -Path $log -Value ("{0}  裸Win -> 打开 Launcher (hwnd={1}, 启动耗时 {2}ms)" -f (Get-Date -Format 'HH:mm:ss.fff'), $fg, $ms)
+        $script:launcherHwnd = $fg
+        Add-Content -Path $log -Value ("{0}  裸Win -> 首次打开 Launcher (hwnd={1}, 耗时 {2}ms)" -f (Get-Date -Format 'HH:mm:ss.fff'), $fg, $ms)
     } else {
         Add-Content -Path $log -Value ("{0}  裸Win -> 打开失败，前台={1}" -f (Get-Date -Format 'HH:mm:ss.fff'), [WinBridge]::ProcessOf($fg))
     }
@@ -99,3 +134,5 @@ try {
 } finally {
     [WinBridge]::Stop()
 }
+
+

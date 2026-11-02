@@ -40,7 +40,7 @@ via `scripts/devices.json` without touching code.
    - `start remote control: ... "deviceName":"OPPO Find N6" ...`
    - `stop remote control: ...`
 2. On session start it calls OPPO's bundled `OPDisplayDriverTool.exe` to create a virtual display at the device's native resolution.
-3. `TopologyGuard.ps1` (user-level, starts at logon) switches the display topology to **"show only on the virtual display"**.
+3. The same watcher switches the display topology to **"show only on the virtual display"**, so the remote side only sees one screen.
 4. 10 seconds after the session ends it switches back to "internal display only", and removes the virtual display after a 90-second grace period (to avoid rebuild loops when the client briefly reconnects).
 
 The tool only reads log files — it does not inject into or modify OPPO Connect.
@@ -73,7 +73,7 @@ If it does not exist: open OPPO Connect's "Screen Extend" feature once so it unp
 2. Extract it anywhere;
 3. Double-click **`一键安装.cmd`** and approve the UAC prompt.
 
-The installer copies the program to `%LOCALAPPDATA%\OPPO-ScreenFit` (so you can move or delete the extracted folder afterwards) and registers a logon-start, highest-privilege scheduled task plus a user-level topology guard.
+The installer copies the program to `%LOCALAPPDATA%\OPPO-ScreenFit` (so you can move or delete the extracted folder afterwards) and registers a logon-start, highest-privilege scheduled task.
 
 ### Command-line install (optional)
 

@@ -130,6 +130,71 @@ function New-VirtualDisplay($w, $h) {
 function Get-State { if (Test-Path $StateFile) { (Get-Content $StateFile -Raw).Trim() } else { 'off' } }
 function Set-State($s) { Set-Content -Path $StateFile -Value $s -Encoding UTF8 }
 
+
+# ---- 显示拓扑切换（合并进 watcher，单进程负责建屏 + 切屏）----
+Add-Type -TypeDefinition @'
+using System;using System.Runtime.InteropServices;
+public static class ScreenFitTopo {
+  [StructLayout(LayoutKind.Sequential)] public struct LUID { public uint LowPart; public int HighPart; }
+  [StructLayout(LayoutKind.Sequential)] public struct RAT { public uint N; public uint D; }
+  [StructLayout(LayoutKind.Sequential)] public struct SRC { public LUID adapterId; public uint id; public uint modeInfoIdx; public uint statusFlags; }
+  [StructLayout(LayoutKind.Sequential)] public struct TGT { public LUID adapterId; public uint id; public uint modeInfoIdx; public uint outputTechnology; public uint rotation; public uint scaling; public RAT refreshRate; public uint scanLineOrdering; public int targetAvailable; public uint statusFlags; }
+  [StructLayout(LayoutKind.Sequential)] public struct PATH { public SRC sourceInfo; public TGT targetInfo; public uint flags; }
+  [StructLayout(LayoutKind.Sequential)] public struct MODE { public uint infoType; public uint id; public LUID adapterId; public uint a,b,c,d,e,f,g,h,i,j; }
+  [StructLayout(LayoutKind.Sequential)] public struct HDR { public uint type; public uint size; public LUID adapterId; public uint id; }
+  [StructLayout(LayoutKind.Sequential, CharSet=CharSet.Unicode)] public struct TDN {
+    public HDR header; public uint flags; public uint outputTechnology; public ushort mfg; public ushort prod; public uint connector;
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst=64)] public string name;
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst=128)] public string path; }
+  [DllImport("user32.dll")] static extern int GetDisplayConfigBufferSizes(uint f, out uint np, out uint nm);
+  [DllImport("user32.dll")] static extern int QueryDisplayConfig(uint f, ref uint np, [Out] PATH[] p, ref uint nm, [Out] MODE[] m, IntPtr t);
+  [DllImport("user32.dll")] static extern int SetDisplayConfig(uint np, PATH[] p, uint nm, MODE[] m, uint f);
+  [DllImport("user32.dll")] static extern int DisplayConfigGetDeviceInfo(ref TDN n);
+  const uint QDC_ALL = 1, USE = 0x20, APPLY = 0x80, INTERNAL = 0x1, INVALID = 0xFFFFFFFF;
+  static string Name(PATH p) {
+    var n = new TDN(); n.header.type = 2; n.header.size = (uint)Marshal.SizeOf(typeof(TDN));
+    n.header.adapterId = p.targetInfo.adapterId; n.header.id = p.targetInfo.id;
+    if (DisplayConfigGetDeviceInfo(ref n) == 0) return n.name + "|" + n.path; return "";
+  }
+  static PATH[] Query() {
+    uint np, nm; int e = GetDisplayConfigBufferSizes(QDC_ALL, out np, out nm); if (e != 0) throw new Exception("buf=" + e);
+    var p = new PATH[np]; var m = new MODE[nm];
+    e = QueryDisplayConfig(QDC_ALL, ref np, p, ref nm, m, IntPtr.Zero); if (e != 0) throw new Exception("query=" + e);
+    var r = new PATH[np]; Array.Copy(p, r, np); return r;
+  }
+  public static string OnlyVirtual() {
+    var all = Query(); PATH pick = new PATH(); bool found = false;
+    foreach (var p in all) {
+      var n = Name(p);
+      if (n.IndexOf("OPExtScreen", StringComparison.OrdinalIgnoreCase) >= 0 ||
+          n.IndexOf("OPDisplayDriver", StringComparison.OrdinalIgnoreCase) >= 0 ||
+          n.IndexOf("DELD0E6", StringComparison.OrdinalIgnoreCase) >= 0) {
+        if (!found || p.flags != 0) { pick = p; found = true; if (p.flags != 0) break; }
+      }
+    }
+    if (!found) return "no-match";
+    pick.sourceInfo.modeInfoIdx = INVALID; pick.targetInfo.modeInfoIdx = INVALID;
+    return "err=" + SetDisplayConfig(1, new PATH[] { pick }, 0, null, USE | APPLY);
+  }
+  public static string OnlyInternal() {
+    return "err=" + SetDisplayConfig(0, null, 0, null, APPLY | INTERNAL);
+  }
+}
+'@
+
+$topoState = ''
+function Set-OnlyVirtual {
+    if ($topoState -eq 'virtual') { return }
+    $r = [ScreenFitTopo]::OnlyVirtual()
+    if ($r -eq 'err=0') { Write-Log "切到仅在虚拟屏: $r"; $topoState = 'virtual' }
+    elseif ($r -ne 'no-match') { Write-Log "切虚拟屏失败: $r（下轮重试）" }
+}
+function Set-OnlyInternal {
+    if ($topoState -eq 'internal') { return }
+    $r = [ScreenFitTopo]::OnlyInternal()
+    if ($r -eq 'err=0') { Write-Log "恢复仅内屏: $r"; $topoState = 'internal' }
+}
+
 Write-Log 'watcher 启动（远程会话触发）'
 $lastActive = Get-Date
 if ((Get-State) -eq 'on') {
@@ -155,12 +220,14 @@ while ($true) {
                 }
             }
             if ((Get-State) -ne 'on' -and (Test-Resolution $t.W $t.H)) { Set-State 'on'; Write-Log ('虚拟屏就绪: ' + [ScreenFitDisplay]::All()) }
+            if (Test-Resolution $t.W $t.H) { Set-OnlyVirtual }
         }
     } else {
+        if ((Get-State) -eq 'on') { Set-OnlyInternal }
         if ((Get-State) -eq 'on' -and ((Get-Date) - $lastActive).TotalSeconds -ge $GraceSec) {
             Write-Log '远程结束满 90 秒 -> 拆虚拟屏'
             Remove-VirtualDisplay
-            Set-State 'off'
+            Set-State 'off'; $topoState = ''
         }
     }
     Start-Sleep -Seconds $PollSec

@@ -184,15 +184,15 @@ public static class ScreenFitTopo {
 
 $topoState = ''
 function Set-OnlyVirtual {
-    if ($topoState -eq 'virtual') { return }
+    if ($script:topoState -eq 'virtual') { return }
     $r = [ScreenFitTopo]::OnlyVirtual()
-    if ($r -eq 'err=0') { Write-Log "切到仅在虚拟屏: $r"; $topoState = 'virtual' }
+    if ($r -eq 'err=0') { Write-Log "切到仅在虚拟屏: $r"; $script:topoState = 'virtual' }
     elseif ($r -ne 'no-match') { Write-Log "切虚拟屏失败: $r（下轮重试）" }
 }
 function Set-OnlyInternal {
-    if ($topoState -eq 'internal') { return }
+    if ($script:topoState -eq 'internal') { return }
     $r = [ScreenFitTopo]::OnlyInternal()
-    if ($r -eq 'err=0') { Write-Log "恢复仅内屏: $r"; $topoState = 'internal' }
+    if ($r -eq 'err=0') { Write-Log "恢复仅内屏: $r"; $script:topoState = 'internal' }
 }
 
 Write-Log 'watcher 启动（远程会话触发）'
@@ -232,3 +232,4 @@ while ($true) {
     }
     Start-Sleep -Seconds $PollSec
 }
+

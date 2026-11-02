@@ -10,7 +10,7 @@
 
 $ErrorActionPreference = 'Stop'
 $Repo = 'hoyin-law/oppo-remote-screenfit'
-$Asset = 'oppo-remote-screenfit-v1.1.0.zip'
+$Asset = 'oppo-remote-screenfit-v1.1.1.zip'
 $Url = "https://github.com/$Repo/releases/latest/download/$Asset"
 $Zip = Join-Path $env:TEMP 'oppo-remote-screenfit.zip'
 $Dir = Join-Path $env:TEMP 'oppo-remote-screenfit-install'

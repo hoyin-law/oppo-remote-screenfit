@@ -5,3 +5,5 @@ state.txt
 *.log
 *.out
 *.err
+release/
+

@@ -1,11 +1,12 @@
 <#
-  Uninstall.ps1 —— 卸载（会请求一次 UAC）。
-  停止并删除计划任务、停止守护进程、移除登录自启、拆除虚拟屏、恢复「仅内屏」。
+  Uninstall.ps1 —— 一键卸载（会自动请求一次 UAC）。
+  停止并删除任务、停止守护、移除自启、拆除虚拟屏、恢复「仅内屏」、删除安装目录。
 #>
 
 $ErrorActionPreference = 'SilentlyContinue'
-$Root = Split-Path -Parent $PSCommandPath
-$TaskName = 'OPPO平板分辨率适配'
+
+$Dest = Join-Path $env:LOCALAPPDATA 'OPPO-ScreenFit'
+$TaskNames = @('OPPO平板分辨率适配', 'OPPO平板自动适配')
 
 function Test-Admin {
     $id = [Security.Principal.WindowsIdentity]::GetCurrent()
@@ -20,12 +21,14 @@ if (-not (Test-Admin)) {
 }
 
 Write-Host '停止并删除计划任务…'
-Stop-ScheduledTask -TaskName $TaskName -ErrorAction SilentlyContinue
-Unregister-ScheduledTask -TaskName $TaskName -Confirm:$false -ErrorAction SilentlyContinue
+foreach ($tn in $TaskNames) {
+    Stop-ScheduledTask -TaskName $tn -ErrorAction SilentlyContinue
+    Unregister-ScheduledTask -TaskName $tn -Confirm:$false -ErrorAction SilentlyContinue
+}
 
 Write-Host '停止守护进程并移除自启…'
 Get-CimInstance Win32_Process -Filter "Name='powershell.exe'" -ErrorAction SilentlyContinue |
-    Where-Object { $_.CommandLine -match 'Watcher.ps1|TopologyGuard.ps1' } |
+    Where-Object { $_.CommandLine -match 'Watcher\.ps1|TopologyGuard\.ps1|watcher-run\.ps1|拓扑守护\.ps1' } |
     ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }
 Remove-ItemProperty 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Run' -Name 'OPPO平板拓扑守护' -ErrorAction SilentlyContinue
 
@@ -48,4 +51,8 @@ public static class ScreenFitRestore {
 '@
 [ScreenFitRestore]::InternalOnly() | Out-Null
 
+Write-Host '删除安装目录…'
+Remove-Item $Dest -Recurse -Force -ErrorAction SilentlyContinue
+
 Write-Host '✅ 已卸载。若屏幕未回到「仅电脑屏幕」，按 Win+P 选一次即可。' -ForegroundColor Green
+Start-Sleep -Seconds 2

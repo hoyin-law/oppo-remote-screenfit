@@ -65,21 +65,31 @@ OPPO 互联 的远程控制内核不会按接收端自适应分辨率：它抓�
 
 ---
 
-## 安装
+## 安装（推荐：Release 一键包）
 
-1. 下载/克隆本仓库到一个**固定的目录**（脚本注册的计划任务会引用该路径，移动目录后需要重新安装）；
-2. 右键 `scripts\Install.ps1` → **使用 PowerShell 运行**（或在 PowerShell 中执行）；
-3. 在 UAC 弹窗点「是」。
+1. 打开 [Releases](https://github.com/hoyin-law/oppo-remote-screenfit/releases) 下载最新的
+   `oppo-remote-screenfit-v*.zip`；
+2. 解压到任意目录；
+3. 双击 **`一键安装.cmd`**，在 UAC 弹窗点「是」。
 
-安装脚本会：
+安装脚本会把程序复制到 `%LOCALAPPDATA%\OPPO-ScreenFit`（所以解压目录之后可以删掉/移动），
+并注册「登录自启 + 最高权限」的计划任务和用户级守护。
 
-- 注册计划任务「OPPO平板分辨率适配」：登录时以最高权限运行 `Watcher.ps1`；
-- 注册 HKCU Run：登录时运行 `TopologyGuard.ps1`；
-- 立即启动两者。
+### 高级：命令行一键安装
 
-之后不需要任何手动操作。
+```powershell
+irm https://raw.githubusercontent.com/hoyin-law/oppo-remote-screenfit/main/install.ps1 | iex
+```
 
----
+（网络不畅时请改用上面的 zip 方式；脚本会自动请求 UAC。）
+
+### 手动安装（开发/调试）
+
+```powershell
+git clone https://github.com/hoyin-law/oppo-remote-screenfit.git
+cd oppo-remote-screenfit
+.\scripts\Install.ps1
+```
 
 ## 使用
 

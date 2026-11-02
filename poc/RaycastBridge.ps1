@@ -51,14 +51,18 @@ if (-not [WinBridge]::Start()) { Write-Host '安装键盘钩子失败' -Foregrou
 $script:launcherHwnd = [IntPtr]::Zero
 
 function Invoke-BareWin {
-    $h = $script:launcherHwnd
-    if ($h -ne [IntPtr]::Zero -and [WinBridge]::IsWindow($h) -and [WinBridge]::IsWindowVisible($h)) {
-        Add-Content -Path $log -Value ("{0}  裸Win -> Launcher 已打开，忽略" -f (Get-Date -Format 'HH:mm:ss.fff'))
+    $fgNow = [WinBridge]::GetForegroundWindow()
+    if ([WinBridge]::ProcessOf($fgNow) -eq 'Raycast') {
+        Add-Content -Path $log -Value ("{0}  裸Win -> Launcher 在前台，忽略" -f (Get-Date -Format 'HH:mm:ss.fff'))
         return
     }
     Start-Process 'raycast://'
-    Start-Sleep -Milliseconds 700
-    $fg = [WinBridge]::GetForegroundWindow()
+    $fg = [IntPtr]::Zero
+    for ($i = 0; $i -lt 12; $i++) {
+        Start-Sleep -Milliseconds 200
+        $fg = [WinBridge]::GetForegroundWindow()
+        if ([WinBridge]::ProcessOf($fg) -eq 'Raycast') { break }
+    }
     if ([WinBridge]::ProcessOf($fg) -eq 'Raycast') {
         $script:launcherHwnd = $fg
         Add-Content -Path $log -Value ("{0}  裸Win -> 打开 Launcher (hwnd={1})" -f (Get-Date -Format 'HH:mm:ss.fff'), $fg)

@@ -65,9 +65,40 @@ function Get-RemoteSession {
     return @{ Active = ($lastStart -ge 0 -and $lastStart -gt $lastStop); Device = $dev }
 }
 
+$DeviceMap = @(
+    @{ Match = @('Pad 5 Pro');    W = 3392; H = 2400; Label = 'OPPO Pad 5 Pro' },
+    @{ Match = @('Pad 4 Pro');    W = 3392; H = 2400; Label = 'OPPO Pad 4 Pro' },
+    @{ Match = @('Pad 3 Pro');    W = 3000; H = 2120; Label = 'OPPO Pad 3 Pro' },
+    @{ Match = @('Pad 5');        W = 3000; H = 2120; Label = 'OPPO Pad 5' },
+    @{ Match = @('Pad 3');        W = 2800; H = 2000; Label = 'OPPO Pad 3' },
+    @{ Match = @('Pad mini', 'Pad Mini'); W = 2520; H = 1680; Label = 'OPPO Pad Mini' },
+    @{ Match = @('Pad Air5');     W = 2800; H = 1980; Label = 'OPPO Pad Air5' },
+    @{ Match = @('Find N6');      W = 2480; H = 2248; Label = 'OPPO Find N6 (inner)' },
+    @{ Match = @('OnePlus Pad 3 Pro', '一加平板 3 Pro'); W = 3392; H = 2400; Label = 'OnePlus Pad 3 Pro' },
+    @{ Match = @('OnePlus Pad 2 Pro', '一加平板 2 Pro'); W = 3392; H = 2400; Label = 'OnePlus Pad 2 Pro' },
+    @{ Match = @('OnePlus Pad Pro', '一加平板 Pro');     W = 3000; H = 2120; Label = 'OnePlus Pad Pro' },
+    @{ Match = @('OnePlus Pad 2', '一加平板 2');         W = 3000; H = 2120; Label = 'OnePlus Pad 2' },
+    @{ Match = @('OnePlus Pad', '一加平板');             W = 2800; H = 2000; Label = 'OnePlus Pad' }
+)
+
+# 可选扩展：在 scripts\devices.json 里追加设备（数组，元素形如
+# {"match":["Pad 6"],"w":3000,"h":2120,"label":"OPPO Pad 6"}）
+$DeviceCfg = Join-Path $Root 'devices.json'
+if (Test-Path $DeviceCfg) {
+    try {
+        $extra = Get-Content $DeviceCfg -Raw | ConvertFrom-Json
+        foreach ($e in $extra) {
+            $DeviceMap = @(@{ Match = @($e.match); W = [int]$e.w; H = [int]$e.h; Label = "$($e.label)" }) + $DeviceMap
+        }
+    } catch { Write-Log ('devices.json 解析失败: ' + $_.Exception.Message) }
+}
+
 function Get-TargetSize($dev) {
-    if ($dev -like '*Find N6*')   { return @{ W = 2480; H = 2248 } }
-    if ($dev -like '*Pad 5 Pro*') { return @{ W = 3392; H = 2400 } }
+    foreach ($entry in $DeviceMap) {
+        foreach ($pat in $entry.Match) {
+            if ($dev -like "*$pat*") { return @{ W = $entry.W; H = $entry.H; Label = $entry.Label } }
+        }
+    }
     return $null
 }
 

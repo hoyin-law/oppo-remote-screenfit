@@ -1,16 +1,22 @@
 <#
   TabletScreen.ps1 —— 手动建/拆平板分辨率虚拟屏（不依赖自动逻辑）。
   用法：
-    .\TabletScreen.ps1 -Device Pad5Pro        # 3392x2400
-    .\TabletScreen.ps1 -Device FindN6         # 2480x2248
-    .\TabletScreen.ps1 -Device Off            # 拆除虚拟屏
-    .\TabletScreen.ps1 -Status                # 查看当前显示状态（只读）
+    .\TabletScreen.ps1 -Device Pad5Pro
+    .\TabletScreen.ps1 -Device FindN6
+    .\TabletScreen.ps1 -Device PadMini
+    .\TabletScreen.ps1 -Device Off
+    .\TabletScreen.ps1 -Status
   需要管理员权限（会自动请求 UAC）。
 #>
 
 [CmdletBinding()]
 param(
-    [ValidateSet('Pad5Pro', 'FindN6', 'Off', 'Status')]
+    [ValidateSet(
+        'Pad5Pro', 'Pad4Pro', 'Pad5', 'Pad3Pro', 'Pad3', 'PadMini', 'PadAir5',
+        'FindN6',
+        'OnePlusPad3Pro', 'OnePlusPad2Pro', 'OnePlusPadPro', 'OnePlusPad2', 'OnePlusPad',
+        'Off', 'Status'
+    )]
     [string]$Device = 'Pad5Pro',
     [switch]$KeepWindow
 )
@@ -19,8 +25,19 @@ $ErrorActionPreference = 'Stop'
 $Tool = Join-Path $env:LOCALAPPDATA 'DeviceSpace\ext-service\OPVirtualDisplayDriver\OPDisplayDriverTool.exe'
 
 $Profiles = @{
-    'Pad5Pro' = @{ W = 3392; H = 2400; Label = 'OPPO Pad 5 Pro 13.2" (3392x2400)' }
-    'FindN6'  = @{ W = 2480; H = 2248; Label = 'OPPO Find N6 内屏 (2480x2248)' }
+    'Pad5Pro'         = @{ W = 3392; H = 2400; Label = 'OPPO Pad 5 Pro (13.2" 3392x2400)' }
+    'Pad4Pro'         = @{ W = 3392; H = 2400; Label = 'OPPO Pad 4 Pro (13.2" 3392x2400)' }
+    'Pad5'            = @{ W = 3000; H = 2120; Label = 'OPPO Pad 5 (12.1" 3000x2120)' }
+    'Pad3Pro'         = @{ W = 3000; H = 2120; Label = 'OPPO Pad 3 Pro (12.1" 3000x2120)' }
+    'Pad3'            = @{ W = 2800; H = 2000; Label = 'OPPO Pad 3 (11.61" 2800x2000)' }
+    'PadMini'         = @{ W = 2520; H = 1680; Label = 'OPPO Pad Mini (8.8" 2520x1680)' }
+    'PadAir5'         = @{ W = 2800; H = 1980; Label = 'OPPO Pad Air5 (12.1" 2800x1980)' }
+    'FindN6'          = @{ W = 2480; H = 2248; Label = 'OPPO Find N6 内屏 (2480x2248)' }
+    'OnePlusPad3Pro'  = @{ W = 3392; H = 2400; Label = 'OnePlus Pad 3 Pro (13.2" 3392x2400)' }
+    'OnePlusPad2Pro'  = @{ W = 3392; H = 2400; Label = 'OnePlus Pad 2 Pro (13.2" 3392x2400)' }
+    'OnePlusPadPro'   = @{ W = 3000; H = 2120; Label = 'OnePlus Pad Pro (12.1" 3000x2120)' }
+    'OnePlusPad2'     = @{ W = 3000; H = 2120; Label = 'OnePlus Pad 2 (12.1" 3000x2120)' }
+    'OnePlusPad'      = @{ W = 2800; H = 2000; Label = 'OnePlus Pad (11.61" 2800x2000)' }
 }
 
 Add-Type -TypeDefinition @'

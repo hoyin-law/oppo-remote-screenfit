@@ -68,6 +68,29 @@ function Get-Session {
     return @{ Active = ($lastStart -ge 0 -and $lastStart -gt $lastStop); Device = $dev; StartTs = $startTs }
 }
 
+function Get-RemoteLiveness {
+    $agentAge = 9999
+    $a = Get-ChildItem (Join-Path $env:APPDATA 'O+Connect\devicespace\desktop_agent.*.log') -ErrorAction SilentlyContinue |
+        Sort-Object LastWriteTime -Descending | Select-Object -First 1
+    if ($a) { $agentAge = ((Get-Date) - $a.LastWriteTime).TotalSeconds }
+
+    $ackAge = 9999
+    $m = Get-ChildItem (Join-Path $env:APPDATA 'O+Connect\devicespace\*_main.log') -ErrorAction SilentlyContinue |
+        Sort-Object LastWriteTime -Descending | Select-Object -First 1
+    if ($m) {
+        $lines = Get-Content $m.FullName -Tail 400 -ErrorAction SilentlyContinue
+        for ($i = $lines.Count - 1; $i -ge 0; $i--) {
+            if ($lines[$i] -match 'ws\.heartbeat\.ack') {
+                if ($lines[$i] -match '(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})') {
+                    try { $ackAge = ((Get-Date) - [datetime]::ParseExact($matches[1], 'yyyy-MM-dd HH:mm:ss', $null)).TotalSeconds } catch { }
+                }
+                break
+            }
+        }
+    }
+    return @{ AgentAge = $agentAge; AckAge = $ackAge }
+}
+
 $DeviceMap = @(
     @{ Match = @('Pad 5 Pro');    W = 3392; H = 2400 },
     @{ Match = @('Pad 4 Pro');    W = 3392; H = 2400 },
@@ -502,6 +525,26 @@ if (-not $s0.Active) {
 while ($true) {
     $s = Get-Session
     if ($s.Active) {
+        # 僵尸会话看门狗：会话在，但远程引擎日志/心跳都长时间无更新（典型是平板 App 崩了）
+        $live = Get-RemoteLiveness
+        if (-not $script:lastZombieKill) { $script:lastZombieKill = [datetime]::MinValue }
+        if ($live.AgentAge -gt 120 -and $live.AckAge -gt 90 -and
+            ((Get-Date) - $script:lastZombieKill).TotalSeconds -gt 300) {
+            WLog ("检测到僵尸会话（远程引擎 " + [math]::Round($live.AgentAge) + "s / 心跳 " + [math]::Round($live.AckAge) + "s 无更新）→ 恢复布局并重启远程引擎")
+            if ([ScreenFitTopo]::HasSnapshot()) {
+                $r = [ScreenFitTopo]::RestoreSnapshot()
+                Remove-Item $SnapshotFile -Force -ErrorAction SilentlyContinue
+                WLog ("   恢复连接前布局: " + $r)
+            } else {
+                Set-OnlyInternal
+            }
+            SetState 'off'
+            Get-Process SLDesktopAgent -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
+            $script:lastZombieKill = Get-Date
+            $script:windowsMoved = $false
+            Start-Sleep -Seconds 2
+            continue
+        }
         $t = Desired $s.Device
         $bounds = [ScreenFitTopo]::ActiveBounds()
         $resOk = ($t -and $bounds -like ("$($t.W),$($t.H),*"))

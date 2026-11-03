@@ -52,9 +52,17 @@ function WLog($m) {
 }
 
 function Get-Session {
-    $main = Get-ChildItem (Join-Path $env:APPDATA 'O+Connect\devicespace\*_main.log') | Sort-Object LastWriteTime -Descending | Select-Object -First 1
-    if (-not $main) { return @{ Active = $false; Device = $null; StartTs = $null } }
-    $lines = Get-Content $main.FullName -Tail 4000
+    # 读最近两个 main 日志：OPPO 每天 0 点轮转日志，只读最新文件会丢掉跨零点的会话开始事件
+    $dir = Join-Path $env:APPDATA 'O+Connect\devicespace'
+    $files = Get-ChildItem (Join-Path $dir '*_main.log') -ErrorAction SilentlyContinue |
+        Sort-Object LastWriteTime -Descending | Select-Object -First 2
+    if (-not $files) { return @{ Active = $false; Device = $null; StartTs = $null } }
+
+    $lines = @()
+    foreach ($f in ($files | Sort-Object LastWriteTime)) {
+        $lines += Get-Content $f.FullName -Tail 4000 -ErrorAction SilentlyContinue
+    }
+
     $lastStart = -1; $lastStop = -1; $dev = $null; $startTs = $null
     for ($i = 0; $i -lt $lines.Count; $i++) {
         $l = $lines[$i]
@@ -65,7 +73,35 @@ function Get-Session {
             if ($l -match '(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})') { $startTs = [datetime]::ParseExact($matches[1], 'yyyy-MM-dd HH:mm:ss', $null) }
         } elseif ($l -match 'stop remote control:') { $lastStop = $i }
     }
-    return @{ Active = ($lastStart -ge 0 -and $lastStart -gt $lastStop); Device = $dev; StartTs = $startTs }
+    $active = ($lastStart -ge 0 -and $lastStart -gt $lastStop)
+
+    if ($active -and -not $dev) {
+        $devFile = Join-Path $LogDir 'last-device.txt'
+        if (Test-Path $devFile) { $dev = (Get-Content $devFile -Raw -ErrorAction SilentlyContinue).Trim() }
+    }
+
+    # 兜底：日志轮转后可能读不到 start，但心跳仍在（说明会话语义上还活着）
+    if (-not $active) {
+        $ackAge = 9999
+        $newest = $files[0]
+        $tail = Get-Content $newest.FullName -Tail 400 -ErrorAction SilentlyContinue
+        for ($i = $tail.Count - 1; $i -ge 0; $i--) {
+            if ($tail[$i] -match 'ws\.heartbeat\.ack') {
+                if ($tail[$i] -match '(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})') {
+                    try { $ackAge = ((Get-Date) - [datetime]::ParseExact($matches[1], 'yyyy-MM-dd HH:mm:ss', $null)).TotalSeconds } catch { }
+                }
+                break
+            }
+        }
+        $devFile = Join-Path $LogDir 'last-device.txt'
+        if ($ackAge -lt 90 -and (Test-Path $devFile)) {
+            $dev = (Get-Content $devFile -Raw -ErrorAction SilentlyContinue).Trim()
+            $active = $true
+            $startTs = $null
+        }
+    }
+
+    return @{ Active = $active; Device = $dev; StartTs = $startTs }
 }
 
 function Get-RemoteLiveness {
@@ -599,6 +635,7 @@ while ($true) {
                     [ScreenFitTopo]::Extend() | Out-Null
                 } elseif (((Get-Date) - $lastCreateTry).TotalSeconds -ge 15) {
                     $lastCreateTry = Get-Date
+                    Set-Content -Path (Join-Path $LogDir 'last-device.txt') -Value $s.Device -Encoding UTF8
                     WLog ('检测到远程会话 -> 建屏 ' + $s.Device + ' ' + $t.W + 'x' + $t.H)
                     CleanDevice
                     Start-Create $t.W $t.H | Out-Null

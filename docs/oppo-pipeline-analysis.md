@@ -113,3 +113,31 @@ PC 端 app.asar 里也有完整文案：`EX_EXTEND_SCREEN_CONFIRM_TITLE`（要�
   1. 在平板端确认「屏幕扩展」入口是否可用：若可用，记录完整日志（`screenshare.exe` + `castScreenStatusChanged`），据此把插件改为原生扩展守护；
   2. 若原生扩展不可用，再评估安装 Oray IDD 驱动做路线 B；
   3. 无论哪条路线，都用 `Probe-OPPO-Pipeline.ps1` 做前后对照，以「连续 10 分钟 send>0」为验收线。
+
+---
+
+## 4. 已实现：原生扩展守护模式（v1.2.8）
+
+按路线 A 落地了第一版，不依赖真实会话即可单测/冒烟：
+
+- `Core.Get-CastState`：解析 `[screenshare_ipc] castScreenStatusChanged` 的三种状态位；
+- `Core.Get-NativeExtendState`：`screenshare.exe` 进程 + 状态位 + 120 秒新鲜度联合判定；
+- `Core.Get-NativeExtendDecision`：`observe`（原生扩展中，仅守护）/ `restore`（结束，恢复布局）/ `idle`；
+- `Watcher`：原生扩展进行中 -> `state=native`，不自行建屏；结束时校验并恢复「内屏 + 外接扩展」，随后 30 秒看护；
+- `NO_REMOTE_ADAPT.txt`：存在时关闭「远程控制自建虚拟屏」（当前 OPPO 16.2.20.0 推荐），
+  仅保留原生扩展守护与布局恢复。目前机器上已按此模式部署（`version.txt=1.2.8`）。
+
+### 验证记录
+
+- 单测 52/52 通过（新增 5 条原生决策 + 3 条 cast 状态解析）；
+- 集成冒烟（伪造 cast 状态 + 真实 `screenshare.exe` 进程 + 沙箱 Watcher）：
+  `检测到 OPPO 原生屏幕扩展/镜像（screenshare=True）-> 原生模式，插件不自行建屏`，且全程无「已切到」日志；
+- 部署后实测未改动显示拓扑：`active=2（InternalPanel + ExternalMonitor）`。
+
+### 还需的真实会话验证
+
+在平板 OPPO 互联里发起一次「屏幕扩展」，然后：
+
+1. `pwsh scripts\Probe-OPPO-Pipeline.ps1 -Last 3` 应看到 `castMirrorScreenStatus` 非 0 时段；
+2. `%LOCALAPPDATA%\OPPO-ScreenFit\logs\watcher.log` 应出现「原生模式」→ 结束后「已恢复扩展布局」；
+3. 结束扩展后 2 秒内物理屏应保持内屏 + ExternalMonitor 扩展。

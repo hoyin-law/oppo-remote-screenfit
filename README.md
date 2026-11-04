@@ -133,6 +133,19 @@ cd oppo-remote-screenfit
 
 ---
 
+## 原生屏幕扩展守护模式（v1.2.8 起推荐）
+
+实测 OPPO 互联 16.2.20.0 的远控内核只支持 `OrayIddDriver`，本项目自建的 `OPDisplayDriver` 虚拟屏会被回退到 DXGI 采集并停帧
+（详见 [docs/oppo-pipeline-analysis.md](docs/oppo-pipeline-analysis.md)）。因此新增了**原生扩展守护模式**：
+
+- 在安装目录放一个 `NO_REMOTE_ADAPT.txt`（内容随意）即可关闭「远程控制自建虚拟屏」；
+- 守护仍然工作：检测到 OPPO 原生「屏幕扩展 / 屏幕镜像」（`screenshare.exe` + `castScreenStatusChanged`）时只做守护、不自行建屏；
+- 原生扩展结束时，校验并恢复「内屏 + 外接扩展」，并在随后 30 秒内防止外接屏被再次关掉。
+
+该文件不存在时恢复旧行为（为远控自建虚拟屏，当前 OPPO 版本下已知会停帧）。
+
+---
+
 ## 关闭 / 卸载
 
 - **临时关闭**：在安装目录新建空文件 `STOP.txt`，守护会在 1 秒内恢复布局并退出（运行中新建也立即生效）；

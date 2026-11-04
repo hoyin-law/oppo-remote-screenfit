@@ -19,10 +19,11 @@ param(
     [ValidateSet(
         'Pad5Pro', 'Pad4Pro', 'Pad5', 'Pad3Pro', 'Pad3', 'PadMini', 'PadAir5', 'Pad6',
         'FindN6', 'FindN5', 'FindN3', 'FindN2',
-        'OnePlusPad3Pro', 'OnePlusPad2Pro', 'OnePlusPadPro', 'OnePlusPad2', 'OnePlusPad', 'OnePlusPadGo',
-        'Cancel', 'Status'
+        'OnePlusPad3Pro', 'OnePlusPad2Pro', 'OnePlusPadPro', 'OnePlusPad2', 'OnePlusPad', 'OnePlusPadGo'
     )]
-    [string]$Device = 'Pad5Pro'
+    [string]$Device = 'Pad5Pro',
+    [switch]$Cancel,
+    [switch]$Status
 )
 
 $ErrorActionPreference = 'Stop'
@@ -55,7 +56,7 @@ function Get-InstalledState {
     if (Test-Path $stateFile) { return (Get-Content $stateFile -Raw).Trim() } else { return 'off' }
 }
 
-if ($Device -eq 'Status') {
+if ($Status) {
     Write-Host ('预建标记: ' + (Test-Path $Flag)) -ForegroundColor Cyan
     if (Test-Path $Flag) { Write-Host ('  目标设备: ' + (Get-Content $Flag -Raw).Trim()) }
     Write-Host ('Watcher 状态: ' + (Get-InstalledState))
@@ -63,7 +64,7 @@ if ($Device -eq 'Status') {
     exit 0
 }
 
-if ($Device -eq 'Cancel') {
+if ($Cancel) {
     Remove-Item $Flag -Force -ErrorAction SilentlyContinue
     Write-Host '已取消预建；Watcher 会在 1~2 秒内恢复物理扩展布局。' -ForegroundColor Yellow
     Start-Sleep -Seconds 3

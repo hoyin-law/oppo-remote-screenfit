@@ -776,8 +776,9 @@ while ($true) {
     }
 
     # 可选的模式开关：NO_REMOTE_ADAPT.txt 存在时，只保留「原生屏幕扩展守护 + 恢复扩展」，
-    # 不再尝试为远程控制自建虚拟屏（当前 OPPO 16.2.20.0 下该路线已证伪）
-    if ($s.Active -and -not $s.Cast -and (Test-Path (Join-Path $Root 'NO_REMOTE_ADAPT.txt'))) {
+    # 不再尝试为远程控制自建虚拟屏（当前 OPPO 16.2.20.0 下该路线已证伪）。
+    # 例外：预建屏已 promote 到 state=on 时，仍要走正常会话逻辑（含观看端丢失恢复）。
+    if ($s.Active -and -not $s.Cast -and (GetState) -ne 'on' -and (Test-Path (Join-Path $Root 'NO_REMOTE_ADAPT.txt'))) {
         if (-not $script:remoteDisabledLogged) {
             WLog '远程控制自适应已关闭（NO_REMOTE_ADAPT.txt）：仅守护原生屏幕扩展与恢复布局'
             $script:remoteDisabledLogged = $true

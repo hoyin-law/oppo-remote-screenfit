@@ -51,44 +51,99 @@ function WLog($m) {
     Add-Content -Path $LogFile -Value $line -Encoding UTF8
 }
 
+$script:logOffsets = @{}
+$script:logRemainders = @{}
+$script:sessActive = $false
+$script:sessDevice = $null
+$script:sessStartTs = $null
+$script:sessLastEventTs = [datetime]::MinValue
+$script:sessLastEventType = ''
+
+# 增量读取日志：避免每 500ms 重复 tail 两个 4000 行文件（高 CPU 的主因）
+function Read-NewLines([string]$path) {
+    $item = Get-Item $path -ErrorAction SilentlyContinue
+    if (-not $item) { return @() }
+    $len = [long]$item.Length
+
+    if (-not $script:logOffsets.ContainsKey($path)) {
+        $lines = @(Get-Content $path -Tail 4000 -ErrorAction SilentlyContinue)
+        $script:logOffsets[$path] = $len
+        $script:logRemainders[$path] = ''
+        return $lines
+    }
+
+    $off = [long]$script:logOffsets[$path]
+    if ($len -lt $off) { $off = 0; $script:logRemainders[$path] = '' }
+    if ($len -eq $off) { return @() }
+
+    $chunk = ''
+    try {
+        $fs = [System.IO.File]::Open($path, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read, [System.IO.FileShare]::ReadWrite)
+        [void]$fs.Seek($off, [System.IO.SeekOrigin]::Begin)
+        $count = [int]($len - $off)
+        $buf = New-Object byte[] $count
+        $read = $fs.Read($buf, 0, $count)
+        $fs.Close()
+        $script:logOffsets[$path] = $off + $read
+        $chunk = [System.Text.Encoding]::UTF8.GetString($buf, 0, $read)
+    } catch { return @() }
+
+    $text = [string]$script:logRemainders[$path] + $chunk
+    $parts = $text -split "`r?`n"
+    if ($parts.Count -eq 0) { return @() }
+    $script:logRemainders[$path] = $parts[$parts.Count - 1]
+    if ($parts.Count -eq 1) { return @() }
+    return @($parts[0..($parts.Count - 2)])
+}
+
 function Get-Session {
-    # 读最近两个 main 日志：OPPO 每天 0 点轮转日志，只读最新文件会丢掉跨零点的会话开始事件
     $dir = Join-Path $env:APPDATA 'O+Connect\devicespace'
     $files = Get-ChildItem (Join-Path $dir '*_main.log') -ErrorAction SilentlyContinue |
         Sort-Object LastWriteTime -Descending | Select-Object -First 2
     if (-not $files) { return @{ Active = $false; Device = $null; StartTs = $null } }
 
-    $lines = @()
     foreach ($f in ($files | Sort-Object LastWriteTime)) {
-        $lines += Get-Content $f.FullName -Tail 4000 -ErrorAction SilentlyContinue
+        foreach ($l in (Read-NewLines $f.FullName)) {
+            $ts = $null
+            if ($l -match '(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})') {
+                try { $ts = [datetime]::ParseExact($matches[1], 'yyyy-MM-dd HH:mm:ss', $null) } catch { }
+            }
+            if ($l -match 'start remote control:') {
+                if (-not $ts -or $ts -ge $script:sessLastEventTs) {
+                    $script:sessActive = $true
+                    $script:sessLastEventType = 'start'
+                    if ($ts) { $script:sessLastEventTs = $ts; $script:sessStartTs = $ts }
+                    $m = [regex]::Match($l, '"deviceName":"([^"]+)"')
+                    if ($m.Success) { $script:sessDevice = $m.Groups[1].Value }
+                }
+            } elseif ($l -match 'stop remote control:') {
+                if (-not $ts -or $ts -ge $script:sessLastEventTs) {
+                    $script:sessActive = $false
+                    $script:sessLastEventType = 'stop'
+                    if ($ts) { $script:sessLastEventTs = $ts }
+                }
+            }
+        }
     }
 
-    $lastStart = -1; $lastStop = -1; $dev = $null; $startTs = $null
-    for ($i = 0; $i -lt $lines.Count; $i++) {
-        $l = $lines[$i]
-        if ($l -match 'start remote control:') {
-            $lastStart = $i
-            $m = [regex]::Match($l, '"deviceName":"([^"]+)"')
-            if ($m.Success) { $dev = $m.Groups[1].Value }
-            if ($l -match '(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})') { $startTs = [datetime]::ParseExact($matches[1], 'yyyy-MM-dd HH:mm:ss', $null) }
-        } elseif ($l -match 'stop remote control:') { $lastStop = $i }
-    }
-    $active = ($lastStart -ge 0 -and $lastStart -gt $lastStop)
+    $active = $script:sessActive
+    $dev = $script:sessDevice
+    $startTs = $script:sessStartTs
+    $devFile = Join-Path $LogDir 'last-device.txt'
 
-    if ($active -and -not $dev) {
-        $devFile = Join-Path $LogDir 'last-device.txt'
-        if (Test-Path $devFile) { $dev = (Get-Content $devFile -Raw -ErrorAction SilentlyContinue).Trim() }
+    if ($active -and -not $dev -and (Test-Path $devFile)) {
+        $dev = (Get-Content $devFile -Raw -ErrorAction SilentlyContinue).Trim()
     }
 
-    # 兜底：日志轮转后读不到 start 时，用“远程引擎进程 + 引擎日志新鲜度”判断。
-    # 注意：主日志里的 ws.heartbeat 是控制通道心跳，空闲时也存在，不能当会话依据（会误判）。
-    if (-not $active) {
+    # 兜底：日志轮转导致读不到 start 时，用远程引擎进程 + 引擎日志新鲜度判断。
+    # 若最近 120 秒内刚看到 stop，则不做兜底，避免刚结束时被重新判成活动。
+    $stopRecently = ($script:sessLastEventType -eq 'stop' -and ((Get-Date) - $script:sessLastEventTs).TotalSeconds -lt 120)
+    if (-not $active -and -not $stopRecently) {
         $agentAge = 9999
         $a = Get-ChildItem (Join-Path $dir 'desktop_agent.*.log') -ErrorAction SilentlyContinue |
             Sort-Object LastWriteTime -Descending | Select-Object -First 1
         if ($a) { $agentAge = ((Get-Date) - $a.LastWriteTime).TotalSeconds }
         $agentRunning = @(Get-Process SLDesktopAgent -ErrorAction SilentlyContinue).Count -gt 0
-        $devFile = Join-Path $LogDir 'last-device.txt'
         if ($agentRunning -and $agentAge -lt 60 -and (Test-Path $devFile)) {
             $dev = (Get-Content $devFile -Raw -ErrorAction SilentlyContinue).Trim()
             $active = $true
@@ -104,22 +159,8 @@ function Get-RemoteLiveness {
     $a = Get-ChildItem (Join-Path $env:APPDATA 'O+Connect\devicespace\desktop_agent.*.log') -ErrorAction SilentlyContinue |
         Sort-Object LastWriteTime -Descending | Select-Object -First 1
     if ($a) { $agentAge = ((Get-Date) - $a.LastWriteTime).TotalSeconds }
-
-    $ackAge = 9999
-    $m = Get-ChildItem (Join-Path $env:APPDATA 'O+Connect\devicespace\*_main.log') -ErrorAction SilentlyContinue |
-        Sort-Object LastWriteTime -Descending | Select-Object -First 1
-    if ($m) {
-        $lines = Get-Content $m.FullName -Tail 400 -ErrorAction SilentlyContinue
-        for ($i = $lines.Count - 1; $i -ge 0; $i--) {
-            if ($lines[$i] -match 'ws\.heartbeat\.ack') {
-                if ($lines[$i] -match '(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})') {
-                    try { $ackAge = ((Get-Date) - [datetime]::ParseExact($matches[1], 'yyyy-MM-dd HH:mm:ss', $null)).TotalSeconds } catch { }
-                }
-                break
-            }
-        }
-    }
-    return @{ AgentAge = $agentAge; AckAge = $ackAge }
+    $agentRunning = @(Get-Process SLDesktopAgent -ErrorAction SilentlyContinue).Count -gt 0
+    return @{ AgentAge = $agentAge; AgentRunning = $agentRunning }
 }
 
 $DeviceMap = @(
@@ -554,14 +595,29 @@ if (-not $s0.Active) {
 }
 
 while ($true) {
+    # STOP.txt 实时生效：运行中新建也能立即停止并恢复布局
+    if (Test-Path (Join-Path $Root 'STOP.txt')) {
+        WLog '检测到 STOP.txt -> 恢复布局并退出'
+        if ([ScreenFitTopo]::HasSnapshot()) {
+            $r = [ScreenFitTopo]::RestoreSnapshot()
+            Remove-Item $SnapshotFile -Force -ErrorAction SilentlyContinue
+            WLog ('   恢复连接前布局: ' + $r)
+        } else {
+            Set-OnlyInternal
+        }
+        SetState 'off'
+        if ([ScreenFitTopo]::VirtualPathExists()) { CleanDevice }
+        exit
+    }
+
     $s = Get-Session
     if ($s.Active) {
         # 僵尸会话看门狗：会话在，但远程引擎日志/心跳都长时间无更新（典型是平板 App 崩了）
         $live = Get-RemoteLiveness
         if (-not $script:lastZombieKill) { $script:lastZombieKill = [datetime]::MinValue }
-        if ($live.AgentAge -gt 120 -and $live.AckAge -gt 90 -and
+        if ((-not $live.AgentRunning -or $live.AgentAge -gt 120) -and
             ((Get-Date) - $script:lastZombieKill).TotalSeconds -gt 300) {
-            WLog ("检测到僵尸会话（远程引擎 " + [math]::Round($live.AgentAge) + "s / 心跳 " + [math]::Round($live.AckAge) + "s 无更新）→ 恢复布局并重启远程引擎")
+            WLog ("检测到僵尸会话（远程引擎进程=" + $live.AgentRunning + " / 日志 " + [math]::Round($live.AgentAge) + "s 无更新）→ 恢复布局并重启远程引擎")
             if ([ScreenFitTopo]::HasSnapshot()) {
                 $r = [ScreenFitTopo]::RestoreSnapshot()
                 Remove-Item $SnapshotFile -Force -ErrorAction SilentlyContinue
@@ -571,8 +627,10 @@ while ($true) {
             }
             SetState 'off'
             Get-Process SLDesktopAgent -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
+            if ([ScreenFitTopo]::VirtualPathExists()) { CleanDevice }
             $script:lastZombieKill = Get-Date
             $script:windowsMoved = $false
+            $script:snapshotTried = $false
             Start-Sleep -Seconds 2
             continue
         }

@@ -130,7 +130,8 @@ Prints current displays, OPPO Connect session/device, the latest encoder resolut
 
 ## Disable / Uninstall
 
-- **Temporarily disable**: create an empty `STOP.txt` in the install directory (`%LOCALAPPDATA%\OPPO-ScreenFit`); both guards exit on next start.
+- **Temporarily disable**: create an empty `STOP.txt` in the install directory (`%LOCALAPPDATA%\OPPO-ScreenFit`); the watcher restores the layout and exits within about a second (also while running).
+- **Stale session**: if the tablet app crashes and the remote session is left hanging, the watcher detects that the remote engine is gone or its log is stale for 120 s, restores the layout, restarts the engine and removes the virtual display.
 - **Uninstall**: double-click **`一键卸载.cmd`** (or run `scripts\Uninstall.ps1`). It stops/removes the tasks, removes autostart, deletes the virtual display, restores the internal display and deletes the install directory.
 
 ---

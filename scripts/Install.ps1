@@ -57,11 +57,15 @@ Write-Host '3/4 注册计划任务（登录自启、最高权限）'
 $action = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument (
     '-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File "{0}"' -f (Join-Path $Dest 'Watcher.ps1')
 )
-$trigger = New-ScheduledTaskTrigger -AtLogOn -User "$env:USERDOMAIN\$env:USERNAME"
+$triggerLogon = New-ScheduledTaskTrigger -AtLogOn -User "$env:USERDOMAIN\$env:USERNAME"
+# 每 5 分钟检查一次（任务已在跑时 IgnoreNew 不会重复启动）；任务被异常终止后能自动恢复
+$triggerRepeat = New-ScheduledTaskTrigger -Once -At (Get-Date).AddMinutes(2) `
+    -RepetitionInterval (New-TimeSpan -Minutes 5) -RepetitionDuration (New-TimeSpan -Days 3650)
 $principal = New-ScheduledTaskPrincipal -UserId "$env:USERDOMAIN\$env:USERNAME" -LogonType Interactive -RunLevel Highest
 $settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries `
-    -ExecutionTimeLimit (New-TimeSpan -Days 3650) -MultipleInstances IgnoreNew -StartWhenAvailable
-Register-ScheduledTask -TaskName $TaskName -Action $action -Trigger $trigger -Principal $principal -Settings $settings -Force | Out-Null
+    -ExecutionTimeLimit (New-TimeSpan -Days 3650) -MultipleInstances IgnoreNew -StartWhenAvailable `
+    -RestartCount 3 -RestartInterval (New-TimeSpan -Minutes 1)
+Register-ScheduledTask -TaskName $TaskName -Action $action -Trigger @($triggerLogon, $triggerRepeat) -Principal $principal -Settings $settings -Force | Out-Null
 
 Write-Host '4/4 启动'
 Start-ScheduledTask -TaskName $TaskName
@@ -70,7 +74,7 @@ Write-Host ''
 Write-Host '✅ 安装完成。' -ForegroundColor Green
 Write-Host '   - 平时：守护只读日志，不动显示；'
 Write-Host '   - 远程连接开始：自动建对应分辨率的虚拟屏，并切换为「仅在虚拟屏上显示」；'
-Write-Host '   - 远程结束：立即恢复内屏，90 秒后拆除虚拟屏。'
+Write-Host '   - 远程结束：按连接前快照恢复布局，随后拆除虚拟屏。'
 Write-Host ''
 Write-Host ('安装目录：' + $Dest)
 Write-Host ('日志目录：' + (Join-Path $Dest 'logs'))

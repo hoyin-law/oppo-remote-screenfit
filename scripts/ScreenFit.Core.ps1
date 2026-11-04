@@ -4,7 +4,7 @@
   不碰显示拓扑、不启动进程、不写状态文件。
 #>
 
-$script:ScreenFitVersion = '1.2.6'
+$script:ScreenFitVersion = '1.2.7'
 $script:ScreenFitLogDir = $null
 $script:ScreenFitStateDir = $null
 $script:logOffsets = @{}
@@ -148,10 +148,23 @@ function Get-RemoteLiveness {
 
 <#
   Get-ViewerEvidence —— 从一份 desktop_agent 日志判断「观看端是否在消费画面」。
-  依据：日志行形如 "[...] 2026-11-04 13:57:49.282  ... [CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40"。
+  OPPO 不同版本/不同会话的日志格式不一样，必须同时兼容：
+    旧版逐帧行: [CSingleDesktop] Too few frames sent, drop 0, send 7, fps 40
+    新版质量行: [EncoderQualityCalc] ... drop=0, send=39, line=187   （约每 5 秒一行）
+    新版汇总行: [desktop] total 137 calc 0 encode 125 send 0 push 12 ...
   规则：最后一次 send>0 距 Now（默认取日志内最后时间戳，回放模式）不超过 WindowSeconds 视为在观看。
   -TailLines <= 0 表示读整个文件（测试回放用）；默认只读最后 600 行（生产用，避免每次轮询读大文件）。
 #>
+function Get-FrameSendValue([string]$line) {
+    $m = [regex]::Match($line, 'EncoderQualityCalc\].*?send=(\d+)')
+    if ($m.Success) { return [int]$m.Groups[1].Value }
+    $m = [regex]::Match($line, 'CSingleDesktop\].*?send\s+(\d+)')
+    if ($m.Success) { return [int]$m.Groups[1].Value }
+    $m = [regex]::Match($line, '\[desktop\].*?\bsend\s+(\d+)')
+    if ($m.Success) { return [int]$m.Groups[1].Value }
+    return $null
+}
+
 function Get-ViewerEvidence {
     param(
         [Parameter(Mandatory = $true)][string]$LogPath,
@@ -184,12 +197,10 @@ function Get-ViewerEvidence {
 
         if (-not $result.LastSampleTs -or $ts -gt $result.LastSampleTs) { $result.LastSampleTs = $ts }
 
-        $mSend = [regex]::Match($l, 'CSingleDesktop\].*?send\s+(\d+)')
-        if ($mSend.Success) {
+        $sendValue = Get-FrameSendValue $l
+        if ($null -ne $sendValue) {
             $result.Samples++
-            $send = 0
-            [void][int]::TryParse($mSend.Groups[1].Value, [ref]$send)
-            if ($send -gt 0) {
+            if ($sendValue -gt 0) {
                 $result.SamplesWithSend++
                 if (-not $result.LastConsumedTs -or $ts -gt $result.LastConsumedTs) { $result.LastConsumedTs = $ts }
             }

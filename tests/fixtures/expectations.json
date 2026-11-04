@@ -1,12 +1,13 @@
 {
-  "note": "由真实 OPPO 互联 desktop_agent 日志导出的回放用例。lastTs = 该日志最后一行时间戳；viewer = 以 lastTs 为 now、30 秒窗口内是否存在 send>0 的帧（即观看端在消费画面）；samplesGt0 用于哨兵断言，证明 false 用例不是空输入。",
+  "note": "由真实 OPPO 互联 desktop_agent 日志导出的回放用例。lastTs = 该日志最后一行时间戳；viewer = 以 lastTs 为 now、30 秒窗口内是否存在 send>0 的帧（即观看端在消费画面）。samples/samplesGt0 覆盖三种日志格式：旧版 [CSingleDesktop] ... send N、新版 [EncoderQualityCalc] ... send=N、新版 [desktop] ... send N；samplesGt0 用于哨兵断言，证明 false 用例不是空输入。",
   "cases": [
-    { "file": "desktop_agent.20261104-135502.log", "lastTs": "2026-11-04 14:07:20", "viewer": false, "samples": 583, "samplesGt0": 7 },
-    { "file": "desktop_agent.20261104-140807.log", "lastTs": "2026-11-04 14:20:58", "viewer": false, "samples": 648, "samplesGt0": 1 },
-    { "file": "desktop_agent.20261104-151244.log", "lastTs": "2026-11-04 15:23:08", "viewer": false, "samples": 602, "samplesGt0": 3 },
-    { "file": "desktop_agent.20261104-145531.log", "lastTs": "2026-11-04 15:00:46", "viewer": false, "samples": 303, "samplesGt0": 5 },
-    { "file": "desktop_agent.20261104-102554.log", "lastTs": "2026-11-04 13:50:10", "viewer": true, "samples": 7582, "samplesGt0": 7582 },
-    { "file": "desktop_agent.20261103-233049.log", "lastTs": "2026-11-03 23:47:12", "viewer": true, "samples": 121, "samplesGt0": 121 },
-    { "file": "desktop_agent.20261104-150053.log", "lastTs": "2026-11-04 15:06:18", "viewer": true, "samples": 312, "samplesGt0": 312 }
+    { "file": "desktop_agent.20261104-135502.log", "lastTs": "2026-11-04 14:07:20", "viewer": false, "samples": 592, "samplesGt0": 13 },
+    { "file": "desktop_agent.20261104-140807.log", "lastTs": "2026-11-04 14:20:58", "viewer": false, "samples": 666, "samplesGt0": 17 },
+    { "file": "desktop_agent.20261104-151244.log", "lastTs": "2026-11-04 15:23:08", "viewer": false, "samples": 604, "samplesGt0": 4 },
+    { "file": "desktop_agent.20261104-145531.log", "lastTs": "2026-11-04 15:00:46", "viewer": false, "samples": 311, "samplesGt0": 5 },
+    { "file": "desktop_agent.20261104-102554.log", "lastTs": "2026-11-04 13:50:10", "viewer": true, "samples": 7639, "samplesGt0": 7635 },
+    { "file": "desktop_agent.20261103-233049.log", "lastTs": "2026-11-03 23:47:12", "viewer": true, "samples": 129, "samplesGt0": 127 },
+    { "file": "desktop_agent.20261104-150053.log", "lastTs": "2026-11-04 15:06:18", "viewer": true, "samples": 320, "samplesGt0": 318 },
+    { "file": "desktop_agent.20261104-225601.log", "lastTs": "2026-11-04 22:57:00", "viewer": true, "samples": 7, "samplesGt0": 6 }
   ]
 }

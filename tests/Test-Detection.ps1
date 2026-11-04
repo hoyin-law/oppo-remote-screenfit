@@ -116,7 +116,22 @@ try {
     Remove-Item $castTmp -Recurse -Force -ErrorAction SilentlyContinue
 }
 
-Write-Host '== 5. 版本一致性 =='
+Write-Host '== 5. 预建屏状态机 =='
+$preArmCases = @(
+    @{ armed = $true;  state = 'off';      sess = $false; viewer = $false; secs = $null; expect = 'arm' },
+    @{ armed = $true;  state = 'prearmed'; sess = $false; viewer = $false; secs = 10;    expect = 'wait' },
+    @{ armed = $true;  state = 'prearmed'; sess = $true;  viewer = $true;  secs = 30;    expect = 'promote' },
+    @{ armed = $true;  state = 'prearmed'; sess = $true;  viewer = $false; secs = 30;    expect = 'wait' },
+    @{ armed = $true;  state = 'prearmed'; sess = $false; viewer = $false; secs = 1000;  expect = 'restore' },
+    @{ armed = $false; state = 'prearmed'; sess = $false; viewer = $false; secs = $null; expect = 'restore' },
+    @{ armed = $false; state = 'off';      sess = $false; viewer = $false; secs = $null; expect = 'idle' }
+)
+foreach ($c in $preArmCases) {
+    $d = Get-PreArmAction -Armed $c.armed -State $c.state -SessionActive $c.sess -ViewerActive $c.viewer -SecondsSinceArm $c.secs -ArmTimeoutSeconds 900
+    Check ($d -eq $c.expect) ("prearm:armed=" + $c.armed + ",state=" + $c.state + ",sess=" + $c.sess + ",viewer=" + $c.viewer + ",secs=" + $c.secs) ("expected=" + $c.expect + " got=" + $d)
+}
+
+Write-Host '== 6. 版本一致性 =='
 $ver = Get-ScreenFitVersion
 Check ($ver -match '^\d+\.\d+\.\d+$') 'version-format' ("got=" + $ver)
 $verFile = Join-Path $RepoRoot 'VERSION'

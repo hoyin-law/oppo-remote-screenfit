@@ -4,7 +4,7 @@
   不碰显示拓扑、不启动进程、不写状态文件。
 #>
 
-$script:ScreenFitVersion = '1.2.8'
+$script:ScreenFitVersion = '1.2.9'
 $script:ScreenFitLogDir = $null
 $script:ScreenFitStateDir = $null
 $script:logOffsets = @{}
@@ -211,6 +211,33 @@ function Get-NativeExtendDecision {
     if ($NativeActive) { return 'observe' }
     if ($State -eq 'native') { return 'restore' }
     return 'idle'
+}
+
+<#
+  Get-PreArmAction —— 「预建屏（会话前就绪）」模式的状态机（纯函数）。
+    arm     : 已请求预建，但还没执行 -> 建屏并切到仅虚拟屏
+    wait    : 已预建，等待平板发起远控（超时前）
+    promote : 已检测到远控会话且观看端在消费 -> 进入正常会话
+    restore : 撤防（用户取消）或等待超时 -> 恢复物理扩展布局
+    idle    : 未请求预建且当前不是预建状态
+#>
+function Get-PreArmAction {
+    param(
+        [bool]$Armed,
+        [string]$State = 'off',
+        [bool]$SessionActive = $false,
+        [bool]$ViewerActive = $false,
+        [Nullable[double]]$SecondsSinceArm = $null,
+        [double]$ArmTimeoutSeconds = 900
+    )
+    if (-not $Armed) {
+        if ($State -eq 'prearmed') { return 'restore' }
+        return 'idle'
+    }
+    if ($State -ne 'prearmed') { return 'arm' }
+    if ($SessionActive -and $ViewerActive) { return 'promote' }
+    if ($SecondsSinceArm -ne $null -and $SecondsSinceArm -ge $ArmTimeoutSeconds) { return 'restore' }
+    return 'wait'
 }
 
 <#

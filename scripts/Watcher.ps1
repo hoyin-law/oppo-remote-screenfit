@@ -25,6 +25,8 @@ $PollSec = 1
 $GraceSec = 90
 $SnapshotFile = Join-Path $LogDir 'topology.snapshot'
 $WindowSnapshotFile = Join-Path $LogDir 'window.snapshot.txt'
+$PreArmFile = Join-Path $Root 'PREARM.txt'
+$ArmTimeoutSec = 900
 $ViewerWindowSec = 30        # 最近 30 秒内有 send>0 的帧，才认为有观看端在消费画面
 $ViewerGraceSec = 60         # 切屏后连续 60 秒无观看端 -> 自动恢复原布局
 $NoViewerKillSec = 180       # 远程引擎存活但长时间无观看端 -> 只恢复布局，不杀引擎
@@ -517,7 +519,7 @@ function Restore-Layout {
         WLog ("   恢复连接前布局: " + $r)
         $restoreFailed = ($r -ne 'err=0')
         $did = $true
-    } elseif ((GetState) -eq 'on' -or $script:topoState -eq 'virtual') {
+    } elseif ((GetState) -eq 'on' -or (GetState) -eq 'prearmed' -or $script:topoState -eq 'virtual') {
         $did = $true
     }
     if (-not $did) {
@@ -565,6 +567,38 @@ function Restore-Layout {
     $script:snapshotTried = $false
     $script:windowsMoved = $false
     $script:noViewerSince = $null
+    Remove-Item (Join-Path $Root 'PREARM.txt') -Force -ErrorAction SilentlyContinue
+    return $true
+}
+
+<#
+  Invoke-PreArm —— 预建屏：保存当前布局 -> 建指定设备分辨率的虚拟屏 -> 切到仅虚拟屏。
+  用于「会话前就绪」：让 OPPO 远控从会话一开始就抓到这块屏，避免会话中切换导致 DXGI 失效。
+#>
+function Invoke-PreArm {
+    param([string]$DeviceName)
+    $t = Desired $DeviceName
+    if (-not $t) {
+        $devFile = Join-Path $LogDir 'last-device.txt'
+        if (Test-Path $devFile) {
+            $d2 = (Get-Content $devFile -Raw -ErrorAction SilentlyContinue).Trim()
+            if ($d2) { $t = Desired $d2; if ($t) { WLog ("预建屏：设备名未识别，回退到最后设备 " + $d2) } }
+        }
+    }
+    if (-not $t) { WLog ("预建屏失败：无法识别设备 '" + $DeviceName + "' 的分辨率"); return $false }
+
+    if (-not [ScreenFitTopo]::HasSnapshot()) {
+        $r = [ScreenFitTopo]::SaveSnapshot($SnapshotFile)
+        WLog ("预建屏：保存连接前屏幕布局: " + $r)
+        Save-WindowLayout | Out-Null
+    }
+    CleanDevice
+    Start-Create $t.W $t.H | Out-Null
+    if (-not (Wait-VirtualPath 10)) { WLog '预建屏失败：虚拟屏未出现'; return $false }
+    $switched = Ensure-OnlyVirtual
+    if (-not $switched) { WLog '预建屏：切换到仅虚拟屏失败'; return $false }
+    SetState 'prearmed'
+    WLog ("预建屏就绪：" + $DeviceName + " " + $t.W + "x" + $t.H + "（现在可用平板发起远控；结束/超时会自动恢复）")
     return $true
 }
 
@@ -638,9 +672,9 @@ try {
 WLog 'watcher-run 启动（仅远程信号触发 + 退出恢复布局）'
 
 # 空闲启动：恢复残留快照，清理虚拟屏，保持用户原布局
-# 若 OPPO 原生屏幕扩展/镜像正在进行，则不要动布局（那条链路自己建屏推流）
+# 若 OPPO 原生屏幕扩展/镜像正在进行，或已请求预建屏，则不要动布局
 $native0 = Get-NativeExtendState
-if (-not $native0.Active) {
+if (-not $native0.Active -and -not (Test-Path $PreArmFile)) {
     $s0 = Get-Session
     if (-not $s0.Active) {
         if (Test-Path $SnapshotFile) {
@@ -691,6 +725,56 @@ while ($true) {
     }
 
     $s = Get-Session
+
+    # ===== 预建屏模式（会话前就绪）=====
+    # 由 Prepare-Remote.ps1 写入 PREARM.txt 触发；建屏后等待平板发起远控，
+    # 会话开始（有观看端）后转 on；撤防/超时/结束则恢复物理扩展布局。
+    $armed = Test-Path $PreArmFile
+    $armSeconds = $null
+    if ($armed) {
+        try { $armSeconds = ((Get-Date) - (Get-Item $PreArmFile).LastWriteTime).TotalSeconds } catch { }
+    }
+    if ($armed) {
+        $viewerPre = if ($s.Cast) { $true } else { (Test-ViewerActive -WindowSeconds $ViewerWindowSec).Active }
+        $preArmDecision = Get-PreArmAction -Armed $true -State (GetState) -SessionActive $s.Active -ViewerActive $viewerPre -SecondsSinceArm $armSeconds -ArmTimeoutSeconds $ArmTimeoutSec
+        switch ($preArmDecision) {
+            'arm' {
+                $devName = (Get-Content $PreArmFile -Raw -ErrorAction SilentlyContinue).Trim()
+                WLog ("收到预建请求（设备: " + $devName + "）-> 建屏并切到仅虚拟屏")
+                if (-not (Invoke-PreArm -DeviceName $devName)) {
+                    Remove-Item $PreArmFile -Force -ErrorAction SilentlyContinue
+                }
+                Start-Sleep -Milliseconds 500
+                continue
+            }
+            'promote' {
+                WLog '预建屏检测到远控会话且观看端在消费 -> 进入会话模式'
+                SetState 'on'
+                # 继续往下走正常会话分支
+            }
+            'wait' {
+                Start-Sleep -Milliseconds 500
+                continue
+            }
+            'restore' {
+                WLog '预建屏撤防或等待超时 -> 恢复物理扩展布局'
+                Restore-Layout | Out-Null
+                Remove-Item $PreArmFile -Force -ErrorAction SilentlyContinue
+                if ([ScreenFitTopo]::VirtualPathExists()) { CleanDevice }
+                SetState 'off'
+                Start-Sleep -Milliseconds 500
+                continue
+            }
+        }
+    } elseif ((GetState) -eq 'prearmed') {
+        WLog '预建标记消失（已撤防）-> 恢复物理扩展布局'
+        Restore-Layout | Out-Null
+        if ([ScreenFitTopo]::VirtualPathExists()) { CleanDevice }
+        SetState 'off'
+        Start-Sleep -Milliseconds 500
+        continue
+    }
+
     # 可选的模式开关：NO_REMOTE_ADAPT.txt 存在时，只保留「原生屏幕扩展守护 + 恢复扩展」，
     # 不再尝试为远程控制自建虚拟屏（当前 OPPO 16.2.20.0 下该路线已证伪）
     if ($s.Active -and -not $s.Cast -and (Test-Path (Join-Path $Root 'NO_REMOTE_ADAPT.txt'))) {

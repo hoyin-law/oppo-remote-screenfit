@@ -133,7 +133,32 @@ cd oppo-remote-screenfit
 
 ---
 
-## 原生屏幕扩展守护模式（v1.2.8 起推荐）
+## 预建屏（会话前就绪，v1.2.9 起推荐）
+
+OPPO 手机/平板端没有「屏幕扩展」按钮，且远控内核不支持会话中切换到新建的虚拟屏（DXGI 会 0x80004005 停帧）。
+因此新增**预建屏模式**：在发起远控**之前**就把平板分辨率的虚拟屏建好并切为主屏，让远控从会话一开始就抓这块屏。
+
+```powershell
+# 1) 电脑上运行（无需管理员，Watcher 会以管理员身份完成建屏）
+pwsh -NoProfile -File scripts\Prepare-Remote.ps1 -Device Pad5Pro
+
+# 2) 现在用平板 OPPO 互联「远程控制」连接本机；画面应为平板原生分辨率
+
+# 3) 结束远控后会自动恢复「内屏 + 外接扩展」；也可手动取消：
+pwsh -NoProfile -File scripts\Prepare-Remote.ps1 -Cancel
+
+# 查看状态
+pwsh -NoProfile -File scripts\Prepare-Remote.ps1 -Status
+```
+
+行为细节：
+- 预建后电脑物理屏会暂时变黑（只剩虚拟屏），这是预期现象，请在连接前 1~2 秒执行；
+- 等 15 分钟仍没有远控连接会自动撤防并恢复物理布局；
+- 会话结束后自动恢复扩展布局与窗口位置，并删除虚拟屏。
+
+---
+
+## 原生屏幕扩展守护模式（v1.2.8）
 
 实测 OPPO 互联 16.2.20.0 的远控内核只支持 `OrayIddDriver`，本项目自建的 `OPDisplayDriver` 虚拟屏会被回退到 DXGI 采集并停帧
 （详见 [docs/oppo-pipeline-analysis.md](docs/oppo-pipeline-analysis.md)）。因此新增了**原生扩展守护模式**：

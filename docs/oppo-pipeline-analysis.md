@@ -29,8 +29,9 @@
 ### 1.2 切到虚拟屏后为什么停帧
 
 虚拟屏由 `%LOCALAPPDATA%\DeviceSpace\ext-service\OPVirtualDisplayDriver\OPDisplayDriverTool.exe` 创建。
-该工具是**未签名、无版本信息、2026-11-04 22:12 重新编译的自定义工具**（内部用 `SwDeviceCreate` 创建 `SWD\OPDISPLAYDRIVER` 软件设备），
-它在日志里自称打开的是 `\\?\swd#opdisplaydriver#opdisplaydriver#{89c99670-3fbc-4ea5-962a-f2c46ba45e5a}`。
+该组件是 OPPO 自带的一部分（无数字签名、带 PDB 的内部构建；`DeviceSpace ext-service` 会在需要时自愈重写，文件哈希稳定为
+`A767EE94…09B1`），内部用 `SwDeviceCreate` 创建 `SWD\OPDISPLAYDRIVER` 软件设备，
+日志显示它打开的设备接口是 `\\?\swd#opdisplaydriver#opdisplaydriver#{89c99670-3fbc-4ea5-962a-f2c46ba45e5a}`。
 
 切屏后远控内核的表现：
 

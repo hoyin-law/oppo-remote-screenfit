@@ -1,5 +1,7 @@
 # oppo-remote-screenfit
 
+> Current version: **1.2.5** (kept in sync with the `VERSION` file and `scripts/ScreenFit.Core.ps1`)
+
 > Automatically switch your Windows display to the **native resolution of your OPPO Pad / Find N6** when using **OPPO Connect (O+ Connect)** remote control — no stretching, no letterboxing.
 
 For Windows 11 + OPPO Connect remote-control scenarios. Verified with **OPPO Pad 5 Pro** and **OPPO Find N6**.
@@ -39,9 +41,10 @@ via `scripts/devices.json` without touching code.
 1. `Watcher.ps1` (elevated scheduled task, starts at logon) reads OPPO Connect's own logs to detect **remote-control session start/end**:
    - `start remote control: ... "deviceName":"OPPO Find N6" ...`
    - `stop remote control: ...`
-2. On session start it calls OPPO's bundled `OPDisplayDriverTool.exe` to create a virtual display at the device's native resolution.
-3. The same watcher switches the display topology to **"show only on the virtual display"**, so the remote side only sees one screen; it keeps checking and re-applies within 2 seconds if a physical display comes back, and moves stranded windows onto the virtual screen.
-4. When the session ends it restores the exact layout you had before connecting (extend / duplicate / single screen), then removes the virtual display.
+2. **Viewer gate**: OPPO's "remote-control state = true" only means a device connected, not that anyone is watching. The watcher switches only when the `desktop_agent` log shows `[CSingleDesktop] ... send>0` (frames actually consumed by a viewer) within the last 30 seconds. If the layout was already switched and no viewer appears for 60 seconds, it restores the original layout so the physical screen cannot stay locked on the virtual display.
+3. On session start it calls OPPO's bundled `OPDisplayDriverTool.exe` to create a virtual display at the device's native resolution.
+4. The same watcher switches the display topology to **"show only on the virtual display"**, so the remote side only sees one screen; it keeps checking and re-applies within 2 seconds if a physical display comes back, and moves stranded windows onto the virtual screen (window positions are snapshotted before switching).
+5. When the session ends it restores the exact layout you had before connecting (extend / duplicate / single screen) and moves windows back, then removes the virtual display.
 
 Ordinary device connect/disconnect does not trigger any switching; only a remote-control session does.
 
@@ -98,8 +101,9 @@ cd oppo-remote-screenfit
 ## Usage
 
 - **Idle**: both guards only read logs; they never touch the display.
-- **Remote session starts**: within ~10–20 seconds the virtual display is created and activated at the device's native resolution.
-- **Session ends**: the previous layout is restored within about a second, then the virtual display is removed.
+- **Remote session starts**: once the tablet actually starts receiving frames (usually 3-5 s), the virtual display is created and activated at the device's native resolution.
+- **Session ends**: the previous layout and window positions are restored within about a second, then the virtual display is removed.
+- **Nobody watching**: if a device auto-connects but no viewer consumes frames (phone in background), the watcher does not switch; if it already switched, 60 seconds without a viewer restores the original layout.
 
 ### Manual mode
 
@@ -131,15 +135,33 @@ Prints current displays, OPPO Connect session/device, the latest encoder resolut
 ## Disable / Uninstall
 
 - **Temporarily disable**: create an empty `STOP.txt` in the install directory (`%LOCALAPPDATA%\OPPO-ScreenFit`); the watcher restores the layout and exits within about a second (also while running).
-- **Stale session**: if the tablet app crashes and the remote session is left hanging, the watcher detects that the remote engine is gone or its log is stale for 120 s, restores the layout, restarts the engine and removes the virtual display.
+- **Re-enable**: delete `STOP.txt`, or re-run the installer (it renames `STOP.txt` to `STOP.txt.bak-<timestamp>` and tells you, so it can never stay silently disabled).
+- **Stale session**: if the remote engine process disappears, the watcher restores the layout and removes the virtual display (it no longer kills the engine process).
 - **Uninstall**: double-click **`一键卸载.cmd`** (or run `scripts\Uninstall.ps1`). It stops/removes the tasks, removes autostart, deletes the virtual display, restores the internal display and deletes the install directory.
+
+---
+
+## Development / test / release
+
+```powershell
+# Offline regression test of the detection logic (replays real logs, never touches displays)
+pwsh -NoProfile -File tests\Test-Detection.ps1
+
+# Reproducible release build (checks version sync, script syntax, and zip == worktree byte-for-byte)
+pwsh -NoProfile -File scripts\Build-Release.ps1
+```
+
+Detection lives in `scripts/ScreenFit.Core.ps1` (pure functions) and is shared by `Watcher.ps1` and `Diagnose.ps1`, so the diagnostics can never disagree with the running logic. `tests/fixtures/` contains replay cases exported from real `desktop_agent` logs, covering both "someone is watching" and "nobody is watching".
+
+The version must match in three places: `VERSION`, `$script:ScreenFitVersion` in `ScreenFit.Core.ps1`, and `version.txt` in the install directory; `Build-Release.ps1` enforces it.
 
 ---
 
 ## Known limitations
 
 - **Portrait is not supported**: a landscape stream in a portrait viewport must have top/bottom bars (correct aspect, no stretching). The project only guarantees full-screen in landscape.
-- **10–20 second delay**: the virtual display is created after the remote session starts; the client may briefly show the old picture before it switches.
+- **Switching depends on frames**: switching only happens while a viewer is consuming frames; a viewer with a completely static picture for a long time may be treated as "not watching" and get the layout restored — moving the picture brings it back.
+- **3-5 second delay**: the virtual display is created after a viewer is detected; the client may briefly show the old picture before it switches.
 - **Client compatibility**: OPPO Connect log formats may change between major versions. If it stops working after an update, run `Diagnose.ps1` and open an issue.
 - **Display numbering**: Windows keeps incrementing the virtual display's GDI number (DISPLAY47, 57, …). The tool enumerates up to 200; a reboot resets the numbering in extreme cases.
 - The physical screen flickers briefly during a topology switch — expected.

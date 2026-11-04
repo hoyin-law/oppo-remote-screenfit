@@ -35,21 +35,25 @@ foreach ($i in 1..200) {
     if ($cur) { Write-Host ("DISPLAY{0} = {1}" -f $i, $cur) }
 }
 
-Section '2. OPPO 互联 会话与设备'
-$main = Get-ChildItem (Join-Path $OppLogDir '*_main.log') | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+Section '2. OPPO 互联 会话与观看端'
+$main = Get-ChildItem (Join-Path $OppLogDir '*_main.log') -ErrorAction SilentlyContinue | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+# 与 Watcher 使用同一份检测逻辑（ScreenFit.Core.ps1），避免诊断结论和守护行为不一致
+$corePath = Join-Path $Root 'ScreenFit.Core.ps1'
+if (Test-Path $corePath) {
+    . $corePath
+    Initialize-ScreenFit -StateDir (Join-Path $Root 'logs')
+    Write-Host ('ScreenFit 版本 = ' + (Get-ScreenFitVersion))
+    $s = Get-Session
+    Write-Host ('远程会话活动 = ' + $s.Active)
+    Write-Host ('当前/最近设备 = ' + $s.Device)
+    $v = Test-ViewerActive -WindowSeconds 30
+    Write-Host ('观看端在消费画面 = ' + $v.Active + '（最近消费帧 ' + $v.SecondsSinceConsumed + ' 秒前，日志 ' + $v.LogName + '）')
+    Write-Host '切屏条件：会话活动 且 观看端在消费画面；切屏后 60 秒无观看端会自动恢复原布局。'
+} else {
+    Write-Host ('⚠ 缺少 ' + $corePath + '，无法给出与守护一致的判定') -ForegroundColor Yellow
+}
 if ($main) {
-    $lines = Get-Content $main.FullName -Tail 8000
-    $start = -1; $stop = -1; $dev = $null
-    for ($i = 0; $i -lt $lines.Count; $i++) {
-        if ($lines[$i] -match 'start remote control:') {
-            $start = $i
-            $m = [regex]::Match($lines[$i], '"deviceName":"([^"]+)"')
-            if ($m.Success) { $dev = $m.Groups[1].Value }
-        } elseif ($lines[$i] -match 'stop remote control:') { $stop = $i }
-    }
-    Write-Host ("日志: " + $main.Name)
-    Write-Host ("远程会话活动 = " + ($start -ge 0 -and $start -gt $stop))
-    Write-Host ("当前/最近设备 = " + $dev)
+    Write-Host ("最近主日志: " + $main.Name)
 }
 
 Section '3. 最近编码分辨率'

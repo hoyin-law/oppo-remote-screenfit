@@ -7,3 +7,6 @@ state.txt
 *.err
 release/
 
+# 例外：测试夹具是真实日志回放用例，必须入库（否则 clone 后 tests 跑不起来）
+!tests/fixtures/*.log
+

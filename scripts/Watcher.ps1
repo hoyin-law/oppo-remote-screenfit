@@ -4,8 +4,11 @@
   行为：
     - 只在检测到 OPPO 互联「远程控制」会话开始时才建虚拟屏并切换；
     - 设备普通连接/断开不会自动切换屏幕（避免日常打扰）；
-    - 远程开始时保存“连接前”的屏幕布局（扩展/复制/仅某屏），退出时原样恢复；
+    - 必须有观看端在消费画面（最近 30 秒内有 send>0 的帧）才切屏；
+      切屏后连续 60 秒没有观看端则自动恢复原布局，避免把物理屏锁死；
+    - 远程开始时保存“连接前”的屏幕布局（扩展/复制/仅某屏）与窗口位置，退出时原样恢复；
     - 切换后校验确实只剩一块活动屏，失败自动重试/重建。
+    - 版本号见 ScreenFit.Core.ps1（Get-ScreenFitVersion）。
 #>
 
 
@@ -21,6 +24,14 @@ $Tool = Join-Path $env:LOCALAPPDATA 'DeviceSpace\ext-service\OPVirtualDisplayDri
 $PollSec = 1
 $GraceSec = 90
 $SnapshotFile = Join-Path $LogDir 'topology.snapshot'
+$WindowSnapshotFile = Join-Path $LogDir 'window.snapshot.txt'
+$ViewerWindowSec = 30        # 最近 30 秒内有 send>0 的帧，才认为有观看端在消费画面
+$ViewerGraceSec = 60         # 切屏后连续 60 秒无观看端 -> 自动恢复原布局
+$NoViewerKillSec = 180       # 远程引擎存活但长时间无观看端 -> 只恢复布局，不杀引擎
+
+# 检测逻辑集中在 ScreenFit.Core.ps1（纯函数，tests\Test-Detection.ps1 用真实日志回放验证）
+. (Join-Path $Root 'ScreenFit.Core.ps1')
+Initialize-ScreenFit -StateDir $LogDir   # 日志目录用 Core 默认（OPPO devicespace），状态文件用本目录
 
 Add-Type -TypeDefinition @'
 using System;using System.Runtime.InteropServices;
@@ -51,142 +62,6 @@ function WLog($m) {
     Add-Content -Path $LogFile -Value $line -Encoding UTF8
 }
 
-$script:logOffsets = @{}
-$script:logRemainders = @{}
-$script:sessActive = $false
-$script:sessDevice = $null
-$script:sessStartTs = $null
-$script:sessLastEventTs = [datetime]::MinValue
-$script:sessLastEventType = ''
-
-# 增量读取日志：避免每 500ms 重复 tail 两个 4000 行文件（高 CPU 的主因）
-function Read-NewLines([string]$path) {
-    $item = Get-Item $path -ErrorAction SilentlyContinue
-    if (-not $item) { return @() }
-    $len = [long]$item.Length
-
-    if (-not $script:logOffsets.ContainsKey($path)) {
-        $lines = @(Get-Content $path -Tail 4000 -ErrorAction SilentlyContinue)
-        $script:logOffsets[$path] = $len
-        $script:logRemainders[$path] = ''
-        return $lines
-    }
-
-    $off = [long]$script:logOffsets[$path]
-    if ($len -lt $off) { $off = 0; $script:logRemainders[$path] = '' }
-    if ($len -eq $off) { return @() }
-
-    $chunk = ''
-    try {
-        $fs = [System.IO.File]::Open($path, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read, [System.IO.FileShare]::ReadWrite)
-        [void]$fs.Seek($off, [System.IO.SeekOrigin]::Begin)
-        $count = [int]($len - $off)
-        $buf = New-Object byte[] $count
-        $read = $fs.Read($buf, 0, $count)
-        $fs.Close()
-        $script:logOffsets[$path] = $off + $read
-        $chunk = [System.Text.Encoding]::UTF8.GetString($buf, 0, $read)
-    } catch { return @() }
-
-    $text = [string]$script:logRemainders[$path] + $chunk
-    $parts = $text -split "`r?`n"
-    if ($parts.Count -eq 0) { return @() }
-    $script:logRemainders[$path] = $parts[$parts.Count - 1]
-    if ($parts.Count -eq 1) { return @() }
-    return @($parts[0..($parts.Count - 2)])
-}
-
-function Get-Session {
-    $dir = Join-Path $env:APPDATA 'O+Connect\devicespace'
-    $files = Get-ChildItem (Join-Path $dir '*_main.log') -ErrorAction SilentlyContinue |
-        Sort-Object LastWriteTime -Descending | Select-Object -First 2
-    if (-not $files) { return @{ Active = $false; Device = $null; StartTs = $null } }
-
-    foreach ($f in ($files | Sort-Object LastWriteTime)) {
-        foreach ($l in (Read-NewLines $f.FullName)) {
-            $ts = $null
-            if ($l -match '(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})') {
-                try { $ts = [datetime]::ParseExact($matches[1], 'yyyy-MM-dd HH:mm:ss', $null) } catch { }
-            }
-            if ($l -match 'start remote control:') {
-                if (-not $ts -or $ts -ge $script:sessLastEventTs) {
-                    $script:sessActive = $true
-                    $script:sessLastEventType = 'start'
-                    if ($ts) { $script:sessLastEventTs = $ts; $script:sessStartTs = $ts }
-                    $m = [regex]::Match($l, '"deviceName":"([^"]+)"')
-                    if ($m.Success) { $script:sessDevice = $m.Groups[1].Value }
-                }
-            } elseif ($l -match 'stop remote control:') {
-                if (-not $ts -or $ts -ge $script:sessLastEventTs) {
-                    $script:sessActive = $false
-                    $script:sessLastEventType = 'stop'
-                    if ($ts) { $script:sessLastEventTs = $ts }
-                }
-            }
-        }
-    }
-
-    $active = $script:sessActive
-    $dev = $script:sessDevice
-    $startTs = $script:sessStartTs
-    $devFile = Join-Path $LogDir 'last-device.txt'
-
-    if ($active -and -not $dev -and (Test-Path $devFile)) {
-        $dev = (Get-Content $devFile -Raw -ErrorAction SilentlyContinue).Trim()
-    }
-
-    # 兜底：日志轮转导致读不到 start 时，用远程引擎进程 + 引擎日志新鲜度判断。
-    # 若最近 120 秒内刚看到 stop，则不做兜底，避免刚结束时被重新判成活动。
-    $stopRecently = ($script:sessLastEventType -eq 'stop' -and ((Get-Date) - $script:sessLastEventTs).TotalSeconds -lt 120)
-    if (-not $active -and -not $stopRecently) {
-        $agentAge = 9999
-        $a = Get-ChildItem (Join-Path $dir 'desktop_agent.*.log') -ErrorAction SilentlyContinue |
-            Sort-Object LastWriteTime -Descending | Select-Object -First 1
-        if ($a) { $agentAge = ((Get-Date) - $a.LastWriteTime).TotalSeconds }
-        $agentRunning = @(Get-Process SLDesktopAgent -ErrorAction SilentlyContinue).Count -gt 0
-        if ($agentRunning -and $agentAge -lt 60 -and (Test-Path $devFile)) {
-            $dev = (Get-Content $devFile -Raw -ErrorAction SilentlyContinue).Trim()
-            $active = $true
-            $startTs = $null
-        }
-    }
-
-    return @{ Active = $active; Device = $dev; StartTs = $startTs }
-}
-
-function Get-RemoteLiveness {
-    $agentAge = 9999
-    $a = Get-ChildItem (Join-Path $env:APPDATA 'O+Connect\devicespace\desktop_agent.*.log') -ErrorAction SilentlyContinue |
-        Sort-Object LastWriteTime -Descending | Select-Object -First 1
-    if ($a) { $agentAge = ((Get-Date) - $a.LastWriteTime).TotalSeconds }
-    $agentRunning = @(Get-Process SLDesktopAgent -ErrorAction SilentlyContinue).Count -gt 0
-    return @{ AgentAge = $agentAge; AgentRunning = $agentRunning }
-}
-
-$DeviceMap = @(
-    @{ Match = @('Pad 5 Pro');    W = 3392; H = 2400 },
-    @{ Match = @('Pad 4 Pro');    W = 3392; H = 2400 },
-    @{ Match = @('Pad 3 Pro');    W = 3000; H = 2120 },
-    @{ Match = @('Pad 5');        W = 3000; H = 2120 },
-    @{ Match = @('Pad 3');        W = 2800; H = 2000 },
-    @{ Match = @('Pad mini', 'Pad Mini'); W = 2520; H = 1680 },
-    @{ Match = @('Pad Air5');     W = 2800; H = 1980 },
-    @{ Match = @('Find N6');      W = 2480; H = 2248 },
-    @{ Match = @('OnePlus Pad 3 Pro', '一加平板 3 Pro'); W = 3392; H = 2400 },
-    @{ Match = @('OnePlus Pad 2 Pro', '一加平板 2 Pro'); W = 3392; H = 2400 },
-    @{ Match = @('OnePlus Pad Pro', '一加平板 Pro');     W = 3000; H = 2120 },
-    @{ Match = @('OnePlus Pad 2', '一加平板 2');         W = 3000; H = 2120 },
-    @{ Match = @('OnePlus Pad', '一加平板');             W = 2800; H = 2000 }
-)
-
-function Desired($dev) {
-    foreach ($entry in $DeviceMap) {
-        foreach ($pat in $entry.Match) {
-            if ($dev -like "*$pat*") { return @{ W = $entry.W; H = $entry.H } }
-        }
-    }
-    return $null
-}
 
 function KillTools {
     Get-Process OPDisplayDriverTool -ErrorAction SilentlyContinue | ForEach-Object { Stop-Process -Id $_.Id -Force -ErrorAction SilentlyContinue }
@@ -430,6 +305,7 @@ public static class WindowMover {
   [DllImport("user32.dll")] static extern bool EnumWindows(EnumWindowsProc cb, IntPtr lParam);
   [DllImport("user32.dll")] static extern bool IsWindowVisible(IntPtr h);
   [DllImport("user32.dll")] static extern bool IsIconic(IntPtr h);
+  [DllImport("user32.dll")] static extern bool IsWindow(IntPtr h);
   [DllImport("user32.dll")] static extern bool IsZoomed(IntPtr h);
   [DllImport("user32.dll")] static extern bool GetWindowRect(IntPtr h, out RECT r);
   [DllImport("user32.dll")] static extern int GetWindowLong(IntPtr h, int idx);
@@ -503,6 +379,74 @@ public static class WindowMover {
     }, IntPtr.Zero);
     return moved;
   }
+
+  // ---- 窗口位置快照 / 回搬：远控结束后把窗口放回原位 ----
+  public static int SaveAll(string file) {
+    int n = 0;
+    var sb = new StringBuilder();
+    EnumWindows((h, l) => {
+      if (!IsWindowVisible(h)) return true;
+      int cloak = 0; try { DwmGetWindowAttribute(h, DWMWA_CLOAKED, out cloak, 4); } catch { }
+      if (cloak != 0) return true;
+      if ((GetWindowLong(h, GWL_EXSTYLE) & WS_EX_TOOLWINDOW) != 0) return true;
+      if (GetWindowTextLength(h) == 0) return true;
+      var cls = new StringBuilder(256); GetClassName(h, cls, 256);
+      if (SkipClass(cls.ToString())) return true;
+      RECT r; if (!GetPhysicalRect(h, out r)) return true;
+      int lx = r.Left, ty = r.Top, rx = r.Right, by = r.Bottom;
+      if (rx - lx <= 0 || by - ty <= 0) return true;
+      int cmd = 1;
+      var wp = new WINDOWPLACEMENT(); wp.length = Marshal.SizeOf(typeof(WINDOWPLACEMENT));
+      bool hasWp = GetWindowPlacement(h, ref wp);
+      if (IsIconic(h)) {
+        // 最小化窗口的物理矩形是 -32000 哨兵，必须存 rcNormalPosition（还原后的位置）
+        cmd = 2;
+        if (hasWp) { lx = wp.rcNormalPosition.Left; ty = wp.rcNormalPosition.Top; rx = wp.rcNormalPosition.Right; by = wp.rcNormalPosition.Bottom; }
+      } else if (IsZoomed(h)) { cmd = 3; }
+      if (rx - lx <= 0 || by - ty <= 0) return true;
+      sb.AppendLine(h.ToInt64() + "|" + lx + "|" + ty + "|" + rx + "|" + by + "|" + cmd);
+      n++;
+      return true;
+    }, IntPtr.Zero);
+    try { System.IO.File.WriteAllText(file, sb.ToString()); } catch { }
+    return n;
+  }
+
+  public static int RestoreAll(string file) {
+    int sw = GetSystemMetrics(0), sh = GetSystemMetrics(1);
+    if (sw <= 0 || sh <= 0) return 0;
+    string[] lines;
+    try { lines = System.IO.File.ReadAllLines(file); } catch { return 0; }
+    int restored = 0;
+    foreach (var line in lines) {
+      var p = line.Split('|');
+      if (p.Length < 6) continue;
+      long hv; int l, t, rr, b, cmd;
+      if (!long.TryParse(p[0], out hv)) continue;
+      if (!int.TryParse(p[1], out l) || !int.TryParse(p[2], out t)) continue;
+      if (!int.TryParse(p[3], out rr) || !int.TryParse(p[4], out b) || !int.TryParse(p[5], out cmd)) continue;
+      IntPtr h = new IntPtr(hv);
+      if (!IsWindow(h)) continue;
+      int w = rr - l, hh = b - t;
+      if (w <= 0 || hh <= 0) continue;
+      if (w > sw) w = sw; if (hh > sh) hh = sh;
+      if (l < 0) l = 0; if (t < 0) t = 0;
+      if (l + w > sw) l = Math.Max(0, sw - w);
+      if (t + hh > sh) t = Math.Max(0, sh - hh);
+      var wp = new WINDOWPLACEMENT(); wp.length = Marshal.SizeOf(typeof(WINDOWPLACEMENT));
+      bool hasWp = GetWindowPlacement(h, ref wp);
+      if (cmd == 2 && hasWp) {
+        wp.rcNormalPosition = new RECT { Left = l, Top = t, Right = l + w, Bottom = t + hh };
+        wp.showCmd = SW_SHOWMINIMIZED;
+        SetWindowPlacement(h, ref wp);
+      } else {
+        SetWindowPos(h, IntPtr.Zero, l, t, w, hh, SWP_NOZORDER | SWP_NOACTIVATE);
+        if (cmd == 3) ShowWindow(h, SW_MAXIMIZE);
+      }
+      restored++;
+    }
+    return restored;
+  }
 }
 '@
 
@@ -515,6 +459,51 @@ function Move-WindowsToVirtual {
         $w = [int]$m.Groups[1].Value; $h = [int]$m.Groups[2].Value
         return [WindowMover]::MoveAll($w, $h)
     } catch { return 0 }
+}
+
+function Save-WindowLayout {
+    try {
+        [WindowMover]::InitDpi()
+        $n = [WindowMover]::SaveAll($WindowSnapshotFile)
+        if ($n -gt 0) { WLog ("保存窗口位置: " + $n + " 个") }
+        return $n
+    } catch { return 0 }
+}
+
+function Restore-WindowLayout {
+    try {
+        if (-not (Test-Path $WindowSnapshotFile)) { return 0 }
+        [WindowMover]::InitDpi()
+        $n = [WindowMover]::RestoreAll($WindowSnapshotFile)
+        Remove-Item $WindowSnapshotFile -Force -ErrorAction SilentlyContinue
+        if ($n -gt 0) { WLog ("恢复窗口位置: " + $n + " 个") }
+        return $n
+    } catch { return 0 }
+}
+
+# 所有退出路径共用：恢复拓扑 -> 等系统稳定 -> 回搬窗口 -> 拆除虚拟屏
+function Restore-Layout {
+    $did = $false
+    if ([ScreenFitTopo]::HasSnapshot()) {
+        $r = [ScreenFitTopo]::RestoreSnapshot()
+        Remove-Item $SnapshotFile -Force -ErrorAction SilentlyContinue
+        WLog ("   恢复连接前布局: " + $r)
+        if ($r -ne 'err=0') { Set-OnlyInternal }
+        $did = $true
+    } elseif ((GetState) -eq 'on' -or $script:topoState -eq 'virtual') {
+        Set-OnlyInternal
+        $did = $true
+    }
+    if ($did) {
+        SetState 'off'
+        Start-Sleep -Milliseconds 600
+        Restore-WindowLayout | Out-Null
+        if ([ScreenFitTopo]::VirtualPathExists()) { CleanDevice }
+    }
+    $script:snapshotTried = $false
+    $script:windowsMoved = $false
+    $script:noViewerSince = $null
+    return $did
 }
 
 function Set-OnlyVirtual {
@@ -569,6 +558,8 @@ $script:snapshotTried = $false
 $script:windowsMoved = $false
 $script:lastReapply = [datetime]::MinValue
 $script:reapplyFails = 0
+$script:noViewerSince = $null
+$script:lastStayLog = $null
 # 日志清理：只保留最近 40 个工具输出，watcher.log 超过 5MB 截断
 try {
     Get-ChildItem $LogDir -Filter 'tool_*' | Sort-Object LastWriteTime -Descending |
@@ -589,6 +580,8 @@ if (-not $s0.Active) {
         $r = [ScreenFitTopo]::RestoreSnapshot()
         WLog ("启动恢复上次屏幕布局: " + $r)
         Remove-Item $SnapshotFile -Force -ErrorAction SilentlyContinue
+        Start-Sleep -Milliseconds 600
+        Restore-WindowLayout | Out-Null
     }
     if ([ScreenFitTopo]::VirtualPathExists()) { CleanDevice }
     SetState 'off'
@@ -598,42 +591,47 @@ while ($true) {
     # STOP.txt 实时生效：运行中新建也能立即停止并恢复布局
     if (Test-Path (Join-Path $Root 'STOP.txt')) {
         WLog '检测到 STOP.txt -> 恢复布局并退出'
-        if ([ScreenFitTopo]::HasSnapshot()) {
-            $r = [ScreenFitTopo]::RestoreSnapshot()
-            Remove-Item $SnapshotFile -Force -ErrorAction SilentlyContinue
-            WLog ('   恢复连接前布局: ' + $r)
-        } else {
-            Set-OnlyInternal
-        }
-        SetState 'off'
-        if ([ScreenFitTopo]::VirtualPathExists()) { CleanDevice }
+        Restore-Layout | Out-Null
         exit
     }
 
     $s = Get-Session
     if ($s.Active) {
-        # 僵尸会话看门狗：会话在，但远程引擎日志/心跳都长时间无更新（典型是平板 App 崩了）
         $live = Get-RemoteLiveness
-        if (-not $script:lastZombieKill) { $script:lastZombieKill = [datetime]::MinValue }
-        if ((-not $live.AgentRunning -or $live.AgentAge -gt 120) -and
-            ((Get-Date) - $script:lastZombieKill).TotalSeconds -gt 300) {
-            WLog ("检测到僵尸会话（远程引擎进程=" + $live.AgentRunning + " / 日志 " + [math]::Round($live.AgentAge) + "s 无更新）→ 恢复布局并重启远程引擎")
-            if ([ScreenFitTopo]::HasSnapshot()) {
-                $r = [ScreenFitTopo]::RestoreSnapshot()
-                Remove-Item $SnapshotFile -Force -ErrorAction SilentlyContinue
-                WLog ("   恢复连接前布局: " + $r)
-            } else {
-                Set-OnlyInternal
-            }
-            SetState 'off'
-            Get-Process SLDesktopAgent -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
-            if ([ScreenFitTopo]::VirtualPathExists()) { CleanDevice }
-            $script:lastZombieKill = Get-Date
-            $script:windowsMoved = $false
-            $script:snapshotTried = $false
-            Start-Sleep -Seconds 2
+        if (-not $live.AgentRunning) {
+            # 远程引擎进程已消失 = 会话确实结束；只恢复布局，不做任何 kill
+            if (Restore-Layout) { WLog '远程引擎已退出 -> 已恢复原布局' }
+            Start-Sleep -Milliseconds 500
             continue
         }
+
+        # 观看端门禁：OPPO 的「远控态 = true」只说明设备连上了，不等于有人在看画面。
+        # 只有最近 ViewerWindowSec 秒内确有 send>0 的帧（观看端在消费画面）才允许切屏。
+        $viewer = Test-ViewerActive -WindowSeconds $ViewerWindowSec
+        if (-not $viewer.Active) {
+            if (-not $script:noViewerSince) { $script:noViewerSince = Get-Date }
+        } else {
+            $script:noViewerSince = $null
+            $script:lastStayLog = $null
+        }
+        $noViewerSec = $null
+        if ($script:noViewerSince) { $noViewerSec = ((Get-Date) - $script:noViewerSince).TotalSeconds }
+        $decision = Get-ScreenFitDecision -SessionActive $true -ViewerActive $viewer.Active -State (GetState) -NoViewerSeconds $noViewerSec -ViewerGraceSeconds $ViewerGraceSec
+        if ($decision -eq 'restore') {
+            WLog ("无观看端已 " + [math]::Round($noViewerSec) + "s -> 恢复原布局（避免物理屏被锁在虚拟屏）")
+            Restore-Layout | Out-Null
+            Start-Sleep -Milliseconds 500
+            continue
+        }
+        if ($decision -eq 'stay') {
+            if (-not $script:lastStayLog -or ((Get-Date) - $script:lastStayLog).TotalSeconds -ge 60) {
+                WLog ("会话存在但无观看端（最近消费帧 " + $viewer.SecondsSinceConsumed + "s 前）-> 暂不切屏")
+                $script:lastStayLog = Get-Date
+            }
+            Start-Sleep -Milliseconds 500
+            continue
+        }
+
         $t = Desired $s.Device
         $bounds = [ScreenFitTopo]::ActiveBounds()
         $resOk = ($t -and $bounds -like ("$($t.W),$($t.H),*"))
@@ -681,6 +679,7 @@ while ($true) {
                 $script:snapshotTried = $true
                 $r = [ScreenFitTopo]::SaveSnapshot($SnapshotFile)
                 WLog ("保存连接前屏幕布局: " + $r)
+                Save-WindowLayout | Out-Null
             }
             $t0 = Get-Date
             if (-not [ScreenFitTopo]::VirtualActive()) {
@@ -722,21 +721,11 @@ while ($true) {
             }
         }
     } else {
-        if ([ScreenFitTopo]::HasSnapshot()) {
-            $r = [ScreenFitTopo]::RestoreSnapshot()
-            Remove-Item $SnapshotFile -Force -ErrorAction SilentlyContinue
-            WLog ("远程结束 -> 恢复连接前屏幕布局: " + $r)
-            if ($r -ne 'err=0') { Set-OnlyInternal; WLog '   快照恢复失败，已兜底回到仅内屏' }
-            SetState 'off'
-            if ([ScreenFitTopo]::VirtualPathExists()) { CleanDevice }
-        } elseif ((GetState) -eq 'on' -or $script:topoState -eq 'virtual') {
-            Set-OnlyInternal
-            SetState 'off'
-            Remove-Item $SnapshotFile -Force -ErrorAction SilentlyContinue
-            if ([ScreenFitTopo]::VirtualPathExists()) { CleanDevice }
-        }
+        # 会话结束（或本来就没有会话）：统一走 Restore-Layout，含窗口位置回搬
+        if (Restore-Layout) { WLog '远程结束 -> 已恢复连接前屏幕布局' }
         $script:snapshotTried = $false
         $script:windowsMoved = $false
+        $script:noViewerSince = $null
     }
     Start-Sleep -Milliseconds 500
 }

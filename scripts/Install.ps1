@@ -30,11 +30,32 @@ if (-not (Test-Admin)) {
 
 Write-Host '1/4 复制程序文件到固定目录'
 New-Item -ItemType Directory -Force $Dest | Out-Null
-foreach ($f in @('Watcher.ps1', 'TabletScreen.ps1', 'Diagnose.ps1', 'Uninstall.ps1')) {
+foreach ($f in @('Watcher.ps1', 'ScreenFit.Core.ps1', 'TabletScreen.ps1', 'Diagnose.ps1', 'Uninstall.ps1')) {
     $p = Join-Path $Src $f
     if (Test-Path $p) { Copy-Item $p $Dest -Force }
 }
 if (Test-Path (Join-Path $Src 'devices.json')) { Copy-Item (Join-Path $Src 'devices.json') $Dest -Force }
+
+# 版本号：候选位置 = Src、Src 的上一级（Release 包根）、当前仓库根
+$verFile = $null
+foreach ($cand in @((Join-Path $Src 'VERSION'), (Join-Path (Split-Path -Parent $Src) 'VERSION'), 'VERSION')) {
+    if ($cand -and (Test-Path $cand)) { $verFile = $cand; break }
+}
+if ($verFile) {
+    $ver = (Get-Content $verFile -Raw).Trim()
+    Set-Content -Path (Join-Path $Dest 'version.txt') -Value $ver -Encoding UTF8
+    Write-Host ("   版本：" + $ver)
+} else {
+    Write-Host '   ⚠ 未找到 VERSION 文件，安装副本将没有版本标识' -ForegroundColor Yellow
+}
+
+# 临时关闭标记会让 Watcher 启动即退出；升级/重装时必须显式处理，不能静默失效
+$stopFile = Join-Path $Dest 'STOP.txt'
+if (Test-Path $stopFile) {
+    $bak = Join-Path $Dest ("STOP.txt.bak-" + (Get-Date -Format 'yyyyMMdd-HHmmss'))
+    Move-Item $stopFile $bak -Force -ErrorAction SilentlyContinue
+    Write-Host ("⚠ 检测到临时关闭标记 STOP.txt，已备份为 " + (Split-Path -Leaf $bak) + "，本次安装会重新启用。") -ForegroundColor Yellow
+}
 
 $tool = Join-Path $env:LOCALAPPDATA 'DeviceSpace\ext-service\OPVirtualDisplayDriver\OPDisplayDriverTool.exe'
 if (-not (Test-Path $tool)) {
@@ -73,8 +94,9 @@ Start-ScheduledTask -TaskName $TaskName
 Write-Host ''
 Write-Host '✅ 安装完成。' -ForegroundColor Green
 Write-Host '   - 平时：守护只读日志，不动显示；'
-Write-Host '   - 远程连接开始：自动建对应分辨率的虚拟屏，并切换为「仅在虚拟屏上显示」；'
-Write-Host '   - 远程结束：按连接前快照恢复布局，随后拆除虚拟屏。'
+Write-Host '   - 远程连接开始且确有观看端在消费画面：自动建对应分辨率的虚拟屏，并切换为「仅在虚拟屏上显示」；'
+Write-Host '   - 切屏后连续 60 秒没有观看端：自动恢复原布局（不会再锁死物理屏）；'
+Write-Host '   - 远程结束：按连接前快照恢复屏幕布局与窗口位置，随后拆除虚拟屏。'
 Write-Host ''
 Write-Host ('安装目录：' + $Dest)
 Write-Host ('日志目录：' + (Join-Path $Dest 'logs'))

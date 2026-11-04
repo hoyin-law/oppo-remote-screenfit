@@ -1,0 +1,1049 @@
+[57816]	2026-11-04 15:12:44.916	- Info  -	slsdk version: 3.0.0.32272
+[44084]	2026-11-04 15:12:44.917	= Debug =	[enumsession] session list: SessionId:0, ConnectState:4, ClientProtocolType:0, UserName:, WinStationName:Services| SessionId:2, ConnectState:0, ClientProtocolType:0, UserName:User, WinStationName:Console| SessionId:65536, ConnectState:6, ClientProtocolType:0, UserName:, WinStationName:7A78855482A04FA781DC| SessionId:65537, ConnectState:6, ClientProtocolType:0, UserName:, WinStationName:D8D584DCE21F4BD4B923| SessionId:65538, ConnectState:6, ClientProtocolType:0, UserName:, WinStationName:RDP-Tcp| 
+[57816]	2026-11-04 15:12:44.917	= Debug =	[call] SLClientRunDesktopAgent: port[57984], id[7]
+[44084]	2026-11-04 15:12:44.917	= Debug =	[thread] set thread name Thread-44084 80e292d0 / 44084
+[57816]	2026-11-04 15:12:44.917	= Debug =	*[statistical] time point: 15:12:44.917 -- agent_run
+[57816]	2026-11-04 15:12:44.917	- Info  -	[client] current session id 2, ProcessID 58712
+[57816]	2026-11-04 15:12:44.917	= Debug =	[client] CreateClientDesktop start
+[57816]	2026-11-04 15:12:44.922	= Debug =	[desktop_client] desktop_client_create interface IClientDesktopPlugin  version 0
+[57816]	2026-11-04 15:12:44.926	= Debug =	[saddc_client] saddc_client_create interface IIddCxHardwareListener  version 1
+[44084]	2026-11-04 15:12:44.928	= Debug =	[enumsession] session list: SessionId:0, ConnectState:4, ClientProtocolType:0, UserName:, WinStationName:Services| SessionId:2, ConnectState:0, ClientProtocolType:0, UserName:User, WinStationName:Console| SessionId:65536, ConnectState:6, ClientProtocolType:0, UserName:, WinStationName:7A78855482A04FA781DC| SessionId:65537, ConnectState:6, ClientProtocolType:0, UserName:, WinStationName:D8D584DCE21F4BD4B923| SessionId:65538, ConnectState:6, ClientProtocolType:0, UserName:, WinStationName:RDP-Tcp| 
+[57816]	2026-11-04 15:12:44.929	= Debug =	[monitor]PRIMARY, left=0, top=0, right=2480, bottom=2248, string=OPDisplayDriver Device
+[57816]	2026-11-04 15:12:44.929	= Debug =	MonitorManager::reset, count=1
+[57816]	2026-11-04 15:12:44.932	= Debug =	[monitor]PRIMARY, left=0, top=0, right=2480, bottom=2248, string=OPDisplayDriver Device
+[57816]	2026-11-04 15:12:44.933	= Debug =	MonitorManager::reset, count=1
+[57816]	2026-11-04 15:12:44.943	= Debug =	[IddListener] Init
+[57816]	2026-11-04 15:12:44.943	= Debug =	[client] CreateClientDesktop finish
+[57816]	2026-11-04 15:12:44.943	= Debug =	[select_tracker] run ok
+[57816]	2026-11-04 15:12:44.943	= Debug =	[select_tracker] run ok
+[57816]	2026-11-04 15:12:44.943	= Debug =	[select_tracker] run ok
+[58748]	2026-11-04 15:12:44.943	= Debug =	[thread] set thread name Thread-58748 db7da1c0 / 58748
+[36028]	2026-11-04 15:12:44.943	= Debug =	[thread] set thread name [rpcservice] db7da640 / 36028
+[1176]	2026-11-04 15:12:44.943	= Debug =	[thread] set thread name Thread-1176 db7da5b0 / 1176
+[57816]	2026-11-04 15:12:44.960	- Info  -	[CSockConnector] attempt to connect server 127.0.0.1:57984(127.0.0.1:57984)
+[57816]	2026-11-04 15:12:44.960	- Info  -	[DesktopAgentClient] connect DesktopServer ok.
+[57816]	2026-11-04 15:12:44.960	= Debug =	*[statistical] time point: 15:12:44.960 -- CClientDesktopMgr::InitInstance
+[57816]	2026-11-04 15:12:44.960	- Info  -	[ClientDesktopMgr] InitInstance start
+[36028]	2026-11-04 15:12:44.960	- Info  -	[client::handler] desktop connected sid(7), thread(36028)
+[57816]	2026-11-04 15:12:44.960	- Info  -	[ClientDesktopMgr] disable_clipboard:0, disable_file:0, disable_print:0, disable_chat:0 auto_idd:0 back C:\Program Files\Oppo Connect\daemon/background.png
+[36028]	2026-11-04 15:12:44.960	= Debug =	[agentclient] write message data size(16), cmd 1
+[56664]	2026-11-04 15:12:44.960	= Debug =	[thread] set thread name wfmo db7d9050 / 56664
+[4788]	2026-11-04 15:12:44.960	= Debug =	[thread] set thread name dataproxy db7dae20 / 4788
+[36028]	2026-11-04 15:12:44.960	- Info  -	[DesktopAgentClient] on_connect ok. sid:2, id:7 precreate:0
+[38208]	2026-11-04 15:12:44.960	= Debug =	[thread] set thread name Thread-38208 d9fab780 / 38208
+[57816]	2026-11-04 15:12:44.961	= Debug =	[select_tracker] run ok
+[53068]	2026-11-04 15:12:44.961	= Debug =	[thread] set thread name MessageTimer db7d95f0 / 53068
+[36028]	2026-11-04 15:12:44.961	- Info  -	[agent] start new plugin.
+[4276]	2026-11-04 15:12:44.961	= Debug =	[thread] set thread name CBufferSender db88fea0 / 4276
+[49752]	2026-11-04 15:12:44.961	= Debug =	[thread] set thread name AgentClientPluginThread dabfbd50 / 49752
+[49752]	2026-11-04 15:12:44.961	= Debug =	*[statistical] time point: 15:12:44.961 -- plugin_threadloop
+[57816]	2026-11-04 15:12:44.982	- Info  -	[dragserverproxy] Create instance on nomral mode
+[57816]	2026-11-04 15:12:44.984	= Debug =	[WinSysMgr] DisplayConfig mode 8
+[57816]	2026-11-04 15:12:44.984	= Debug =	[WinSysMgr] sourceInfo id: 0, targetInfo id: 256, GdiDeviceName: \\.\DISPLAY67, Monitor name: OPExtScreen
+[57816]	2026-11-04 15:12:44.984	= Debug =	[WinSysMgr] resolution: 2480 x 2248, bpp: 32, position: (0,0)
+[57816]	2026-11-04 15:12:44.987	= Debug =	[saddc_client] saddc_client_create interface IIddCxDevice  version 1
+[57816]	2026-11-04 15:12:44.987	- Info  -	[CSingleDesktop] Set screen index 0 channel 0
+[57816]	2026-11-04 15:12:44.987	= Debug =	[saddc_client] saddc_client_create interface IBlackScreenLoader  version 1
+[58980]	2026-11-04 15:12:44.987	= Debug =	[thread] set thread name run_by_thread dab6fe40 / 58980
+[53068]	2026-11-04 15:12:44.987	- Info  -	[ClientDesktopMgr] InitListener at 738
+[57816]	2026-11-04 15:12:44.987	- Info  -	[oray::plugin::MouseMonitor::start] Start success.
+[57816]	2026-11-04 15:12:44.987	- Info  -	[CursorMonitor][CursorMonitor::start] Start success.
+[57816]	2026-11-04 15:12:44.987	- Info  -	[ClientDesktopMgr] InitInstance finish time 27
+[51012]	2026-11-04 15:12:44.987	= Debug =	[thread] set thread name Thread-51012 302885b0 / 51012
+[49752]	2026-11-04 15:12:44.988	= Debug =	[DetectLocalIP] Number of entries: 15
+[49752]	2026-11-04 15:12:44.988	= Debug =	[DetectLocalIP] Detect Local IP : local gateway = 192.0.2.10
+[53068]	2026-11-04 15:12:44.989	= Debug =	[WinSysMgr] QueryMonitorByHWID count 3 vircount 0
+[53068]	2026-11-04 15:12:44.989	= Debug =	[WinSysMgr] physic monotor \\?\display#tma0803#5&2a56f61f&0&uid256#{e6f07b5f-ee97-4a90-b076-33f57bf4eaa7}
+[53068]	2026-11-04 15:12:44.989	= Debug =	[WinSysMgr] physic monotor \\?\display#xmi23c2#5&2a56f61f&0&uid281#{e6f07b5f-ee97-4a90-b076-33f57bf4eaa7}
+[53068]	2026-11-04 15:12:44.989	= Debug =	[WinSysMgr] physic monotor \\?\display#deld0e6#1&3416c83d&134&uid256#{e6f07b5f-ee97-4a90-b076-33f57bf4eaa7}
+[53068]	2026-11-04 15:12:44.989	= Debug =	[WinSysMgr] QueryMonitorByInterfaceId count 3 vircount 0
+[53068]	2026-11-04 15:12:44.989	- Info  -	[WinSysMgr] nCount=1, queryPhysicCount=3, queryVirtualCount=0, nVirtualCount=0, nOrayIddCount=0
+[53068]	2026-11-04 15:12:44.989	- Info  -	[ClientDesktopMgr] monitor [ count 1 virtual 0 orayidd 0 ], useidd 0, devCount 3 devVirCount 0
+[49752]	2026-11-04 15:12:44.989	= Debug =	[DetectLocalIP] Detect Local IP : local ip = 192.0.2.10
+[49752]	2026-11-04 15:12:44.989	= Debug =	[DetectLocalIP] get_default_interface_ip ok with 192.0.2.10
+[49752]	2026-11-04 15:12:44.989	- Info  -	[mac] local ip:192.0.2.10
+[49752]	2026-11-04 15:12:44.992	- Info  -	[mac] mac address:50:BB:B5:4D:AC:44
+[49752]	2026-11-04 15:12:44.992	= Debug =	[DesktopSpeedPlan] plan 0
+[49752]	2026-11-04 15:12:44.992	= Debug =	[DesktopSpeedPlan] disabled plan
+[49752]	2026-11-04 15:12:44.992	= Debug =	[select_tracker] run ok
+[49752]	2026-11-04 15:12:44.992	= Debug =	[ClientDesktopMgr] ClientDesktopMgr::Run add drag server proxy to task tracker
+[56204]	2026-11-04 15:12:44.992	= Debug =	[thread] set thread name work db8b7010 / 56204
+[49752]	2026-11-04 15:12:44.992	+Warning+	[ClientDesktopMgr]packet losted, message1 :244,12, message2:2,4, size=20 channelId=0
+[49752]	2026-11-04 15:12:44.992	- Info  -	[ClientDesktopMgr] time 0 msg 244:2
+[49752]	2026-11-04 15:12:44.992	- Info  -	[ClientDesktopMgr] time 0 msg 1:28
+[49752]	2026-11-04 15:12:44.995	- Info  -	[ClientDesktopMgr] OnCtrlMessage ctrl 1,type 1
+[49752]	2026-11-04 15:12:44.995	- Info  -	[ClientDesktopMgr] run display start
+[12652]	2026-11-04 15:12:45.003	= Debug =	[thread] set thread name Thread-12652 30288688 / 12652
+[49752]	2026-11-04 15:12:45.004	= Debug =	[select_tracker] run ok
+[49752]	2026-11-04 15:12:45.004	= Debug =	[ClientDesktopMgr] capture mode 1
+[49752]	2026-11-04 15:12:45.004	= Debug =	[desktop] recv prefix message at 1411
+[49752]	2026-11-04 15:12:45.004	= Debug =	[desktop] recv prefix message at 1414
+[49752]	2026-11-04 15:12:45.004	= Debug =	[desktop] recv prefix message, limit [0x0], hevc 0 at 1400
+[49752]	2026-11-04 15:12:45.004	= Debug =	[CSingleDesktop][db886ef0] init
+[49752]	2026-11-04 15:12:45.004	- Info  -	[DesktopMonitorServer] bDelayedRun_Sendconfig = TRUE
+[49752]	2026-11-04 15:12:45.004	- Info  -	[desktop/d82ce300] GetInitBuffer image header compress size(20) time(4939984).
+[49752]	2026-11-04 15:12:45.004	- Info  -	[DesktopMonitorServer] recv prefix message, limit [0x0], use_limit 0, hevc 0
+[49752]	2026-11-04 15:12:45.004	- Info  -	[SaddcStream] SetupDesktopMode 5, format 1, encode 3, truecolor 0
+[21672]	2026-11-04 15:12:45.004	= Debug =	[thread] set thread name Thread-21672 db8b71c0 / 21672
+[49752]	2026-11-04 15:12:45.004	= Debug =	[CSingleDesktop][db886ef0] run
+[49752]	2026-11-04 15:12:45.004	- Info  -	[ClientDesktopMgr] run display finish
+[49752]	2026-11-04 15:12:45.004	- Info  -	[ClientDesktopMgr] OnCtrlMessage ctrl 1,type 3
+[49752]	2026-11-04 15:12:45.004	- Info  -	[ClientDesktopMgr] OnCtrlMessage ctrl 1,type 6
+[49752]	2026-11-04 15:12:45.004	- Info  -	[ClientDesktopMgr] OnCtrlMessage ctrl 1,type 7
+[49752]	2026-11-04 15:12:45.004	- Info  -	[ClientDesktopMgr] OnProQueryConfig
+[53068]	2026-11-04 15:12:45.004	- Info  -	[ClientDesktopMgr]Run Keyboard and mouse control ok
+[59004]	2026-11-04 15:12:45.004	= Debug =	[thread] set thread name InputThread db8be940 / 59004
+[53068]	2026-11-04 15:12:45.004	* Error *	[IddCxDevice] open device fail, no device founded
+[49752]	2026-11-04 15:12:45.005	- Info  -	[CHWAccelComp]CHWAccelComp
+[59008]	2026-11-04 15:12:45.005	= Debug =	[thread] set thread name codec-pre db8be400 / 59008
+[49752]	2026-11-04 15:12:45.006	+Warning+	[nvsdk] load nvEncodeAPI64.dll failed!
+[49752]	2026-11-04 15:12:45.006	- Info  -	[nvencdetect] query nvenc version fail
+[49752]	2026-11-04 15:12:45.006	- Info  -	[nvencdetect] sdk version 0.0
+[53068]	2026-11-04 15:12:45.006	- Info  -	[SysMgr] SendExtendDisplayStatus support 0 count 0 canchange 1
+[53068]	2026-11-04 15:12:45.006	- Info  -	[dragproxy] start.
+[53068]	2026-11-04 15:12:45.006	= Debug =	[select_tracker] run ok
+[53068]	2026-11-04 15:12:45.006	- Info  -	[clipboard] clipboard_agent_server created with port 0.
+[53068]	2026-11-04 15:12:45.006	- Info  -	[dragproxy] Get port ok 63622
+[53068]	2026-11-04 15:12:45.008	- Info  -	[DragServer][process_start] current sessionid 2
+[49752]	2026-11-04 15:12:45.008	- Info  -	[nvencdetect] av1 0 h265 0
+[59104]	2026-11-04 15:12:45.008	= Debug =	[thread] set thread name Thread-59104 db8b7e20 / 59104
+[59004]	2026-11-04 15:12:45.018	= Debug =	[WinInput] attach input src 59004 dst 46732 ret 1 err 0
+[59004]	2026-11-04 15:12:45.018	= Debug =	[WinInput] detach input src 59004 dst 46732 ret 1 err 0
+[59004]	2026-11-04 15:12:45.022	- Info  -	[WinInput] use soft input, type 1 console 1 multi 0 vhid 0 
+[59004]	2026-11-04 15:12:45.022	- Info  -	[softmouseproxy] SetMouseMoveRelative false
+[49752]	2026-11-04 15:12:45.220	- Info  -	[amfencdetect] av1 0 h265 1
+[49752]	2026-11-04 15:12:45.222	- Info  -	[mfxencdetect] av1 0 h265 0
+[49752]	2026-11-04 15:12:45.222	- Info  -	[UnifiedEnc] get kCodecProperty_bd_EncH265 1
+[49752]	2026-11-04 15:12:45.222	- Info  -	[UnifiedEnc] get kCodecProperty_bd_EncAV1 0
+[49752]	2026-11-04 15:12:45.222	= Debug =	[saddc_client] saddc_client_create interface IRapidEncoder  version 1
+[51500]	2026-11-04 15:12:45.226	= Debug =	[thread] set thread name Thread-51500 dbf83c50 / 51500
+[20504]	2026-11-04 15:12:45.226	= Debug =	[thread] set thread name Thread-20504 dbf838e0 / 20504
+[31384]	2026-11-04 15:12:45.226	= Debug =	[thread] set thread name Thread-31384 dbf82c80 / 31384
+[19556]	2026-11-04 15:12:45.226	= Debug =	[thread] set thread name Thread-19556 dbf82bd0 / 19556
+[7464]	2026-11-04 15:12:45.226	= Debug =	[thread] set thread name Thread-7464 dbf84490 / 7464
+[36040]	2026-11-04 15:12:45.226	= Debug =	[thread] set thread name Thread-36040 dbf83af0 / 36040
+[47912]	2026-11-04 15:12:45.226	= Debug =	[thread] set thread name Thread-47912 dbf82d30 / 47912
+[32584]	2026-11-04 15:12:45.226	= Debug =	[thread] set thread name Thread-32584 dbf836d0 / 32584
+[49752]	2026-11-04 15:12:45.227	- Info  -	[AmfEnc] havamd 1
+[49752]	2026-11-04 15:12:45.227	- Info  -	[CHWAccelComp]CHWAccelComp
+[49752]	2026-11-04 15:12:45.227	- Info  -	[capdetect] rapid maxver 3 features 1
+[49752]	2026-11-04 15:12:45.232	= Debug =	[ClientDesktopMgr]GdiDeviceName: \\.\DISPLAY67, Monitor name: OPExtScreen
+[49752]	2026-11-04 15:12:45.232	- Info  -	[DesktopMonitorServer] OnProtoSetCompression format 10 fps 15 mode 0
+[49752]	2026-11-04 15:12:45.232	- Info  -	[SaddcStream] SetCompression 8/100->10/15
+[49752]	2026-11-04 15:12:45.232	- Info  -	[DesktopMonitorServer] OnProtoStartDesktopStream
+[49752]	2026-11-04 15:12:45.232	= Debug =	*[statistical] time point: 15:12:45.232 -- recv_start_stream
+[49752]	2026-11-04 15:12:45.232	= Debug =	[DesktopMonitorServer] bDelayedRun_Sendconfig = FALSE
+[49752]	2026-11-04 15:12:45.232	= Debug =	*[statistical] time point: 15:12:45.232 -- desktopserver_build
+[49752]	2026-11-04 15:12:45.232	- Info  -	[SaddcStream] Build start
+[49752]	2026-11-04 15:12:45.232	- Info  -	[SaddcStream] SetCompression 10/15->10/24
+[49752]	2026-11-04 15:12:45.232	= Debug =	[SaddcStream] CreateNewCapturer
+[49752]	2026-11-04 15:12:45.232	= Debug =	[SaddcStream] try dxgi
+[49752]	2026-11-04 15:12:45.232	- Info  -	[dxgi][000002A3DB8F82A0] start capture 
+[49752]	2026-11-04 15:12:45.232	- Info  -	[DXGI] Current desktop(0) size -> (2480, 2248)
+[49752]	2026-11-04 15:12:45.233	- Info  -	[WinVideoCaptureFactory] using 2 mode  with watermark(no)
+[49752]	2026-11-04 15:12:45.233	- Info  -	[SaddcStream] Create new capture mode=2 (0-full, 1-gditracer, 2-mirrortracer, 3-dwm, 4-idd). 
+[49752]	2026-11-04 15:12:45.233	= Debug =	[SaddcStream] new capturer type=2
+[49752]	2026-11-04 15:12:45.233	- Info  -	[LimitedCapture]SetProcessCpuUsageLimitPercentage 0
+[49752]	2026-11-04 15:12:45.233	- Info  -	[LimitedCapture]SetMaxFpsEx 24 locked 0
+[49752]	2026-11-04 15:12:45.233	- Info  -	[dxgi][000002A3DB8F82A0] start capture 
+[48784]	2026-11-04 15:12:45.233	= Debug =	[thread] set thread name Thread-48784 db8f82a0 / 48784
+[49752]	2026-11-04 15:12:45.233	- Info  -	[DXGI] Current desktop(0) size -> (2480, 2248)
+[49752]	2026-11-04 15:12:45.234	- Info  -	[SaddcStream] No need resize screen buffer, dpi=144, [2480, 2248] @ 2071
+[48784]	2026-11-04 15:12:45.235	- Info  -	[DXGI] Uninitialize device.
+[49752]	2026-11-04 15:12:45.235	- Info  -	[CHWAccelComp]CHWAccelComp
+[48784]	2026-11-04 15:12:45.235	- Info  -	[DXGI] Current desktop(0) size -> (2480, 2248)
+[49752]	2026-11-04 15:12:45.235	- Info  -	[LimitedCapture]SetMaxFpsEx 24 locked 0
+[49752]	2026-11-04 15:12:45.235	- Info  -	[UnifiedAvEncoder] SetCompressionParam, layer=1, encoding=h264, format=i420, kbps=0, maxkbpsfactor=0.00 percent 1.00
+[49752]	2026-11-04 15:12:45.235	= Debug =	*[statistical] time point: 15:12:45.235 -- desktopserver_build_ok
+[49752]	2026-11-04 15:12:45.235	- Info  -	[SaddcStream] Build finish time 3
+[49752]	2026-11-04 15:12:45.235	- Info  -	[SaddcStream] recv first captured frame
+[49752]	2026-11-04 15:12:45.235	- Info  -	[dxgi][000002A3DB8F82A0] start capture 
+[56664]	2026-11-04 15:12:45.235	- Info  -	[CSingleDesktop] first render display start, channel 0
+[56664]	2026-11-04 15:12:45.235	- Info  -	[CSingleDesktop] first render display finish, channel 0
+[48784]	2026-11-04 15:12:45.237	= Debug =	[DXGIUtilsHelper] Find adapter: (0, 0, 2480, 2248)
+[48784]	2026-11-04 15:12:45.291	- Info  -	[DXGI] Initialize DXGI duplication device ok!
+[48784]	2026-11-04 15:12:45.291	- Info  -	[DuplMgr] output(0) left(0), top(0), right(2480), bottom(2248), rotation(1)
+[48784]	2026-11-04 15:12:45.294	- Info  -	[DuplMgr] DXGI DuplicateOutput use IDXGIOutput1
+[48784]	2026-11-04 15:12:45.298	- Info  -	[DXGI] Support gpu pre process
+[48784]	2026-11-04 15:12:45.298	- Info  -	[DXGI] use dxgi mode rotation 1
+[48784]	2026-11-04 15:12:45.298	= Debug =	[DXGI] force capture
+[49752]	2026-11-04 15:12:45.299	- Info  -	[DXGI] Current desktop(0) size -> (2480, 2248)
+[49752]	2026-11-04 15:12:45.299	- Info  -	[DesktopMonitorServer] ID_START_DESKTOP_STREAM 4940281
+[56664]	2026-11-04 15:12:45.299	- Info  -	[SaddcStream] SetCompressionParamInternal VideoMode dxgi, is rapid 0
+[56664]	2026-11-04 15:12:45.299	= Debug =	[SaddcStream] ChangeVideoModeVpx
+[56664]	2026-11-04 15:12:45.299	- Info  -	[dxgi][000002A3DB8F82A0] stop capture 
+[56664]	2026-11-04 15:12:45.299	- Info  -	[DXGI] Uninitialize device.
+[49752]	2026-11-04 15:12:45.299	* Error *	[IddCxDevice] open device fail, no device founded
+[49752]	2026-11-04 15:12:45.302	- Info  -	[SysMgr] SendExtendDisplayStatus support 0 count 0 canchange 1
+[49752]	2026-11-04 15:12:45.302	= Debug =	[WinSysMgr] call oray::plugin::WinSysMgr::EnumMonitorDisplaySetting at 784
+[48784]	2026-11-04 15:12:45.379	- Info  -	[DXGI] exit detected
+[48784]	2026-11-04 15:12:45.402	= Debug =	[DXGI] threadloop end.
+[56664]	2026-11-04 15:12:45.403	- Info  -	[dxgi][000002A3DB8F82A0] stop capture 
+[56664]	2026-11-04 15:12:45.403	- Info  -	[DXGI] Uninitialize device.
+[56664]	2026-11-04 15:12:45.405	= Debug =	[SaddcStream] CreateNewCapturer
+[56664]	2026-11-04 15:12:45.405	= Debug =	[SaddcStream] try dxgi
+[56664]	2026-11-04 15:12:45.405	- Info  -	[dxgi][000002A3DB8F82A0] start capture 
+[56664]	2026-11-04 15:12:45.405	- Info  -	[DXGI] Current desktop(0) size -> (2480, 2248)
+[56664]	2026-11-04 15:12:45.405	- Info  -	[WinVideoCaptureFactory] using 2 mode  with watermark(no)
+[56664]	2026-11-04 15:12:45.405	- Info  -	[SaddcStream] Create new capture mode=2 (0-full, 1-gditracer, 2-mirrortracer, 3-dwm, 4-idd). 
+[56664]	2026-11-04 15:12:45.405	= Debug =	[SaddcStream] new capturer type=2
+[56664]	2026-11-04 15:12:45.405	- Info  -	[LimitedCapture]SetProcessCpuUsageLimitPercentage 0
+[56664]	2026-11-04 15:12:45.405	- Info  -	[LimitedCapture]SetMaxFpsEx 24 locked 0
+[56664]	2026-11-04 15:12:45.405	- Info  -	[dxgi][000002A3DB8F82A0] start capture 
+[54728]	2026-11-04 15:12:45.405	= Debug =	[thread] set thread name Thread-54728 db8f82a0 / 54728
+[56664]	2026-11-04 15:12:45.405	- Info  -	[DXGI] Current desktop(0) size -> (2480, 2248)
+[56664]	2026-11-04 15:12:45.406	- Info  -	[SaddcStream] No need resize screen buffer, dpi=144, [2480, 2248] @ 2071
+[56664]	2026-11-04 15:12:45.406	- Info  -	[SaddcStream] new capture start success, type dxgi
+[56664]	2026-11-04 15:12:45.406	- Info  -	[SaddcStream] SetCompressionParamInternal 1332
+[56664]	2026-11-04 15:12:45.406	- Info  -	[SaddcStream] SetCompression 10/24->10/24
+[56664]	2026-11-04 15:12:45.406	- Info  -	[LimitedCapture]SetMaxFpsEx 24 locked 0
+[56664]	2026-11-04 15:12:45.406	- Info  -	[UnifiedAvEncoder] SetCompressionParam, layer=1, encoding=h264, format=i420, kbps=0, maxkbpsfactor=0.00 percent 1.00
+[56664]	2026-11-04 15:12:45.406	= Debug =	*[statistical] time point: 15:12:45.406 -- desktopserver_initinfo
+[56664]	2026-11-04 15:12:45.406	- Info  -	[SaddcStream] No need resize screen buffer, dpi=144, [2480, 2248] @ 2071
+[56664]	2026-11-04 15:12:45.406	- Info  -	[SaddcStream] send full screen image begin,bDisplayChanged 0, bScreenSwitched 0, bInitInfoSend 0, 2480x2248
+[56664]	2026-11-04 15:12:45.406	= Debug =	*[statistical] time point: 15:12:45.406 -- SaddcStream::GetInitBuffer
+[56664]	2026-11-04 15:12:45.406	= Debug =	[SaddcStream] send full screen image end
+[56664]	2026-11-04 15:12:45.406	- Info  -	[SaddcStream] No need resize screen buffer, dpi=144, [2480, 2248] @ 2071
+[56664]	2026-11-04 15:12:45.406	= Debug =	*[statistical] time point: 15:12:45.406 -- desktopserver_initinfo_ok
+[56664]	2026-11-04 15:12:45.406	- Info  -	[SaddcStream] reconfig crf 28 @ 2133
+[54728]	2026-11-04 15:12:45.406	- Info  -	[DXGI] Uninitialize device.
+[54728]	2026-11-04 15:12:45.407	- Info  -	[DXGI] Current desktop(0) size -> (2480, 2248)
+[56664]	2026-11-04 15:12:45.409	- Info  -	[HWAccelComp] AMD card, vendorId=0x1002, desc=AMD Radeon(TM) 8060S Graphics
+[56664]	2026-11-04 15:12:45.409	- Info  -	[AmfEnc] set encode type h264
+[24836]	2026-11-04 15:12:45.409	= Debug =	[thread] set thread name codec-pre db8bdb00 / 24836
+[54728]	2026-11-04 15:12:45.409	= Debug =	[DXGIUtilsHelper] Find adapter: (0, 0, 2480, 2248)
+[59104]	2026-11-04 15:12:45.418	- Info  -	[clipboard::clipboard_router::OnConnect] new agent client connected!
+[59104]	2026-11-04 15:12:45.418	- Info  -	[clipboard] stop plugin
+[59104]	2026-11-04 15:12:45.418	- Info  -	[clipboard] enable clipboard text:1 
+[59104]	2026-11-04 15:12:45.419	- Info  -	[clipboard] enable clipboard file:1 
+[59104]	2026-11-04 15:12:45.419	- Info  -	[clipboard] enable p2p:0 
+[59104]	2026-11-04 15:12:45.419	- Info  -	[clipboard] enable auxchannelmode:0 
+[56664]	2026-11-04 15:12:45.443	= Debug =	[AmfEnc] Resolution range [128, 4096], [128, 4096]
+[56664]	2026-11-04 15:12:45.443	= Debug =	[AmfEnc] Calculated bitrate from CRF 28: 7321011 bps
+[56664]	2026-11-04 15:12:45.443	- Info  -	[AmfEnc] UpdateRCParams VBR: h264 target=7321 Kbps, peak=9151 Kbps, res=0/0
+[56664]	2026-11-04 15:12:45.462	- Info  -	[AmfEnc] init amf environment ok, use avc
+[56664]	2026-11-04 15:12:45.462	- Info  -	[HWAccelComp] encoder init h264 ok, 2480x2248
+[56664]	2026-11-04 15:12:45.462	- Info  -	[UnifiedEnc] use HW mode h264(i420) 2480x2248 
+[54728]	2026-11-04 15:12:45.473	- Info  -	[DXGI] Initialize DXGI duplication device ok!
+[54728]	2026-11-04 15:12:45.473	- Info  -	[DuplMgr] output(0) left(0), top(0), right(2480), bottom(2248), rotation(1)
+[54728]	2026-11-04 15:12:45.475	- Info  -	[DuplMgr] DXGI DuplicateOutput use IDXGIOutput1
+[54728]	2026-11-04 15:12:45.489	- Info  -	[DXGI] Support gpu pre process
+[54728]	2026-11-04 15:12:45.489	- Info  -	[DXGI] use dxgi mode rotation 1
+[54728]	2026-11-04 15:12:45.489	= Debug =	[DXGI] force capture
+[56664]	2026-11-04 15:12:45.491	= Debug =	*[statistical] time point: 15:12:45.491 -- send_first_frame
+[56664]	2026-11-04 15:12:45.491	- Info  -	[ClientDesktopMgr] send first frame
+[56968]	2026-11-04 15:12:45.509	= Debug =	[WinLockStateWnd::MessageThreadFn] regist wtslock
+[56664]	2026-11-04 15:12:45.510	= Debug =	[LockStateInterFace::SetAfterFirstFrame] [lock_state] received first frame
+[56664]	2026-11-04 15:12:45.510	+Warning+	[LockStateInterFace::OnSendLockStateThread] [lock_state] dont send lock state init protocol
+[56664]	2026-11-04 15:12:45.510	- Info  -	[ClientDesktopMgr] run statistical task
+[56664]	2026-11-04 15:12:45.510	- Info  -	[desktop] total 211 calc 0 encode 191 send 1 push 19 cost 505 size 16579 cache=0/0/0, bandwidth=65536(0, recv 0) frame count=0/0 frameid 1
+[53068]	2026-11-04 15:12:45.521	- Info  -	[ClientDesktopMgr] DisplayRefreshRateDetect hz=60
+[53068]	2026-11-04 15:12:45.521	- Info  -	[ClientDesktopMgr] DoStartOtherModules start
+[53068]	2026-11-04 15:12:45.521	- Info  -	[dragproxy] has started.
+[53068]	2026-11-04 15:12:45.521	* Error *	[ClientDesktopMgr] DoStartOtherModules not support auxiliray channel mode
+[53068]	2026-11-04 15:12:45.521	- Info  -	[ClientDesktopMgr] DoStartOtherModules finish
+[49752]	2026-11-04 15:12:45.551	- Info  -	[DesktopMonitorServer] OnProtoSetFrameRate
+[49752]	2026-11-04 15:12:45.584	= Debug =	[CSingleDesktop] recv first frame respond, frameid 1,chl 0, 4940565
+[49752]	2026-11-04 15:12:45.584	- Info  -	[X264_CrfCalculator] rf control received first remote frame count.
+[49752]	2026-11-04 15:12:45.590	- Info  -	[BlackScreen] OnRequestBlackScreen ctrl 1
+[49752]	2026-11-04 15:12:45.590	= Debug =	[WinBlackScreen] InternalProc val: 1
+[49752]	2026-11-04 15:12:45.591	- Info  -	[CBlackScreenLoader] Init start
+[49752]	2026-11-04 15:12:45.591	- Info  -	[CBlackScreenLoader] Init enter
+[49752]	2026-11-04 15:12:45.591	= Debug =	[select_tracker] run ok
+[57380]	2026-11-04 15:12:45.591	- Info  -	[FilterWindowBlackScreen]SyncRun mainpid 0, custom 0 img 
+[50824]	2026-11-04 15:12:45.591	= Debug =	[thread] set thread name WinBlackScreen dc48e2c0 / 50824
+[49752]	2026-11-04 15:12:45.618	= Debug =	[SaddcStream]SetLimitTargetSize limit [3840, 2160], enable 1
+[49752]	2026-11-04 15:12:45.618	- Info  -	[SaddcStream] no necessary to resize screen buffer, limit [2480, 2248], origin [2480, 2248], from 252
+[49752]	2026-11-04 15:12:45.618	= Debug =	[ORTCStream]SetLimitTargetSize limit [3840, 2160], enable 1
+[56664]	2026-11-04 15:12:45.637	= Debug =	*[statistical] time point: 15:12:45.637 -- desktopserver_initinfo
+[56664]	2026-11-04 15:12:45.637	- Info  -	[DXGI] Current desktop(0) size -> (2480, 2248)
+[56664]	2026-11-04 15:12:45.640	- Info  -	[SaddcStream] no necessary to resize screen buffer, limit [2480, 2248], origin [2480, 2248], from 252
+[56664]	2026-11-04 15:12:45.640	- Info  -	[SaddcStream] send full screen image begin,bDisplayChanged 0, bScreenSwitched 0, bInitInfoSend 0, 2480x2248
+[56664]	2026-11-04 15:12:45.640	= Debug =	*[statistical] time point: 15:12:45.640 -- SaddcStream::GetInitBuffer
+[54728]	2026-11-04 15:12:45.645	- Info  -	[DXGI] need reset
+[54728]	2026-11-04 15:12:45.647	- Info  -	[DXGI] Uninitialize device.
+[56664]	2026-11-04 15:12:45.658	- Info  -	[AmfEnc] uninit amf environment
+[57380]	2026-11-04 15:12:45.668	- Info  -	[FilterWindowBlackScreen] CreateWindowExW success 0,0,2480,2248
+[54728]	2026-11-04 15:12:45.679	- Info  -	[DXGI] Current desktop(0) size -> (2480, 2248)
+[54728]	2026-11-04 15:12:45.682	= Debug =	[DXGIUtilsHelper] Find adapter: (0, 0, 2480, 2248)
+[56664]	2026-11-04 15:12:45.688	- Info  -	[HWAccelComp] UnInit ok
+[56664]	2026-11-04 15:12:45.688	= Debug =	[SaddcStream] send full screen image end
+[56664]	2026-11-04 15:12:45.688	- Info  -	[SaddcStream] no necessary to resize screen buffer, limit [2480, 2248], origin [2480, 2248], from 252
+[56664]	2026-11-04 15:12:45.688	= Debug =	*[statistical] time point: 15:12:45.688 -- desktopserver_initinfo_ok
+[56664]	2026-11-04 15:12:45.691	- Info  -	[HWAccelComp] AMD card, vendorId=0x1002, desc=AMD Radeon(TM) 8060S Graphics
+[56664]	2026-11-04 15:12:45.691	- Info  -	[AmfEnc] set encode type h264
+[56520]	2026-11-04 15:12:45.691	= Debug =	[thread] set thread name codec-pre db8be280 / 56520
+[56664]	2026-11-04 15:12:45.731	= Debug =	[AmfEnc] Resolution range [128, 4096], [128, 4096]
+[56664]	2026-11-04 15:12:45.731	= Debug =	[AmfEnc] Calculated bitrate from CRF 28: 7321011 bps
+[56664]	2026-11-04 15:12:45.731	- Info  -	[AmfEnc] UpdateRCParams VBR: h264 target=7321 Kbps, peak=9151 Kbps, res=0/0
+[56664]	2026-11-04 15:12:45.747	- Info  -	[AmfEnc] init amf environment ok, use avc
+[56664]	2026-11-04 15:12:45.747	- Info  -	[HWAccelComp] encoder init h264 ok, 2480x2248
+[56664]	2026-11-04 15:12:45.747	- Info  -	[UnifiedEnc] use HW mode h264(i420) 2480x2248 
+[54728]	2026-11-04 15:12:45.754	- Info  -	[DXGI] Initialize DXGI duplication device ok!
+[54728]	2026-11-04 15:12:45.754	- Info  -	[DuplMgr] output(0) left(0), top(0), right(2480), bottom(2248), rotation(1)
+[54728]	2026-11-04 15:12:45.755	- Info  -	[DuplMgr] DXGI DuplicateOutput use IDXGIOutput1
+[54728]	2026-11-04 15:12:45.777	- Info  -	[DXGI] Support gpu pre process
+[54728]	2026-11-04 15:12:45.777	- Info  -	[DXGI] use dxgi mode rotation 1
+[54728]	2026-11-04 15:12:45.777	= Debug =	[DXGI] force capture
+[56664]	2026-11-04 15:12:45.789	= Debug =	*[statistical] time point: 15:12:45.789 -- send_first_frame
+[56664]	2026-11-04 15:12:45.789	- Info  -	[ClientDesktopMgr] send first frame
+[56664]	2026-11-04 15:12:45.789	- Info  -	[desktop] total 152 calc 0 encode 152 send 0 push 0 cost 188 size 16579 cache=23726/23726/0, bandwidth=397896(397896, recv 106969) frame count=5/2 frameid 1
+[49752]	2026-11-04 15:12:45.834	= Debug =	[CSingleDesktop] recv first frame respond, frameid 1,chl 0, 4940815
+[49752]	2026-11-04 15:12:45.842	- Info  -	[X264_CrfCalculator] rf control received first remote frame count.
+[49752]	2026-11-04 15:12:45.842	- Info  -	[DesktopMonitorServer] OnProtoSetFrameRate
+[49752]	2026-11-04 15:12:45.842	- Info  -	[DesktopMonitorServer] OnProtoSetFrameRateV2 fps 40
+[49752]	2026-11-04 15:12:45.842	- Info  -	[SaddcStream] SetCompression 10/24->10/40
+[49752]	2026-11-04 15:12:45.842	- Info  -	[AmfEnc] SetFps 24->40 (CQP mode), res=0
+[49752]	2026-11-04 15:12:45.842	- Info  -	[LimitedCapture]SetMaxFpsEx 40 locked 0
+[49752]	2026-11-04 15:12:45.843	- Info  -	[SaddcStream] SetMaxFps set max frame rate=40, lock 706
+[50824]	2026-11-04 15:12:46.592	- Info  -	[WinBlackScreen] CheckBlackScreen  set auto black screen
+[50824]	2026-11-04 15:12:46.592	= Debug =	[WinBlackScreen] InternalProc val: 1
+[50824]	2026-11-04 15:12:46.592	- Info  -	[CBlackScreenLoader] Init start
+[50824]	2026-11-04 15:12:46.592	- Info  -	[BlackScreen] NotifyBlackScreen state:power_off
+[50824]	2026-11-04 15:12:46.592	= Debug =	[agentclient] write message data size(102), cmd 30
+[50824]	2026-11-04 15:12:46.592	- Info  -	[PowerApiLoader] call powerapi::PowerApiLoader::PowerApiLoader at  109
+[50824]	2026-11-04 15:12:46.592	- Info  -	[PowerApiLoader] pGetActiveScheme: 00007FFB554A4060, pSetActiveScheme: 00007FFB554A2B50, pReadACValueIndex: 00007FFB554A5CE0, pWriteACValueIndex 00007FFB554A3470
+[50824]	2026-11-04 15:12:46.595	= Debug =	[PowerConfigState][GetConfigInterface] path C:\ProgramData\Oray\AweSun\config.ini
+[50824]	2026-11-04 15:12:46.595	* Error *	[PowerConfigState][LoadBackup] load ini file fail
+[50824]	2026-11-04 15:12:46.595	= Debug =	[PowerConfigState][GetConfigInterface] path C:\ProgramData\Oray\AweSun\config.ini
+[50824]	2026-11-04 15:12:46.595	* Error *	[PowerConfigState] SaveBackup load file fail
+[50824]	2026-11-04 15:12:46.598	- Info  -	[WinBlackScreen] PowerWriteACValueIndex value 0, restore 0, result 1, err 2
+[50824]	2026-11-04 15:12:46.678	- Info  -	[WinBlackScreen] PowerSetActiveScheme successed.
+[49752]	2026-11-04 15:12:47.660	- Info  -	[clipboard] receive query version request
+[53068]	2026-11-04 15:12:49.511	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 6, fps 40
+[53068]	2026-11-04 15:12:50.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 5, fps 40
+[53068]	2026-11-04 15:12:51.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 5, fps 40
+[56204]	2026-11-04 15:12:54.992	= Debug =	[DesktopSpeedPlan] enabled plan
+[59004]	2026-11-04 15:12:59.209	= Debug =	keyboard event 0xd 0
+[59004]	2026-11-04 15:12:59.213	= Debug =	keyboard event 0xd 1
+[49752]	2026-11-04 15:13:04.217	- Info  -	[DesktopMonitorServer] OnProtoStopCaptureDesktop
+[53068]	2026-11-04 15:13:07.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:13:08.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:13:09.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:13:10.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:13:11.517	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:13:12.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:13:13.510	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:13:14.511	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:13:15.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:13:16.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:13:17.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:13:18.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:13:19.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:13:20.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:13:21.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:13:22.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:13:23.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:13:24.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:13:25.517	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:13:26.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:13:27.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:13:28.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:13:29.518	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:13:30.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:13:31.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:13:32.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:13:33.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:13:34.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:13:35.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:13:36.517	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:13:37.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:13:38.517	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:13:39.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:13:40.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:13:41.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:13:42.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:13:43.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:13:44.517	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:13:45.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:13:46.517	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:13:47.511	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:13:48.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:13:49.511	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:13:50.517	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:13:51.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:13:52.511	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:13:53.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:13:54.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:13:55.511	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:13:56.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:13:57.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:13:58.517	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:13:59.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:00.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:01.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:02.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:03.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[54728]	2026-11-04 15:14:04.150	- Info  -	[DXGI] Failed to acquire next frame in DUPLICATIONMANAGER hr 887a0026
+[54728]	2026-11-04 15:14:04.150	* Error *	[DXGI] DuplMgr.GetFrame failed
+[54728]	2026-11-04 15:14:04.155	- Info  -	[DXGIScreenCapture] attach input desktop Winlogon from Default
+[54728]	2026-11-04 15:14:04.156	- Info  -	[DXGI] Uninitialize device.
+[54728]	2026-11-04 15:14:04.180	- Info  -	[DXGI] Current desktop(0) size -> (2480, 2248)
+[54728]	2026-11-04 15:14:04.187	= Debug =	[DXGIUtilsHelper] Find adapter: (0, 0, 2480, 2248)
+[54728]	2026-11-04 15:14:04.234	- Info  -	[DXGI] Initialize DXGI duplication device ok!
+[54728]	2026-11-04 15:14:04.234	- Info  -	[DuplMgr] output(0) left(0), top(0), right(2480), bottom(2248), rotation(1)
+[54728]	2026-11-04 15:14:04.235	- Info  -	[DuplMgr] DXGI DuplicateOutput use IDXGIOutput1
+[54728]	2026-11-04 15:14:04.239	- Info  -	[DXGI] Support gpu pre process
+[54728]	2026-11-04 15:14:04.239	- Info  -	[DXGI] use dxgi mode rotation 1
+[54728]	2026-11-04 15:14:04.239	= Debug =	[DXGI] force capture
+[53068]	2026-11-04 15:14:04.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:05.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:06.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:07.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:08.511	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:09.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:10.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:11.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:12.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:13.518	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:14.511	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:15.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:16.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:17.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:18.517	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:19.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:20.517	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:21.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:22.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:23.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:24.518	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:25.511	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:26.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:27.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:28.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:29.511	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:30.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:31.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:32.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:33.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:34.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:35.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:36.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:37.511	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:38.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:39.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:40.511	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:41.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:42.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:43.517	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:44.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:45.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:46.517	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:47.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:48.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:49.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:50.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:51.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:52.517	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:53.517	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:54.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:55.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:56.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:57.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:58.510	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:14:59.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:00.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:01.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:02.518	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:03.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:04.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:05.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:06.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:07.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:08.517	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:09.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:10.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:11.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:12.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:13.511	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:14.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:15.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:16.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:17.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:18.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:19.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:20.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:21.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:22.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:23.511	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:24.517	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:25.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:26.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:27.517	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:28.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:29.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:30.511	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:31.511	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:32.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:33.510	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:34.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:35.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:36.517	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:37.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:38.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:39.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:40.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:41.511	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:42.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:43.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:44.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:45.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:46.517	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:47.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:48.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:49.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:50.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:51.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:52.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:53.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:54.511	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:55.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:56.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:57.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:58.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:15:59.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:00.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:01.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:02.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:03.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:04.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[54728]	2026-11-04 15:16:05.195	- Info  -	[DXGI] Failed to acquire next frame in DUPLICATIONMANAGER hr 887a0001
+[54728]	2026-11-04 15:16:05.195	* Error *	[DXGI] Failed to acquire next frame in DUPLICATIONMANAGER with 0x887A0001.
+[54728]	2026-11-04 15:16:05.195	* Error *	[DXGI] DuplMgr.GetFrame failed
+[54728]	2026-11-04 15:16:05.203	- Info  -	[DXGIScreenCapture] attach input desktop Default from Winlogon
+[54728]	2026-11-04 15:16:05.205	- Info  -	[DXGI] Uninitialize device.
+[54728]	2026-11-04 15:16:05.228	- Info  -	[DXGI] Current desktop(0) size -> (2480, 2248)
+[54728]	2026-11-04 15:16:05.234	= Debug =	[DXGIUtilsHelper] Find adapter: (0, 0, 2480, 2248)
+[54728]	2026-11-04 15:16:05.279	- Info  -	[DXGI] Initialize DXGI duplication device ok!
+[54728]	2026-11-04 15:16:05.279	- Info  -	[DuplMgr] output(0) left(0), top(0), right(2480), bottom(2248), rotation(1)
+[54728]	2026-11-04 15:16:05.279	- Info  -	[DuplMgr] DXGI DuplicateOutput use IDXGIOutput1
+[54728]	2026-11-04 15:16:05.282	- Info  -	[DXGI] Support gpu pre process
+[54728]	2026-11-04 15:16:05.282	- Info  -	[DXGI] use dxgi mode rotation 1
+[54728]	2026-11-04 15:16:05.282	= Debug =	[DXGI] force capture
+[53068]	2026-11-04 15:16:05.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:06.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:07.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:08.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:09.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:10.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:11.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:12.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:13.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:14.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:15.517	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:16.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:17.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:18.510	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:19.511	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:20.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:21.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:22.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:23.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:24.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:25.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:26.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:27.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:28.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:29.511	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:30.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:31.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:32.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:33.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:34.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:35.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:36.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:37.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:38.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:39.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:40.519	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:41.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:42.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:43.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:44.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:45.511	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:46.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:47.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:48.517	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:49.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:50.511	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:51.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:52.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:53.511	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:54.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:55.511	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:56.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:57.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:58.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:16:59.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:00.511	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:01.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:02.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:03.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:04.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:05.517	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:06.517	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:07.511	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:08.517	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:09.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:10.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:11.511	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:12.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:13.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:14.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:15.518	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:16.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:17.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:18.510	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:19.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:20.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:21.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:22.517	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:23.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:24.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:25.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:26.511	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:27.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:28.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:29.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:30.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:31.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:32.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:33.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:34.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:35.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:36.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:37.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:38.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:39.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:40.518	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:41.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:42.511	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:43.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:44.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:45.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:46.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:47.517	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:48.517	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:49.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:50.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:51.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:52.511	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:53.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:54.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:55.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:56.511	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:57.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:58.518	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:17:59.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:00.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:01.517	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:02.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:03.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:04.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:05.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:06.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:07.511	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:08.517	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:09.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:10.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:11.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:12.517	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:13.511	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:14.511	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:15.510	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:16.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:17.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:18.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:19.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:20.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:21.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:22.518	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:23.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:24.510	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:25.519	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:26.517	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:27.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:28.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:29.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:30.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:31.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:32.518	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:33.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:34.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:35.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:36.511	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:37.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:38.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:39.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:40.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:41.517	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:42.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:43.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:44.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:45.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:46.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:47.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:48.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:49.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:50.511	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:51.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:52.510	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:53.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:54.517	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:55.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:56.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:57.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:58.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:18:59.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:00.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:01.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:02.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:03.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:04.510	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:05.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:06.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:07.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:08.517	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:09.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:10.511	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:11.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:12.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:13.517	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:14.518	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:15.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:16.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:17.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:18.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:19.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:20.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:21.517	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:22.517	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:23.517	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:24.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:25.511	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:26.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:27.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:28.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:29.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:30.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:31.510	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:32.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:33.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:34.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:35.517	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:36.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:37.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:38.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:39.517	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:40.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:41.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:42.517	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:43.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:44.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:45.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:46.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:47.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:48.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:49.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:50.511	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:51.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:52.511	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:53.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:54.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:55.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:56.511	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:57.511	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:58.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:19:59.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:00.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:01.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:02.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:03.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:04.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:05.517	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:06.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:07.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:08.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:09.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:10.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:11.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:12.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:13.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:14.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:15.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:16.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:17.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:18.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:19.511	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:20.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:21.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:22.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:23.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:24.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:25.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:26.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:27.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:28.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:29.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:30.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:31.511	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:32.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:33.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:34.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:35.513	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:36.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:37.512	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:38.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:39.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:40.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:41.514	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:42.511	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:43.517	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:44.515	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:45.516	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:46.526	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:47.532	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:48.540	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:49.530	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:50.532	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:51.530	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:52.527	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:53.531	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:54.528	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:55.532	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:56.530	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:57.528	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:58.526	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:20:59.530	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:00.530	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:01.532	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:02.526	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:03.528	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:04.532	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:05.530	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:06.527	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:07.528	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:08.527	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:09.532	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:10.528	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:11.528	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:12.529	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:13.529	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:14.529	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:15.526	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:16.531	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:17.526	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:18.527	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:19.528	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:20.532	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:21.530	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:22.527	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:23.531	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:24.527	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:25.532	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:26.528	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:27.530	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:28.529	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:29.527	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:30.529	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:31.529	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:32.530	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:33.532	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:34.533	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:35.526	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:36.530	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:37.530	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:38.533	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:39.530	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:40.529	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:41.529	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:42.529	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:43.527	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:44.529	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:45.532	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:46.528	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:47.527	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:48.532	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:49.530	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:50.526	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:51.528	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:52.528	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:53.530	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:54.530	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:55.531	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:56.529	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:57.530	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:58.532	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:21:59.527	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:00.529	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:01.528	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:02.530	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:03.531	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:04.528	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:05.528	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:06.529	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:07.530	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:08.527	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:09.529	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:10.531	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:11.530	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:12.526	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:13.530	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:14.531	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:15.527	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:16.527	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:17.530	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:18.526	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:19.528	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:20.529	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:21.530	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:22.528	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:23.533	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:24.527	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:25.527	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:26.530	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:27.529	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:28.529	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:29.529	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:30.533	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:31.532	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:32.527	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:33.527	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:34.527	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:35.532	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:36.530	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:37.529	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:38.530	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:39.532	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:40.526	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:41.528	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:42.529	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:43.527	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:44.527	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:45.532	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:46.526	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:47.531	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:48.531	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:49.532	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:50.531	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:51.526	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:52.527	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:53.531	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:54.531	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:55.528	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:56.530	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:57.530	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:58.531	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:22:59.530	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:23:00.526	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:23:01.527	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:23:02.528	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:23:03.528	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:23:04.526	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[53068]	2026-11-04 15:23:05.530	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 0, fps 40
+[36028]	2026-11-04 15:23:05.671	- Info  -	[client::handler] disconnected
+[36028]	2026-11-04 15:23:05.671	- Info  -	[DesktopAgentClient] on_disconnect ok.
+[49752]	2026-11-04 15:23:05.671	= Debug =	m_queInput.PopFrontBuffer == 0, timeout(0)
+[49752]	2026-11-04 15:23:05.671	= Debug =	ClientDesktopMgr::ExitInstance in
+[49752]	2026-11-04 15:23:05.671	= Debug =	[ClientDesktopMgr] ExitInstance -- stop desktop start
+[49752]	2026-11-04 15:23:05.671	= Debug =	[ClientDesktopMgr] stop blackscreen
+[49752]	2026-11-04 15:23:05.672	= Debug =	[WinBlackScreen] InternalProc val: 0
+[50824]	2026-11-04 15:23:05.678	- Info  -	[BlackScreen] NotifyBlackScreen state:power_normal
+[50824]	2026-11-04 15:23:05.678	= Debug =	[agentclient] write message data size(0), cmd 31
+[57816]	2026-11-04 15:23:05.679	- Info  -	[agent] stop last plugin.
+[49752]	2026-11-04 15:23:05.687	= Debug =	[ClientDesktopMgr] ExitInstance -- stop sub desktop start 0
+[49752]	2026-11-04 15:23:05.687	= Debug =	[ClientDesktopMgr] StopDesk 0 CancelTask
+[49752]	2026-11-04 15:23:05.687	= Debug =	[ClientDesktopMgr] StopDesk 0 Stop
+[49752]	2026-11-04 15:23:05.687	= Debug =	[CSingleDesktop][db886ef0] Stop BufferSender
+[49752]	2026-11-04 15:23:05.687	= Debug =	[CSingleDesktop] Stop KillTimer
+[49752]	2026-11-04 15:23:05.687	= Debug =	[CSingleDesktop] Stop RecordFile
+[49752]	2026-11-04 15:23:05.687	= Debug =	[CSingleDesktop] Stop upload
+[49752]	2026-11-04 15:23:05.687	= Debug =	[CSingleDesktop] Stop Input
+[49752]	2026-11-04 15:23:05.699	= Debug =	[CSingleDesktop] Stop Plugin dragserver
+[49752]	2026-11-04 15:23:05.699	= Debug =	[dragproxy] CDragServer::Stop ipc
+[49752]	2026-11-04 15:23:05.699	- Info  -	[clipboard::handler] agent(0) client disconnected!
+[49752]	2026-11-04 15:23:05.699	= Debug =	[dragproxy] CDragServer::Stop process
+[54728]	2026-11-04 15:23:05.748	- Info  -	[DXGI] Failed to acquire next frame in DUPLICATIONMANAGER hr 887a0026
+[54728]	2026-11-04 15:23:05.748	* Error *	[DXGI] DuplMgr.GetFrame failed
+[57380]	2026-11-04 15:23:06.171	- Info  -	[FilterWindowBlackScreen] loop finish
+[54728]	2026-11-04 15:23:06.241	- Info  -	[DuplMgr] output(0) left(0), top(0), right(0), bottom(0), rotation(1)
+[54728]	2026-11-04 15:23:06.244	- Info  -	[DXGI] Failed to get duplicate output in DUPLICATIONMANAGER hr 80004005
+[54728]	2026-11-04 15:23:06.244	* Error *	[DXGI] Failed to get duplicate output in DUPLICATIONMANAGER with 0x80004005.
+[54728]	2026-11-04 15:23:06.244	- Info  -	[DXGI] Uninitialize device.
+[54728]	2026-11-04 15:23:06.244	+Warning+	[DXGI] InitDxgiCapture, get output fail
+[57132]	2026-11-04 15:23:06.268	= Debug =	[monitor]PRIMARY, left=0, top=0, right=2560, bottom=1600, string=AMD Radeon(TM) 8060S Graphics
+[57132]	2026-11-04 15:23:06.268	= Debug =	MonitorManager::reset, count=1
+[56204]	2026-11-04 15:23:06.310	= Debug =	[ClientDesktopMgr]GdiDeviceName: \\.\DISPLAY1, Monitor name: InternalPanel
+[55276]	2026-11-04 15:23:06.534	- Info  -	[IddListener] monitor removal, \\?\DISPLAY#DELD0E6#1&3416c83d&134&UID256#{e6f07b5f-ee97-4a90-b076-33f57bf4eaa7}
+[50824]	2026-11-04 15:23:06.579	- Info  -	[BlackScreen] NotifyBlackScreen state:power_normal
+[50824]	2026-11-04 15:23:06.579	= Debug =	[agentclient] write message data size(0), cmd 31
+[55276]	2026-11-04 15:23:06.594	= Debug =	[DisplayMonitor] OnDisplayDeviceRemoval 1, check [oray 0, sys 0, phy 1 @ 224]
+[57132]	2026-11-04 15:23:06.630	= Debug =	[monitor]PRIMARY, left=0, top=0, right=2560, bottom=1600, string=AMD Radeon(TM) 8060S Graphics
+[57132]	2026-11-04 15:23:06.630	= Debug =	MonitorManager::reset, count=1
+[55276]	2026-11-04 15:23:06.696	= Debug =	[monitor]PRIMARY, left=0, top=0, right=2560, bottom=1600, string=AMD Radeon(TM) 8060S Graphics
+[55276]	2026-11-04 15:23:06.696	= Debug =	MonitorManager::reset, count=1
+[49752]	2026-11-04 15:23:07.703	= Debug =	[CSingleDesktop] Stop Plugin sysmgr
+[49752]	2026-11-04 15:23:07.704	= Debug =	[WinSysMgr] DisplayConfig mode 1
+[49752]	2026-11-04 15:23:07.706	= Debug =	[WinSysMgr] sourceInfo id: 0, targetInfo id: 256, GdiDeviceName: \\.\DISPLAY1, Monitor name: InternalPanel
+[49752]	2026-11-04 15:23:07.706	= Debug =	[WinSysMgr] resolution: 2560 x 1600, bpp: 32, position: (0,0)
+[49752]	2026-11-04 15:23:08.092	= Debug =	[CSingleDesktop] Stop Display
+[49752]	2026-11-04 15:23:08.092	- Info  -	[dxgi][000002A3DB8F82A0] stop capture 
+[49752]	2026-11-04 15:23:08.092	- Info  -	[DXGI] Uninitialize device.
+[57132]	2026-11-04 15:23:08.139	= Debug =	[monitor]PRIMARY, left=0, top=0, right=1920, bottom=1080, string=AMD Radeon(TM) 8060S Graphics
+[57132]	2026-11-04 15:23:08.139	= Debug =	MonitorManager::reset, count=1
+[56204]	2026-11-04 15:23:08.140	= Debug =	[ClientDesktopMgr]GdiDeviceName: \\.\DISPLAY1, Monitor name: ExternalMonitor
+[54728]	2026-11-04 15:23:08.188	= Debug =	[DXGI] capture loop break by run_continue
+[54728]	2026-11-04 15:23:08.188	= Debug =	[DXGI] threadloop end.
+[49752]	2026-11-04 15:23:08.198	= Debug =	[ClientDesktopMgr] StopDesk 0 Start delete desktop
+[49752]	2026-11-04 15:23:08.198	= Debug =	[ClientDesktopMgr] ExitInstance -- stop sub desktop finish 0
+[49752]	2026-11-04 15:23:08.198	= Debug =	[ClientDesktopMgr] ExitInstance -- stop pub plugins start
+[49752]	2026-11-04 15:23:08.198	= Debug =	[ClientDesktopMgr] ExitInstance -- stop plugin start blackscreen
+[49752]	2026-11-04 15:23:08.198	= Debug =	[ClientDesktopMgr] ExitInstance -- stop plugin finish blackscreen
+[49752]	2026-11-04 15:23:08.199	= Debug =	[ClientDesktopMgr] ExitInstance -- stop plugin start cursorsender
+[49752]	2026-11-04 15:23:08.199	= Debug =	[ClientDesktopMgr] ExitInstance -- stop plugin finish cursorsender
+[49752]	2026-11-04 15:23:08.199	= Debug =	[ClientDesktopMgr] ExitInstance -- stop plugin start file
+[49752]	2026-11-04 15:23:08.199	= Debug =	[ClientDesktopMgr] ExitInstance -- stop plugin finish file
+[49752]	2026-11-04 15:23:08.199	= Debug =	[ClientDesktopMgr] ExitInstance -- stop plugin start printer
+[49752]	2026-11-04 15:23:08.199	= Debug =	[ClientDesktopMgr] ExitInstance -- stop plugin finish printer
+[49752]	2026-11-04 15:23:08.199	= Debug =	[ClientDesktopMgr] ExitInstance -- stop pub plugins finish
+[49752]	2026-11-04 15:23:08.199	= Debug =	[ClientDesktopMgr] ExitInstance -- stop reactor start
+[49752]	2026-11-04 15:23:08.215	= Debug =	[ClientDesktopMgr] ExitInstance -- stop dataproxy reactor start
+[49752]	2026-11-04 15:23:08.216	= Debug =	[ClientDesktopMgr] ExitInstance -- stop message reactor start
+[49752]	2026-11-04 15:23:08.221	= Debug =	[ClientDesktopMgr] ExitInstance -- stop work reactor start
+[49752]	2026-11-04 15:23:08.238	= Debug =	EnumMonitors count:1
+[49752]	2026-11-04 15:23:08.240	= Debug =	EnumMonitors count:1
+[49752]	2026-11-04 15:23:08.240	= Debug =	EnumMonitors count:1
+[49752]	2026-11-04 15:23:08.240	= Debug =	DPMS DeviceOpen(0,100) successed.
+[49752]	2026-11-04 15:23:08.240	= Debug =	EnumMonitors count:1
+[49752]	2026-11-04 15:23:08.240	= Debug =	DPMS DeviceOpen(1,100) successed.
+[49752]	2026-11-04 15:23:08.241	= Debug =	EnumMonitors count:1
+[49752]	2026-11-04 15:23:08.248	- Info  -	[dxgi][000002A3DB8F82A0] stop capture 
+[49752]	2026-11-04 15:23:08.248	- Info  -	[DXGI] Uninitialize device.
+[49752]	2026-11-04 15:23:08.257	- Info  -	[AmfEnc] uninit amf environment
+[49752]	2026-11-04 15:23:08.293	- Info  -	[HWAccelComp] UnInit ok
+[49752]	2026-11-04 15:23:08.295	= Debug =	[LockStateInterFace::SetStream] [lock_state] received stream
+[49752]	2026-11-04 15:23:08.295	+Warning+	[LockStateInterFace::OnSendLockStateThread] [lock_state] dont send lock state init protocol
+[49752]	2026-11-04 15:23:08.295	- Info  -	[oray::plugin::SysFunc::ResumeThemeSettings] resume settings
+[49752]	2026-11-04 15:23:08.296	- Info  -	[CursorMonitor][CursorMonitor::stop] WM_STOP_CURSOR_MONITOR
+[51012]	2026-11-04 15:23:08.298	- Info  -	[CursorMonitor] recv STOP_CURSOR_MONITOR, end thread.
+[49752]	2026-11-04 15:23:08.305	= Debug =	ClientDesktopMgr::ExitInstance out
+[57816]	2026-11-04 15:23:08.309	= Debug =	[IddListener] UnInit
+[57132]	2026-11-04 15:23:08.315	- Info  -	[DisplayMonitorImpl] recv WM_CLOSE, end thread.
+[57816]	2026-11-04 15:23:08.322	= Debug =	ClientDesktopMgr::ExitInstance in
+[57816]	2026-11-04 15:23:08.322	= Debug =	[ClientDesktopMgr] ExitInstance -- stop desktop start
+[57816]	2026-11-04 15:23:08.322	= Debug =	[ClientDesktopMgr] ExitInstance -- stop pub plugins start
+[57816]	2026-11-04 15:23:08.322	= Debug =	[ClientDesktopMgr] ExitInstance -- stop pub plugins finish
+[57816]	2026-11-04 15:23:08.322	= Debug =	[ClientDesktopMgr] ExitInstance -- stop reactor start
+[57816]	2026-11-04 15:23:08.322	= Debug =	[ClientDesktopMgr] ExitInstance -- stop dataproxy reactor start
+[57816]	2026-11-04 15:23:08.322	= Debug =	[ClientDesktopMgr] ExitInstance -- stop message reactor start
+[57816]	2026-11-04 15:23:08.322	= Debug =	[ClientDesktopMgr] ExitInstance -- stop work reactor start
+[57816]	2026-11-04 15:23:08.322	= Debug =	[LockStateInterFace::SetStream] [lock_state] received stream
+[57816]	2026-11-04 15:23:08.322	+Warning+	[LockStateInterFace::OnSendLockStateThread] [lock_state] dont send lock state init protocol
+[57816]	2026-11-04 15:23:08.323	- Info  -	[oray::plugin::SysFunc::ResumeThemeSettings] resume settings
+[57816]	2026-11-04 15:23:08.324	- Info  -	[CursorMonitor][CursorMonitor::stop] WM_STOP_CURSOR_MONITOR
+[57816]	2026-11-04 15:23:08.324	= Debug =	ClientDesktopMgr::ExitInstance out
+[57816]	2026-11-04 15:23:08.324	= Debug =	[call] SLDestroyClient
+[57816]	2026-11-04 15:23:08.324	- Info  -	[RtmpClient] call CRtmpClientPublish::StopLive 
+[57816]	2026-11-04 15:23:08.326	- Info  -	Terminate OK
+[57816]	2026-11-04 15:23:08.327	- Info  -	Terminate OK
+[57816]	2026-11-04 15:23:08.328	= Debug =	[call] SLUninitialize

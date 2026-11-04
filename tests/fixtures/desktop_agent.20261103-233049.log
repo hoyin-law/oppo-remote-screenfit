@@ -1,0 +1,1852 @@
+[43644]	2026-11-03 23:30:49.298	= Debug =	[enumsession] session list: SessionId:0, ConnectState:4, ClientProtocolType:0, UserName:, WinStationName:Services| SessionId:2, ConnectState:0, ClientProtocolType:0, UserName:User, WinStationName:Console| SessionId:65536, ConnectState:6, ClientProtocolType:0, UserName:, WinStationName:7A78855482A04FA781DC| SessionId:65537, ConnectState:6, ClientProtocolType:0, UserName:, WinStationName:D8D584DCE21F4BD4B923| SessionId:65538, ConnectState:6, ClientProtocolType:0, UserName:, WinStationName:RDP-Tcp| 
+[126468]	2026-11-03 23:30:49.301	- Info  -	slsdk version: 3.0.0.32272
+[43644]	2026-11-03 23:30:49.301	= Debug =	[thread] set thread name Thread-43644 80e292d0 / 43644
+[126468]	2026-11-03 23:30:49.303	= Debug =	[call] SLClientRunDesktopAgent: port[62486], id[5]
+[126468]	2026-11-03 23:30:49.304	= Debug =	*[statistical] time point: 23:30:49.304 -- agent_run
+[126468]	2026-11-03 23:30:49.304	- Info  -	[client] current session id 2, ProcessID 126464
+[126468]	2026-11-03 23:30:49.304	= Debug =	[client] CreateClientDesktop start
+[126468]	2026-11-03 23:30:49.310	= Debug =	[desktop_client] desktop_client_create interface IClientDesktopPlugin  version 0
+[126468]	2026-11-03 23:30:49.313	= Debug =	[saddc_client] saddc_client_create interface IIddCxHardwareListener  version 1
+[43644]	2026-11-03 23:30:49.314	= Debug =	[enumsession] session list: SessionId:0, ConnectState:4, ClientProtocolType:0, UserName:, WinStationName:Services| SessionId:2, ConnectState:0, ClientProtocolType:0, UserName:User, WinStationName:Console| SessionId:65536, ConnectState:6, ClientProtocolType:0, UserName:, WinStationName:7A78855482A04FA781DC| SessionId:65537, ConnectState:6, ClientProtocolType:0, UserName:, WinStationName:D8D584DCE21F4BD4B923| SessionId:65538, ConnectState:6, ClientProtocolType:0, UserName:, WinStationName:RDP-Tcp| 
+[126468]	2026-11-03 23:30:49.333	= Debug =	[monitor]PRIMARY, left=0, top=0, right=1920, bottom=1080, string=AMD Radeon(TM) 8060S Graphics
+[126468]	2026-11-03 23:30:49.333	= Debug =	MonitorManager::reset, count=1
+[126468]	2026-11-03 23:30:49.345	= Debug =	[monitor]PRIMARY, left=0, top=0, right=1920, bottom=1080, string=AMD Radeon(TM) 8060S Graphics
+[126468]	2026-11-03 23:30:49.345	= Debug =	MonitorManager::reset, count=1
+[126468]	2026-11-03 23:30:49.404	= Debug =	[IddListener] Init
+[126468]	2026-11-03 23:30:49.404	= Debug =	[client] CreateClientDesktop finish
+[126468]	2026-11-03 23:30:49.404	= Debug =	[select_tracker] run ok
+[126468]	2026-11-03 23:30:49.404	= Debug =	[select_tracker] run ok
+[126468]	2026-11-03 23:30:49.404	= Debug =	[select_tracker] run ok
+[126676]	2026-11-03 23:30:49.404	= Debug =	[thread] set thread name Thread-126676 487e89f0 / 126676
+[126680]	2026-11-03 23:30:49.404	= Debug =	[thread] set thread name [rpcservice] 487e8720 / 126680
+[126684]	2026-11-03 23:30:49.404	= Debug =	[thread] set thread name Thread-126684 487e91d0 / 126684
+[126468]	2026-11-03 23:30:49.460	- Info  -	[CSockConnector] attempt to connect server 127.0.0.1:62486(127.0.0.1:62486)
+[126468]	2026-11-03 23:30:49.460	- Info  -	[DesktopAgentClient] connect DesktopServer ok.
+[126468]	2026-11-03 23:30:49.460	= Debug =	*[statistical] time point: 23:30:49.460 -- CClientDesktopMgr::InitInstance
+[126468]	2026-11-03 23:30:49.460	- Info  -	[ClientDesktopMgr] InitInstance start
+[126468]	2026-11-03 23:30:49.460	- Info  -	[ClientDesktopMgr] disable_clipboard:0, disable_file:0, disable_print:0, disable_chat:0 auto_idd:0 back C:\Program Files\Oppo Connect\daemon/background.png
+[126468]	2026-11-03 23:30:49.461	= Debug =	[select_tracker] run ok
+[126700]	2026-11-03 23:30:49.461	= Debug =	[thread] set thread name wfmo 4942a0e0 / 126700
+[126680]	2026-11-03 23:30:49.461	- Info  -	[client::handler] desktop connected sid(5), thread(126680)
+[126708]	2026-11-03 23:30:49.461	= Debug =	[thread] set thread name Thread-126708 4863ca00 / 126708
+[126680]	2026-11-03 23:30:49.461	= Debug =	[agentclient] write message data size(16), cmd 1
+[126712]	2026-11-03 23:30:49.461	= Debug =	[thread] set thread name MessageTimer 4942acb0 / 126712
+[126680]	2026-11-03 23:30:49.461	- Info  -	[DesktopAgentClient] on_connect ok. sid:2, id:5 precreate:0
+[126704]	2026-11-03 23:30:49.461	= Debug =	[thread] set thread name dataproxy 4942b640 / 126704
+[126716]	2026-11-03 23:30:49.461	= Debug =	[thread] set thread name CBufferSender 49450c70 / 126716
+[126680]	2026-11-03 23:30:49.461	- Info  -	[agent] start new plugin.
+[126724]	2026-11-03 23:30:49.462	= Debug =	[thread] set thread name AgentClientPluginThread 49424180 / 126724
+[126724]	2026-11-03 23:30:49.462	= Debug =	*[statistical] time point: 23:30:49.462 -- plugin_threadloop
+[126468]	2026-11-03 23:30:49.489	- Info  -	[dragserverproxy] Create instance on nomral mode
+[126468]	2026-11-03 23:30:49.490	= Debug =	[WinSysMgr] DisplayConfig mode 8
+[126468]	2026-11-03 23:30:49.490	= Debug =	[WinSysMgr] sourceInfo id: 0, targetInfo id: 281, GdiDeviceName: \\.\DISPLAY1, Monitor name: ExternalMonitor
+[126468]	2026-11-03 23:30:49.490	= Debug =	[WinSysMgr] resolution: 1920 x 1080, bpp: 32, position: (0,0)
+[126468]	2026-11-03 23:30:49.490	= Debug =	[saddc_client] saddc_client_create interface IIddCxDevice  version 1
+[126468]	2026-11-03 23:30:49.490	- Info  -	[CSingleDesktop] Set screen index 0 channel 0
+[126468]	2026-11-03 23:30:49.490	= Debug =	[saddc_client] saddc_client_create interface IBlackScreenLoader  version 1
+[126732]	2026-11-03 23:30:49.491	= Debug =	[thread] set thread name run_by_thread 47a93770 / 126732
+[126712]	2026-11-03 23:30:49.491	- Info  -	[ClientDesktopMgr] InitListener at 738
+[126468]	2026-11-03 23:30:49.491	- Info  -	[oray::plugin::MouseMonitor::start] Start success.
+[126468]	2026-11-03 23:30:49.491	- Info  -	[CursorMonitor][CursorMonitor::start] Start success.
+[126468]	2026-11-03 23:30:49.491	- Info  -	[ClientDesktopMgr] InitInstance finish time 31
+[126740]	2026-11-03 23:30:49.491	= Debug =	[thread] set thread name Thread-126740 778f85b0 / 126740
+[126724]	2026-11-03 23:30:49.491	= Debug =	[DetectLocalIP] Number of entries: 15
+[126724]	2026-11-03 23:30:49.491	= Debug =	[DetectLocalIP] Detect Local IP : local gateway = 192.0.2.10
+[126712]	2026-11-03 23:30:49.492	= Debug =	[WinSysMgr] QueryMonitorByHWID count 2 vircount 0
+[126712]	2026-11-03 23:30:49.493	= Debug =	[WinSysMgr] physic monotor \\?\display#tma0803#5&2a56f61f&0&uid256#{e6f07b5f-ee97-4a90-b076-33f57bf4eaa7}
+[126712]	2026-11-03 23:30:49.493	= Debug =	[WinSysMgr] physic monotor \\?\display#xmi23c2#5&2a56f61f&0&uid281#{e6f07b5f-ee97-4a90-b076-33f57bf4eaa7}
+[126712]	2026-11-03 23:30:49.493	= Debug =	[WinSysMgr] QueryMonitorByInterfaceId count 2 vircount 0
+[126712]	2026-11-03 23:30:49.493	- Info  -	[WinSysMgr] nCount=1, queryPhysicCount=2, queryVirtualCount=0, nVirtualCount=0, nOrayIddCount=0
+[126712]	2026-11-03 23:30:49.493	- Info  -	[ClientDesktopMgr] monitor [ count 1 virtual 0 orayidd 0 ], useidd 0, devCount 2 devVirCount 0
+[126724]	2026-11-03 23:30:49.493	= Debug =	[DetectLocalIP] Detect Local IP : local ip = 192.0.2.10
+[126724]	2026-11-03 23:30:49.493	= Debug =	[DetectLocalIP] get_default_interface_ip ok with 192.0.2.10
+[126724]	2026-11-03 23:30:49.493	- Info  -	[mac] local ip:192.0.2.10
+[126724]	2026-11-03 23:30:49.496	- Info  -	[mac] mac address:50:BB:B5:4D:AC:44
+[126724]	2026-11-03 23:30:49.496	= Debug =	[DesktopSpeedPlan] plan 0
+[126724]	2026-11-03 23:30:49.496	= Debug =	[DesktopSpeedPlan] disabled plan
+[126724]	2026-11-03 23:30:49.496	= Debug =	[select_tracker] run ok
+[126724]	2026-11-03 23:30:49.496	= Debug =	[ClientDesktopMgr] ClientDesktopMgr::Run add drag server proxy to task tracker
+[126724]	2026-11-03 23:30:49.496	+Warning+	[ClientDesktopMgr]packet losted, message1 :244,12, message2:2,4, size=20 channelId=0
+[126744]	2026-11-03 23:30:49.496	= Debug =	[thread] set thread name work 494673c0 / 126744
+[126724]	2026-11-03 23:30:49.496	- Info  -	[ClientDesktopMgr] time 0 msg 244:2
+[126724]	2026-11-03 23:30:49.496	+Warning+	[ClientDesktopMgr]packet losted, message1: 4,4, size=12 channelId=0
+[126724]	2026-11-03 23:30:49.496	- Info  -	[ClientDesktopMgr] time 0 msg 4:0
+[126724]	2026-11-03 23:30:49.496	- Info  -	[DesktopMonitorServer] OnProtoStartCaptureDesktop
+[126724]	2026-11-03 23:30:49.496	- Info  -	[ClientDesktopMgr] OnCtrlMessage ctrl 1,type 1
+[126724]	2026-11-03 23:30:49.496	- Info  -	[ClientDesktopMgr] run display start
+[126724]	2026-11-03 23:30:49.518	= Debug =	[select_tracker] run ok
+[126724]	2026-11-03 23:30:49.518	= Debug =	[ClientDesktopMgr] capture mode 1
+[126724]	2026-11-03 23:30:49.518	= Debug =	[desktop] recv prefix message at 1411
+[126724]	2026-11-03 23:30:49.518	= Debug =	[desktop] recv prefix message at 1414
+[126724]	2026-11-03 23:30:49.518	= Debug =	[desktop] recv prefix message, limit [0x0], hevc 0 at 1400
+[126724]	2026-11-03 23:30:49.518	= Debug =	[CSingleDesktop][4942c4a0] init
+[126724]	2026-11-03 23:30:49.518	- Info  -	[DesktopMonitorServer] bDelayedRun_Sendconfig = TRUE
+[126724]	2026-11-03 23:30:49.518	- Info  -	[desktop/49395d70] GetInitBuffer image header compress size(20) time(133860375).
+[126724]	2026-11-03 23:30:49.518	- Info  -	[DesktopMonitorServer] recv prefix message, limit [0x0], use_limit 0, hevc 0
+[126724]	2026-11-03 23:30:49.518	- Info  -	[SaddcStream] SetupDesktopMode 5, format 1, encode 3, truecolor 0
+[126724]	2026-11-03 23:30:49.518	= Debug =	[CSingleDesktop][4942c4a0] run
+[126724]	2026-11-03 23:30:49.518	- Info  -	[ClientDesktopMgr] run display finish
+[126724]	2026-11-03 23:30:49.518	- Info  -	[ClientDesktopMgr] OnCtrlMessage ctrl 1,type 3
+[126724]	2026-11-03 23:30:49.518	- Info  -	[ClientDesktopMgr] OnCtrlMessage ctrl 1,type 6
+[126724]	2026-11-03 23:30:49.518	- Info  -	[ClientDesktopMgr] OnCtrlMessage ctrl 1,type 7
+[126724]	2026-11-03 23:30:49.518	- Info  -	[ClientDesktopMgr] OnProQueryConfig
+[126748]	2026-11-03 23:30:49.518	= Debug =	[thread] set thread name Thread-126748 494666d0 / 126748
+[126712]	2026-11-03 23:30:49.519	- Info  -	[ClientDesktopMgr]Run Keyboard and mouse control ok
+[126752]	2026-11-03 23:30:49.519	= Debug =	[thread] set thread name InputThread 49424cc0 / 126752
+[126712]	2026-11-03 23:30:49.519	* Error *	[IddCxDevice] open device fail, no device founded
+[126712]	2026-11-03 23:30:49.521	- Info  -	[SysMgr] SendExtendDisplayStatus support 0 count 0 canchange 1
+[126724]	2026-11-03 23:30:49.521	- Info  -	[CHWAccelComp]CHWAccelComp
+[126712]	2026-11-03 23:30:49.521	- Info  -	[dragproxy] start.
+[126712]	2026-11-03 23:30:49.521	= Debug =	[select_tracker] run ok
+[126712]	2026-11-03 23:30:49.521	- Info  -	[clipboard] clipboard_agent_server created with port 0.
+[126712]	2026-11-03 23:30:49.521	- Info  -	[dragproxy] Get port ok 52563
+[126712]	2026-11-03 23:30:49.521	- Info  -	[DragServer][process_start] current sessionid 2
+[126736]	2026-11-03 23:30:49.522	= Debug =	[thread] set thread name Thread-126736 778f8688 / 126736
+[126724]	2026-11-03 23:30:49.522	+Warning+	[nvsdk] load nvEncodeAPI64.dll failed!
+[126724]	2026-11-03 23:30:49.522	- Info  -	[nvencdetect] query nvenc version fail
+[126724]	2026-11-03 23:30:49.522	- Info  -	[nvencdetect] sdk version 0.0
+[126724]	2026-11-03 23:30:49.522	- Info  -	[nvencdetect] av1 0 h265 0
+[126760]	2026-11-03 23:30:49.525	= Debug =	[thread] set thread name Thread-126760 49466a30 / 126760
+[121072]	2026-11-03 23:30:49.525	= Debug =	[thread] set thread name codec-pre 494252c0 / 121072
+[126752]	2026-11-03 23:30:49.533	= Debug =	[WinInput] attach input src 126752 dst 5008 ret 1 err 0
+[126752]	2026-11-03 23:30:49.535	= Debug =	[WinInput] detach input src 126752 dst 5008 ret 1 err 0
+[126752]	2026-11-03 23:30:49.555	- Info  -	[WinInput] use soft input, type 1 console 1 multi 0 vhid 0 
+[126752]	2026-11-03 23:30:49.561	- Info  -	[softmouseproxy] SetMouseMoveRelative false
+[126724]	2026-11-03 23:30:49.859	- Info  -	[amfencdetect] av1 0 h265 1
+[126724]	2026-11-03 23:30:49.861	- Info  -	[mfxencdetect] av1 0 h265 0
+[126724]	2026-11-03 23:30:49.861	- Info  -	[UnifiedEnc] get kCodecProperty_bd_EncH265 1
+[126724]	2026-11-03 23:30:49.861	- Info  -	[UnifiedEnc] get kCodecProperty_bd_EncAV1 0
+[126724]	2026-11-03 23:30:49.861	= Debug =	[saddc_client] saddc_client_create interface IRapidEncoder  version 1
+[88252]	2026-11-03 23:30:49.866	= Debug =	[thread] set thread name Thread-88252 49ca4cb0 / 88252
+[123932]	2026-11-03 23:30:49.866	= Debug =	[thread] set thread name Thread-123932 49ca33f0 / 123932
+[107772]	2026-11-03 23:30:49.866	= Debug =	[thread] set thread name Thread-107772 49ca3080 / 107772
+[122552]	2026-11-03 23:30:49.866	= Debug =	[thread] set thread name Thread-122552 49ca47e0 / 122552
+[4456]	2026-11-03 23:30:49.866	= Debug =	[thread] set thread name Thread-4456 49ca38c0 / 4456
+[112140]	2026-11-03 23:30:49.866	= Debug =	[thread] set thread name Thread-112140 49ca3340 / 112140
+[121524]	2026-11-03 23:30:49.866	= Debug =	[thread] set thread name Thread-121524 49ca3fa0 / 121524
+[122640]	2026-11-03 23:30:49.866	= Debug =	[thread] set thread name Thread-122640 49ca4d60 / 122640
+[126724]	2026-11-03 23:30:49.868	- Info  -	[AmfEnc] havamd 1
+[126724]	2026-11-03 23:30:49.868	- Info  -	[CHWAccelComp]CHWAccelComp
+[126724]	2026-11-03 23:30:49.868	- Info  -	[capdetect] rapid maxver 3 features 1
+[126724]	2026-11-03 23:30:49.873	= Debug =	[ClientDesktopMgr]GdiDeviceName: \\.\DISPLAY1, Monitor name: ExternalMonitor
+[126724]	2026-11-03 23:30:49.873	- Info  -	[DesktopMonitorServer] OnProtoSetCompression format 10 fps 40 mode 0
+[126724]	2026-11-03 23:30:49.873	- Info  -	[SaddcStream] SetCompression 8/100->10/40
+[126724]	2026-11-03 23:30:49.873	- Info  -	[DesktopMonitorServer] OnProtoStartDesktopStream
+[126724]	2026-11-03 23:30:49.874	= Debug =	*[statistical] time point: 23:30:49.874 -- recv_start_stream
+[126724]	2026-11-03 23:30:49.874	= Debug =	[DesktopMonitorServer] bDelayedRun_Sendconfig = FALSE
+[126724]	2026-11-03 23:30:49.874	= Debug =	*[statistical] time point: 23:30:49.874 -- desktopserver_build
+[126724]	2026-11-03 23:30:49.874	- Info  -	[SaddcStream] Build start
+[126724]	2026-11-03 23:30:49.874	- Info  -	[SaddcStream] SetCompression 10/40->10/24
+[126724]	2026-11-03 23:30:49.874	= Debug =	[SaddcStream] CreateNewCapturer
+[126724]	2026-11-03 23:30:49.874	= Debug =	[SaddcStream] try dxgi
+[126724]	2026-11-03 23:30:49.874	- Info  -	[dxgi][0000022F45D1BEE0] start capture 
+[126724]	2026-11-03 23:30:49.874	- Info  -	[DXGI] Current desktop(0) size -> (1920, 1080)
+[126724]	2026-11-03 23:30:49.875	- Info  -	[WinVideoCaptureFactory] using 2 mode  with watermark(no)
+[126724]	2026-11-03 23:30:49.875	- Info  -	[SaddcStream] Create new capture mode=2 (0-full, 1-gditracer, 2-mirrortracer, 3-dwm, 4-idd). 
+[126724]	2026-11-03 23:30:49.875	= Debug =	[SaddcStream] new capturer type=2
+[126724]	2026-11-03 23:30:49.875	- Info  -	[LimitedCapture]SetProcessCpuUsageLimitPercentage 0
+[126724]	2026-11-03 23:30:49.875	- Info  -	[LimitedCapture]SetMaxFpsEx 24 locked 0
+[126724]	2026-11-03 23:30:49.875	- Info  -	[dxgi][0000022F45D1BEE0] start capture 
+[126724]	2026-11-03 23:30:49.875	- Info  -	[DXGI] Current desktop(0) size -> (1920, 1080)
+[107624]	2026-11-03 23:30:49.875	= Debug =	[thread] set thread name Thread-107624 45d1bee0 / 107624
+[126724]	2026-11-03 23:30:49.876	- Info  -	[SaddcStream] No need resize screen buffer, dpi=96, [1920, 1080] @ 2071
+[107624]	2026-11-03 23:30:49.878	- Info  -	[DXGI] Uninitialize device.
+[107624]	2026-11-03 23:30:49.878	- Info  -	[DXGI] Current desktop(0) size -> (1920, 1080)
+[126724]	2026-11-03 23:30:49.878	- Info  -	[CHWAccelComp]CHWAccelComp
+[126724]	2026-11-03 23:30:49.878	- Info  -	[LimitedCapture]SetMaxFpsEx 24 locked 0
+[126724]	2026-11-03 23:30:49.878	- Info  -	[UnifiedAvEncoder] SetCompressionParam, layer=1, encoding=h264, format=i420, kbps=0, maxkbpsfactor=0.00 percent 1.00
+[126724]	2026-11-03 23:30:49.878	= Debug =	*[statistical] time point: 23:30:49.878 -- desktopserver_build_ok
+[126724]	2026-11-03 23:30:49.878	- Info  -	[SaddcStream] Build finish time 5
+[126724]	2026-11-03 23:30:49.878	- Info  -	[SaddcStream] recv first captured frame
+[126724]	2026-11-03 23:30:49.878	- Info  -	[dxgi][0000022F45D1BEE0] start capture 
+[126700]	2026-11-03 23:30:49.878	- Info  -	[CSingleDesktop] first render display start, channel 0
+[126700]	2026-11-03 23:30:49.879	- Info  -	[CSingleDesktop] first render display finish, channel 0
+[107624]	2026-11-03 23:30:49.883	= Debug =	[DXGIUtilsHelper] Find adapter: (0, 0, 1920, 1080)
+[107624]	2026-11-03 23:30:49.934	- Info  -	[DXGI] Initialize DXGI duplication device ok!
+[107624]	2026-11-03 23:30:49.934	- Info  -	[DuplMgr] output(0) left(0), top(0), right(1920), bottom(1080), rotation(1)
+[107624]	2026-11-03 23:30:49.940	- Info  -	[DuplMgr] DXGI DuplicateOutput use IDXGIOutput1
+[107624]	2026-11-03 23:30:49.967	- Info  -	[DXGI] Support gpu pre process
+[107624]	2026-11-03 23:30:49.967	- Info  -	[DXGI] use dxgi mode rotation 1
+[107624]	2026-11-03 23:30:49.967	= Debug =	[DXGI] force capture
+[126724]	2026-11-03 23:30:49.969	- Info  -	[DXGI] Current desktop(0) size -> (1920, 1080)
+[126724]	2026-11-03 23:30:49.970	- Info  -	[DesktopMonitorServer] ID_START_DESKTOP_STREAM 133860828
+[126700]	2026-11-03 23:30:49.970	- Info  -	[SaddcStream] SetCompressionParamInternal VideoMode dxgi, is rapid 0
+[126700]	2026-11-03 23:30:49.970	= Debug =	[SaddcStream] ChangeVideoModeVpx
+[126700]	2026-11-03 23:30:49.970	- Info  -	[dxgi][0000022F45D1BEE0] stop capture 
+[126700]	2026-11-03 23:30:49.970	- Info  -	[DXGI] Uninitialize device.
+[126724]	2026-11-03 23:30:49.970	* Error *	[IddCxDevice] open device fail, no device founded
+[126724]	2026-11-03 23:30:49.973	- Info  -	[SysMgr] SendExtendDisplayStatus support 0 count 0 canchange 1
+[126724]	2026-11-03 23:30:49.973	= Debug =	[WinSysMgr] call oray::plugin::WinSysMgr::EnumMonitorDisplaySetting at 784
+[107624]	2026-11-03 23:30:50.009	- Info  -	[DXGI] exit detected
+[107624]	2026-11-03 23:30:50.034	= Debug =	[DXGI] threadloop end.
+[126700]	2026-11-03 23:30:50.036	- Info  -	[dxgi][0000022F45D1BEE0] stop capture 
+[126700]	2026-11-03 23:30:50.036	- Info  -	[DXGI] Uninitialize device.
+[126700]	2026-11-03 23:30:50.038	= Debug =	[SaddcStream] CreateNewCapturer
+[126700]	2026-11-03 23:30:50.039	= Debug =	[SaddcStream] try dxgi
+[126700]	2026-11-03 23:30:50.039	- Info  -	[dxgi][0000022F45D1BEE0] start capture 
+[126700]	2026-11-03 23:30:50.039	- Info  -	[DXGI] Current desktop(0) size -> (1920, 1080)
+[126712]	2026-11-03 23:30:50.039	- Info  -	[ClientDesktopMgr] DisplayRefreshRateDetect hz=59
+[126712]	2026-11-03 23:30:50.039	- Info  -	[ClientDesktopMgr] DoStartOtherModules start
+[126712]	2026-11-03 23:30:50.039	- Info  -	[dragproxy] has started.
+[126712]	2026-11-03 23:30:50.039	* Error *	[ClientDesktopMgr] DoStartOtherModules not support auxiliray channel mode
+[126700]	2026-11-03 23:30:50.039	- Info  -	[WinVideoCaptureFactory] using 2 mode  with watermark(no)
+[126700]	2026-11-03 23:30:50.039	- Info  -	[SaddcStream] Create new capture mode=2 (0-full, 1-gditracer, 2-mirrortracer, 3-dwm, 4-idd). 
+[126700]	2026-11-03 23:30:50.039	= Debug =	[SaddcStream] new capturer type=2
+[126700]	2026-11-03 23:30:50.039	- Info  -	[LimitedCapture]SetProcessCpuUsageLimitPercentage 0
+[126700]	2026-11-03 23:30:50.039	- Info  -	[LimitedCapture]SetMaxFpsEx 24 locked 0
+[126700]	2026-11-03 23:30:50.039	- Info  -	[dxgi][0000022F45D1BEE0] start capture 
+[38480]	2026-11-03 23:30:50.039	= Debug =	[thread] set thread name Thread-38480 45d1bee0 / 38480
+[126700]	2026-11-03 23:30:50.040	- Info  -	[DXGI] Current desktop(0) size -> (1920, 1080)
+[126712]	2026-11-03 23:30:50.040	- Info  -	[ClientDesktopMgr] DoStartOtherModules finish
+[126700]	2026-11-03 23:30:50.040	- Info  -	[SaddcStream] No need resize screen buffer, dpi=96, [1920, 1080] @ 2071
+[126700]	2026-11-03 23:30:50.040	- Info  -	[SaddcStream] new capture start success, type dxgi
+[126700]	2026-11-03 23:30:50.040	- Info  -	[SaddcStream] SetCompressionParamInternal 1332
+[126700]	2026-11-03 23:30:50.040	- Info  -	[SaddcStream] SetCompression 10/24->10/24
+[126700]	2026-11-03 23:30:50.040	- Info  -	[LimitedCapture]SetMaxFpsEx 24 locked 0
+[126700]	2026-11-03 23:30:50.040	- Info  -	[UnifiedAvEncoder] SetCompressionParam, layer=1, encoding=h264, format=i420, kbps=0, maxkbpsfactor=0.00 percent 1.00
+[126700]	2026-11-03 23:30:50.040	= Debug =	*[statistical] time point: 23:30:50.040 -- desktopserver_initinfo
+[126700]	2026-11-03 23:30:50.040	- Info  -	[SaddcStream] No need resize screen buffer, dpi=96, [1920, 1080] @ 2071
+[126700]	2026-11-03 23:30:50.041	- Info  -	[SaddcStream] send full screen image begin,bDisplayChanged 0, bScreenSwitched 0, bInitInfoSend 0, 1920x1080
+[126700]	2026-11-03 23:30:50.041	= Debug =	*[statistical] time point: 23:30:50.041 -- SaddcStream::GetInitBuffer
+[126700]	2026-11-03 23:30:50.041	= Debug =	[SaddcStream] send full screen image end
+[126700]	2026-11-03 23:30:50.041	- Info  -	[SaddcStream] No need resize screen buffer, dpi=96, [1920, 1080] @ 2071
+[126700]	2026-11-03 23:30:50.041	= Debug =	*[statistical] time point: 23:30:50.041 -- desktopserver_initinfo_ok
+[126700]	2026-11-03 23:30:50.041	- Info  -	[SaddcStream] reconfig crf 28 @ 2133
+[126700]	2026-11-03 23:30:50.042	- Info  -	[HWAccelComp] AMD card, vendorId=0x1002, desc=AMD Radeon(TM) 8060S Graphics
+[119196]	2026-11-03 23:30:50.042	= Debug =	[thread] set thread name codec-pre 49425bc0 / 119196
+[126700]	2026-11-03 23:30:50.042	- Info  -	[AmfEnc] set encode type h264
+[38480]	2026-11-03 23:30:50.045	- Info  -	[DXGI] Uninitialize device.
+[38480]	2026-11-03 23:30:50.045	- Info  -	[DXGI] Current desktop(0) size -> (1920, 1080)
+[38480]	2026-11-03 23:30:50.050	= Debug =	[DXGIUtilsHelper] Find adapter: (0, 0, 1920, 1080)
+[126700]	2026-11-03 23:30:50.075	= Debug =	[AmfEnc] Resolution range [128, 4096], [128, 4096]
+[126700]	2026-11-03 23:30:50.076	= Debug =	[AmfEnc] Calculated bitrate from CRF 28: 3663574 bps
+[126700]	2026-11-03 23:30:50.076	- Info  -	[AmfEnc] UpdateRCParams VBR: h264 target=3663 Kbps, peak=4579 Kbps, res=0/0
+[126700]	2026-11-03 23:30:50.089	- Info  -	[AmfEnc] init amf environment ok, use avc
+[126700]	2026-11-03 23:30:50.089	- Info  -	[HWAccelComp] encoder init h264 ok, 1920x1080
+[126700]	2026-11-03 23:30:50.089	- Info  -	[UnifiedEnc] use HW mode h264(i420) 1920x1080 
+[126700]	2026-11-03 23:30:50.107	= Debug =	*[statistical] time point: 23:30:50.107 -- send_first_frame
+[126700]	2026-11-03 23:30:50.107	- Info  -	[ClientDesktopMgr] send first frame
+[123184]	2026-11-03 23:30:50.147	= Debug =	[WinLockStateWnd::MessageThreadFn] regist wtslock
+[126700]	2026-11-03 23:30:50.148	= Debug =	[LockStateInterFace::SetAfterFirstFrame] [lock_state] received first frame
+[126700]	2026-11-03 23:30:50.149	+Warning+	[LockStateInterFace::OnSendLockStateThread] [lock_state] dont send lock state init protocol
+[126700]	2026-11-03 23:30:50.149	- Info  -	[ClientDesktopMgr] run statistical task
+[126700]	2026-11-03 23:30:50.149	- Info  -	[desktop] total 178 calc 0 encode 137 send 0 push 41 cost 629 size 6307 cache=0/0/0, bandwidth=65536(0, recv 0) frame count=0/0 frameid 1
+[126724]	2026-11-03 23:30:50.153	- Info  -	[DesktopMonitorServer] OnProtoSetFrameRate
+[126724]	2026-11-03 23:30:50.153	- Info  -	[DesktopMonitorServer] OnProtoSetFrameRateV2 fps 40
+[126724]	2026-11-03 23:30:50.156	- Info  -	[SaddcStream] SetCompression 10/24->10/40
+[126724]	2026-11-03 23:30:50.156	- Info  -	[AmfEnc] SetFps 24->40 (CQP mode), res=0
+[126724]	2026-11-03 23:30:50.156	- Info  -	[LimitedCapture]SetMaxFpsEx 40 locked 0
+[126724]	2026-11-03 23:30:50.156	- Info  -	[SaddcStream] SetMaxFps set max frame rate=40, lock 691
+[126760]	2026-11-03 23:30:50.160	- Info  -	[clipboard::clipboard_router::OnConnect] new agent client connected!
+[126760]	2026-11-03 23:30:50.160	- Info  -	[clipboard] stop plugin
+[126760]	2026-11-03 23:30:50.160	- Info  -	[clipboard] enable clipboard text:1 
+[126760]	2026-11-03 23:30:50.160	- Info  -	[clipboard] enable clipboard file:1 
+[126760]	2026-11-03 23:30:50.160	- Info  -	[clipboard] enable p2p:0 
+[126760]	2026-11-03 23:30:50.160	- Info  -	[clipboard] enable auxchannelmode:0 
+[126724]	2026-11-03 23:30:50.179	- Info  -	[DesktopMonitorServer] OnProtoSetFrameRate
+[38480]	2026-11-03 23:30:50.181	- Info  -	[DXGI] Initialize DXGI duplication device ok!
+[38480]	2026-11-03 23:30:50.182	- Info  -	[DuplMgr] output(0) left(0), top(0), right(1920), bottom(1080), rotation(1)
+[38480]	2026-11-03 23:30:50.184	- Info  -	[DuplMgr] DXGI DuplicateOutput use IDXGIOutput1
+[38480]	2026-11-03 23:30:50.189	- Info  -	[DXGI] Support gpu pre process
+[38480]	2026-11-03 23:30:50.189	- Info  -	[DXGI] use dxgi mode rotation 1
+[38480]	2026-11-03 23:30:50.189	= Debug =	[DXGI] force capture
+[126724]	2026-11-03 23:30:50.245	= Debug =	[CSingleDesktop] recv first frame respond, frameid 1,chl 0, 133861110
+[126724]	2026-11-03 23:30:50.245	- Info  -	[X264_CrfCalculator] rf control received first remote frame count.
+[126724]	2026-11-03 23:30:50.245	- Info  -	[DesktopMonitorServer] OnProtoSetFrameRate
+[126724]	2026-11-03 23:30:50.245	- Info  -	[DesktopMonitorServer] OnProtoSetFrameRateV2 fps 40
+[126724]	2026-11-03 23:30:50.245	- Info  -	[SaddcStream] SetCompression 10/40->10/40
+[126724]	2026-11-03 23:30:50.245	- Info  -	[LimitedCapture]SetMaxFpsEx 40 locked 0
+[126724]	2026-11-03 23:30:50.245	- Info  -	[SaddcStream] SetMaxFps set max frame rate=40, lock 727
+[126724]	2026-11-03 23:30:50.245	- Info  -	[BlackScreen] OnRequestBlackScreen ctrl 1
+[126724]	2026-11-03 23:30:50.245	= Debug =	[WinBlackScreen] InternalProc val: 1
+[126724]	2026-11-03 23:30:50.245	- Info  -	[CBlackScreenLoader] Init start
+[126724]	2026-11-03 23:30:50.245	- Info  -	[CBlackScreenLoader] Init enter
+[126724]	2026-11-03 23:30:50.245	= Debug =	[select_tracker] run ok
+[126880]	2026-11-03 23:30:50.246	- Info  -	[FilterWindowBlackScreen]SyncRun mainpid 0, custom 0 img 
+[126884]	2026-11-03 23:30:50.246	= Debug =	[thread] set thread name WinBlackScreen 4a0fe300 / 126884
+[126880]	2026-11-03 23:30:50.312	- Info  -	[FilterWindowBlackScreen] CreateWindowExW success 0,0,1920,1080
+[126884]	2026-11-03 23:30:51.247	- Info  -	[WinBlackScreen] CheckBlackScreen  set auto black screen
+[126884]	2026-11-03 23:30:51.247	= Debug =	[WinBlackScreen] InternalProc val: 1
+[126884]	2026-11-03 23:30:51.260	- Info  -	[CBlackScreenLoader] Init start
+[126884]	2026-11-03 23:30:51.260	- Info  -	[BlackScreen] NotifyBlackScreen state:power_off
+[126884]	2026-11-03 23:30:51.260	= Debug =	[agentclient] write message data size(102), cmd 30
+[126884]	2026-11-03 23:30:51.260	- Info  -	[PowerApiLoader] call powerapi::PowerApiLoader::PowerApiLoader at  109
+[126884]	2026-11-03 23:30:51.260	- Info  -	[PowerApiLoader] pGetActiveScheme: 00007FF81E6C4060, pSetActiveScheme: 00007FF81E6C2B50, pReadACValueIndex: 00007FF81E6C5CE0, pWriteACValueIndex 00007FF81E6C3470
+[126884]	2026-11-03 23:30:51.263	= Debug =	[PowerConfigState][GetConfigInterface] path C:\ProgramData\Oray\AweSun\config.ini
+[126884]	2026-11-03 23:30:51.263	* Error *	[PowerConfigState][LoadBackup] load ini file fail
+[126884]	2026-11-03 23:30:51.263	= Debug =	[PowerConfigState][GetConfigInterface] path C:\ProgramData\Oray\AweSun\config.ini
+[126884]	2026-11-03 23:30:51.263	* Error *	[PowerConfigState] SaveBackup load file fail
+[126884]	2026-11-03 23:30:51.268	- Info  -	[WinBlackScreen] PowerWriteACValueIndex value 0, restore 0, result 1, err 2
+[126884]	2026-11-03 23:30:51.378	- Info  -	[WinBlackScreen] PowerSetActiveScheme successed.
+[126724]	2026-11-03 23:30:51.393	- Info  -	[clipboard] receive query version request
+[126736]	2026-11-03 23:30:51.562	- Info  -	[oray::plugin::MouseMonitor::OnRwaInput] hDevice is null
+[126752]	2026-11-03 23:30:55.409	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:30:55.525	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:30:55.594	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:30:55.659	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:30:55.743	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:30:55.810	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:30:55.900	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:30:55.964	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:30:56.050	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:30:56.118	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:30:56.211	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:30:56.268	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:30:56.373	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:30:56.431	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:30:57.179	= Debug =	keyboard event 0x59 0
+[126752]	2026-11-03 23:30:57.252	= Debug =	keyboard event 0x55 0
+[126752]	2026-11-03 23:30:57.267	= Debug =	keyboard event 0x59 1
+[126752]	2026-11-03 23:30:57.341	= Debug =	keyboard event 0x41 0
+[126752]	2026-11-03 23:30:57.350	= Debug =	keyboard event 0x55 1
+[126752]	2026-11-03 23:30:57.457	= Debug =	keyboard event 0x4e 0
+[126752]	2026-11-03 23:30:57.467	= Debug =	keyboard event 0x41 1
+[126752]	2026-11-03 23:30:57.563	= Debug =	keyboard event 0x4e 1
+[126752]	2026-11-03 23:30:57.637	= Debug =	keyboard event 0x41 0
+[126752]	2026-11-03 23:30:57.668	= Debug =	keyboard event 0x4c 0
+[126752]	2026-11-03 23:30:57.777	= Debug =	keyboard event 0x41 1
+[126752]	2026-11-03 23:30:57.794	= Debug =	keyboard event 0x49 0
+[126752]	2026-11-03 23:30:57.813	= Debug =	keyboard event 0x4c 1
+[126752]	2026-11-03 23:30:57.934	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:30:57.961	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:30:58.063	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:30:58.074	= Debug =	keyboard event 0x53 0
+[126692]	2026-11-03 23:30:58.163	- Info  -	[IddListener] monitor arrival, \\?\DISPLAY#DELD0E6#1&3416c83d&129&UID256#{e6f07b5f-ee97-4a90-b076-33f57bf4eaa7}
+[38480]	2026-11-03 23:30:58.297	- Info  -	[DXGI] Failed to acquire next frame in DUPLICATIONMANAGER hr 887a0001
+[38480]	2026-11-03 23:30:58.297	* Error *	[DXGI] Failed to acquire next frame in DUPLICATIONMANAGER with 0x887A0001.
+[38480]	2026-11-03 23:30:58.297	* Error *	[DXGI] DuplMgr.GetFrame failed
+[126752]	2026-11-03 23:30:58.444	= Debug =	keyboard event 0x48 0
+[126692]	2026-11-03 23:30:58.461	= Debug =	[DisplayMonitor] OnDisplayDeviceArrival 2, check [oray 0, sys 0, phy 1 @ 201]
+[126660]	2026-11-03 23:30:58.482	= Debug =	[ClientDesktopMgr] DisplayAdd count=0
+[126744]	2026-11-03 23:30:58.482	= Debug =	[WinSysMgr] DoDisplayAction isAdd=1, count=0, enable=0
+[126744]	2026-11-03 23:30:58.482	- Info  -	[WinSysMgr] auto virtualdisplay disabled
+[38480]	2026-11-03 23:30:58.578	- Info  -	[DuplMgr] output(0) left(3392), top(0), right(5312), bottom(1080), rotation(1)
+[38480]	2026-11-03 23:30:58.578	- Info  -	[DXGI] Failed to get specified output in DUPLICATIONMANAGER hr 887a0002
+[38480]	2026-11-03 23:30:58.579	- Info  -	[DXGI] Uninitialize device.
+[38480]	2026-11-03 23:30:58.579	+Warning+	[DXGI] InitDxgiCapture, get output fail
+[126692]	2026-11-03 23:30:58.648	= Debug =	[monitor]PRIMARY, left=0, top=0, right=3392, bottom=2400, string=OPDisplayDriver Device
+[126692]	2026-11-03 23:30:58.690	= Debug =	[monitor]MONITOR, left=3392, top=0, right=5312, bottom=1080, string=AMD Radeon(TM) 8060S Graphics
+[126692]	2026-11-03 23:30:58.690	= Debug =	MonitorManager::reset, count=2
+[126692]	2026-11-03 23:30:58.690	- Info  -	[DisplayMonitorImpl] Addtional found screen changed
+[126660]	2026-11-03 23:30:59.035	= Debug =	[monitor]PRIMARY, left=0, top=0, right=3392, bottom=2400, string=OPDisplayDriver Device
+[126660]	2026-11-03 23:30:59.035	= Debug =	MonitorManager::reset, count=1
+[126744]	2026-11-03 23:30:59.036	- Info  -	[ClientDesktopMgr] DisplayChanged 3392*2400
+[126744]	2026-11-03 23:30:59.036	= Debug =	[SaddcStream] Display changed, size=0x0 --> 3392x2400, w=1920, h=1080
+[126744]	2026-11-03 23:30:59.113	- Info  -	[DXGI] Current desktop(0) size -> (3392, 2400)
+[126744]	2026-11-03 23:30:59.116	- Info  -	[WinInput] DisplayChanged
+[126700]	2026-11-03 23:30:59.116	= Debug =	*[statistical] time point: 23:30:59.116 -- desktopserver_initinfo
+[126700]	2026-11-03 23:30:59.116	- Info  -	[DXGI] Current desktop(0) size -> (3392, 2400)
+[126700]	2026-11-03 23:30:59.117	- Info  -	[SaddcStream] No need resize screen buffer, dpi=144, [3392, 2400] @ 2071
+[126700]	2026-11-03 23:30:59.117	- Info  -	[SaddcStream] send full screen image begin,bDisplayChanged 1, bScreenSwitched 0, bInitInfoSend 1, 3392x2400
+[126700]	2026-11-03 23:30:59.117	= Debug =	*[statistical] time point: 23:30:59.117 -- SaddcStream::GetInitBuffer
+[38480]	2026-11-03 23:30:59.117	- Info  -	[DXGI] Current desktop(0) size -> (3392, 2400)
+[126744]	2026-11-03 23:30:59.118	* Error *	[IddCxDevice] open device fail, no device founded
+[126700]	2026-11-03 23:30:59.120	- Info  -	[AmfEnc] uninit amf environment
+[126744]	2026-11-03 23:30:59.121	- Info  -	[SysMgr] SendExtendDisplayStatus support 0 count 0 canchange 1
+[126744]	2026-11-03 23:30:59.122	= Debug =	[ClientDesktopMgr]GdiDeviceName: \\.\DISPLAY487, Monitor name: OPExtScreen
+[126712]	2026-11-03 23:30:59.129	- Info  -	[ClientDesktopMgr] DisplayRefreshRateDetect hz=60
+[126724]	2026-11-03 23:30:59.157	- Info  -	[DesktopMonitorServer] OnProtoSetFrameRate
+[126724]	2026-11-03 23:30:59.157	- Info  -	[DesktopMonitorServer] OnProtoSetFrameRateV2 fps 40
+[126700]	2026-11-03 23:30:59.163	- Info  -	[HWAccelComp] UnInit ok
+[126700]	2026-11-03 23:30:59.163	= Debug =	[SaddcStream] send full screen image end
+[126700]	2026-11-03 23:30:59.163	- Info  -	[SaddcStream] No need resize screen buffer, dpi=144, [3392, 2400] @ 2071
+[126700]	2026-11-03 23:30:59.163	= Debug =	*[statistical] time point: 23:30:59.163 -- desktopserver_initinfo_ok
+[126700]	2026-11-03 23:30:59.171	- Info  -	[HWAccelComp] AMD card, vendorId=0x1002, desc=AMD Radeon(TM) 8060S Graphics
+[107300]	2026-11-03 23:30:59.171	= Debug =	[thread] set thread name codec-pre 49424fc0 / 107300
+[126700]	2026-11-03 23:30:59.171	- Info  -	[AmfEnc] set encode type h264
+[126700]	2026-11-03 23:30:59.197	= Debug =	[AmfEnc] Resolution range [128, 4096], [128, 4096]
+[126700]	2026-11-03 23:30:59.198	= Debug =	[AmfEnc] Calculated bitrate from CRF 28: 12319378 bps
+[126700]	2026-11-03 23:30:59.198	- Info  -	[AmfEnc] UpdateRCParams VBR: h264 target=12319 Kbps, peak=15399 Kbps, res=0/0
+[126700]	2026-11-03 23:30:59.208	- Info  -	[AmfEnc] init amf environment ok, use avc
+[126700]	2026-11-03 23:30:59.208	- Info  -	[HWAccelComp] encoder init h264 ok, 3392x2400
+[126700]	2026-11-03 23:30:59.208	- Info  -	[UnifiedEnc] use HW mode h264(i420) 3392x2400 
+[126724]	2026-11-03 23:30:59.275	- Info  -	[SaddcStream] SetCompression 10/40->10/40
+[126724]	2026-11-03 23:30:59.275	- Info  -	[LimitedCapture]SetMaxFpsEx 40 locked 0
+[126724]	2026-11-03 23:30:59.275	- Info  -	[SaddcStream] SetMaxFps set max frame rate=40, lock 776
+[126700]	2026-11-03 23:30:59.275	= Debug =	*[statistical] time point: 23:30:59.275 -- send_first_frame
+[126700]	2026-11-03 23:30:59.275	- Info  -	[ClientDesktopMgr] send first frame
+[126700]	2026-11-03 23:30:59.275	- Info  -	[desktop] total 164 calc 0 encode 164 send 0 push 0 cost 1116 size 24039 cache=0/0/0, bandwidth=200339(200339, recv 11548) frame count=321/321 frameid 1
+[126660]	2026-11-03 23:30:59.275	= Debug =	[monitor]PRIMARY, left=0, top=0, right=3392, bottom=2400, string=OPDisplayDriver Device
+[126660]	2026-11-03 23:30:59.275	= Debug =	MonitorManager::reset, count=1
+[126752]	2026-11-03 23:30:59.410	= Debug =	keyboard event 0x53 1
+[126744]	2026-11-03 23:30:59.496	= Debug =	[DesktopSpeedPlan] enabled plan
+[126724]	2026-11-03 23:30:59.498	= Debug =	[CSingleDesktop] recv first frame respond, frameid 1,chl 0, 133870363
+[126724]	2026-11-03 23:30:59.498	- Info  -	[X264_CrfCalculator] rf control received first remote frame count.
+[126724]	2026-11-03 23:30:59.498	- Info  -	[DesktopMonitorServer] OnProtoSetFrameRate
+[126724]	2026-11-03 23:30:59.498	- Info  -	[DesktopMonitorServer] OnProtoSetFrameRateV2 fps 40
+[126724]	2026-11-03 23:30:59.498	- Info  -	[SaddcStream] SetCompression 10/40->10/40
+[126724]	2026-11-03 23:30:59.498	- Info  -	[LimitedCapture]SetMaxFpsEx 40 locked 0
+[126724]	2026-11-03 23:30:59.498	- Info  -	[SaddcStream] SetMaxFps set max frame rate=40, lock 776
+[126752]	2026-11-03 23:31:00.495	= Debug =	keyboard event 0x49 0
+[126712]	2026-11-03 23:31:01.147	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 5, fps 40
+[126660]	2026-11-03 23:31:01.346	= Debug =	[monitor]PRIMARY, left=0, top=0, right=3392, bottom=2400, string=OPDisplayDriver Device
+[126660]	2026-11-03 23:31:01.375	= Debug =	[monitor]MONITOR, left=3392, top=0, right=5312, bottom=1080, string=AMD Radeon(TM) 8060S Graphics
+[126660]	2026-11-03 23:31:01.375	= Debug =	MonitorManager::reset, count=2
+[126744]	2026-11-03 23:31:01.378	= Debug =	[ClientDesktopMgr]GdiDeviceName: \\.\DISPLAY487, Monitor name: OPExtScreen
+[126744]	2026-11-03 23:31:01.379	= Debug =	[ClientDesktopMgr]GdiDeviceName: \\.\DISPLAY1, Monitor name: ExternalMonitor
+[126744]	2026-11-03 23:31:01.380	- Info  -	[ClientDesktopMgr] DisplayChanged 5312*3480
+[126744]	2026-11-03 23:31:01.407	= Debug =	[SaddcStream] Display changed, size=3392x2400 --> 5312x3480, w=3392, h=2400
+[126752]	2026-11-03 23:31:01.569	= Debug =	keyboard event 0x20 0
+[126744]	2026-11-03 23:31:01.574	- Info  -	[DXGI] Current desktop(0) size -> (3392, 2400)
+[126744]	2026-11-03 23:31:01.580	- Info  -	[WinInput] DisplayChanged
+[126744]	2026-11-03 23:31:01.583	* Error *	[IddCxDevice] open device fail, no device founded
+[126744]	2026-11-03 23:31:01.586	- Info  -	[SysMgr] SendExtendDisplayStatus support 0 count 0 canchange 1
+[126712]	2026-11-03 23:31:01.593	- Info  -	[ClientDesktopMgr] DisplayRefreshRateDetect hz=60
+[38480]	2026-11-03 23:31:01.621	- Info  -	[DXGI] Current desktop(0) size -> (3392, 2400)
+[126724]	2026-11-03 23:31:01.623	- Info  -	[DesktopMonitorServer] OnProtoSetFrameRate
+[126724]	2026-11-03 23:31:01.623	- Info  -	[DesktopMonitorServer] OnProtoSetFrameRateV2 fps 40
+[126724]	2026-11-03 23:31:01.623	- Info  -	[SaddcStream] SetCompression 10/40->10/40
+[126724]	2026-11-03 23:31:01.623	- Info  -	[LimitedCapture]SetMaxFpsEx 40 locked 0
+[126724]	2026-11-03 23:31:01.623	- Info  -	[SaddcStream] SetMaxFps set max frame rate=40, lock 776
+[126712]	2026-11-03 23:31:02.145	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 6, fps 40
+[126752]	2026-11-03 23:31:02.649	= Debug =	keyboard event 0x48 1
+[126712]	2026-11-03 23:31:03.150	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 6, fps 40
+[126660]	2026-11-03 23:31:03.290	= Debug =	[monitor]PRIMARY, left=0, top=0, right=3392, bottom=2400, string=OPDisplayDriver Device
+[126660]	2026-11-03 23:31:03.290	= Debug =	MonitorManager::reset, count=1
+[126744]	2026-11-03 23:31:03.292	= Debug =	[ClientDesktopMgr]GdiDeviceName: \\.\DISPLAY487, Monitor name: OPExtScreen
+[126744]	2026-11-03 23:31:03.292	- Info  -	[ClientDesktopMgr] DisplayChanged 3392*2400
+[126744]	2026-11-03 23:31:03.309	= Debug =	[SaddcStream] Display changed, size=3392x2400 --> 3392x2400, w=3392, h=2400
+[126744]	2026-11-03 23:31:03.427	- Info  -	[DXGI] Current desktop(0) size -> (3392, 2400)
+[126744]	2026-11-03 23:31:03.434	- Info  -	[WinInput] DisplayChanged
+[38480]	2026-11-03 23:31:03.434	- Info  -	[DXGI] Current desktop(0) size -> (3392, 2400)
+[126744]	2026-11-03 23:31:03.435	* Error *	[IddCxDevice] open device fail, no device founded
+[126744]	2026-11-03 23:31:03.438	- Info  -	[SysMgr] SendExtendDisplayStatus support 0 count 0 canchange 1
+[126712]	2026-11-03 23:31:03.445	- Info  -	[ClientDesktopMgr] DisplayRefreshRateDetect hz=60
+[126724]	2026-11-03 23:31:03.477	- Info  -	[DesktopMonitorServer] OnProtoSetFrameRate
+[126724]	2026-11-03 23:31:03.477	- Info  -	[DesktopMonitorServer] OnProtoSetFrameRateV2 fps 40
+[126724]	2026-11-03 23:31:03.477	- Info  -	[SaddcStream] SetCompression 10/40->10/40
+[126724]	2026-11-03 23:31:03.477	- Info  -	[LimitedCapture]SetMaxFpsEx 40 locked 0
+[126724]	2026-11-03 23:31:03.477	- Info  -	[SaddcStream] SetMaxFps set max frame rate=40, lock 776
+[126752]	2026-11-03 23:31:03.718	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:31:03.892	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:31:04.037	= Debug =	keyboard event 0x5a 0
+[126712]	2026-11-03 23:31:04.148	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 5, fps 40
+[126752]	2026-11-03 23:31:04.191	= Debug =	keyboard event 0x48 0
+[126752]	2026-11-03 23:31:04.329	= Debug =	keyboard event 0x5a 1
+[126752]	2026-11-03 23:31:04.454	= Debug =	keyboard event 0x48 1
+[126752]	2026-11-03 23:31:04.573	= Debug =	keyboard event 0x45 0
+[126752]	2026-11-03 23:31:04.791	= Debug =	keyboard event 0x45 1
+[126752]	2026-11-03 23:31:04.987	= Debug =	keyboard event 0x59 0
+[126752]	2026-11-03 23:31:05.094	= Debug =	keyboard event 0x59 1
+[126712]	2026-11-03 23:31:05.147	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 7, fps 40
+[126752]	2026-11-03 23:31:05.248	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:31:05.262	= Debug =	keyboard event 0x20 1
+[126660]	2026-11-03 23:31:05.370	= Debug =	[monitor]PRIMARY, left=0, top=0, right=3392, bottom=2400, string=OPDisplayDriver Device
+[126660]	2026-11-03 23:31:05.370	= Debug =	MonitorManager::reset, count=1
+[126660]	2026-11-03 23:31:07.331	= Debug =	[monitor]PRIMARY, left=0, top=0, right=3392, bottom=2400, string=OPDisplayDriver Device
+[126660]	2026-11-03 23:31:07.331	= Debug =	MonitorManager::reset, count=1
+[126752]	2026-11-03 23:31:08.232	= Debug =	keyboard event 0xd 0
+[126752]	2026-11-03 23:31:08.325	= Debug =	keyboard event 0xd 1
+[126660]	2026-11-03 23:31:09.338	= Debug =	[monitor]PRIMARY, left=0, top=0, right=3392, bottom=2400, string=OPDisplayDriver Device
+[126660]	2026-11-03 23:31:09.338	= Debug =	MonitorManager::reset, count=1
+[126752]	2026-11-03 23:31:09.510	= Debug =	keyboard event 0x10 0
+[126752]	2026-11-03 23:31:09.782	= Debug =	keyboard event 0x45 0
+[126752]	2026-11-03 23:31:09.895	= Debug =	keyboard event 0x45 1
+[126752]	2026-11-03 23:31:10.036	= Debug =	keyboard event 0x44 0
+[126752]	2026-11-03 23:31:10.193	= Debug =	keyboard event 0x44 1
+[126752]	2026-11-03 23:31:10.269	= Debug =	keyboard event 0x47 0
+[126752]	2026-11-03 23:31:10.378	= Debug =	keyboard event 0x47 1
+[126752]	2026-11-03 23:31:10.442	= Debug =	keyboard event 0x10 1
+[126752]	2026-11-03 23:31:10.622	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:31:10.714	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:31:10.816	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:31:10.937	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:31:10.993	= Debug =	keyboard event 0x32 0
+[126752]	2026-11-03 23:31:11.139	= Debug =	keyboard event 0x32 1
+[126752]	2026-11-03 23:31:11.171	= Debug =	keyboard event 0xbe 0
+[126752]	2026-11-03 23:31:11.315	= Debug =	keyboard event 0xbe 1
+[126660]	2026-11-03 23:31:11.348	= Debug =	[monitor]PRIMARY, left=0, top=0, right=3392, bottom=2400, string=OPDisplayDriver Device
+[126660]	2026-11-03 23:31:11.348	= Debug =	MonitorManager::reset, count=1
+[126752]	2026-11-03 23:31:11.514	= Debug =	keyboard event 0x30 0
+[126752]	2026-11-03 23:31:11.652	= Debug =	keyboard event 0x30 1
+[126752]	2026-11-03 23:31:11.756	= Debug =	keyboard event 0x10 0
+[126752]	2026-11-03 23:31:11.864	= Debug =	keyboard event 0x10 1
+[126752]	2026-11-03 23:31:12.146	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:31:12.235	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:31:12.318	= Debug =	keyboard event 0x42 0
+[126752]	2026-11-03 23:31:12.427	= Debug =	keyboard event 0x42 1
+[126752]	2026-11-03 23:31:12.492	= Debug =	keyboard event 0x45 0
+[126752]	2026-11-03 23:31:12.597	= Debug =	keyboard event 0x45 1
+[126752]	2026-11-03 23:31:12.643	= Debug =	keyboard event 0x49 0
+[126752]	2026-11-03 23:31:12.715	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:31:13.289	= Debug =	keyboard event 0x8 0
+[126660]	2026-11-03 23:31:13.339	= Debug =	[monitor]PRIMARY, left=0, top=0, right=3392, bottom=2400, string=OPDisplayDriver Device
+[126660]	2026-11-03 23:31:13.339	= Debug =	MonitorManager::reset, count=1
+[126752]	2026-11-03 23:31:13.396	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:31:13.467	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:31:13.553	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:31:13.682	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:31:13.811	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:31:14.001	= Debug =	keyboard event 0x10 0
+[126752]	2026-11-03 23:31:14.117	= Debug =	keyboard event 0x10 1
+[126752]	2026-11-03 23:31:15.159	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:31:15.278	= Debug =	keyboard event 0x8 1
+[126660]	2026-11-03 23:31:15.348	= Debug =	[monitor]PRIMARY, left=0, top=0, right=3392, bottom=2400, string=OPDisplayDriver Device
+[126660]	2026-11-03 23:31:15.348	= Debug =	MonitorManager::reset, count=1
+[126752]	2026-11-03 23:31:15.402	= Debug =	keyboard event 0x10 0
+[126752]	2026-11-03 23:31:15.616	= Debug =	keyboard event 0xbf 0
+[126752]	2026-11-03 23:31:15.794	= Debug =	keyboard event 0xbf 1
+[126752]	2026-11-03 23:31:15.854	= Debug =	keyboard event 0x10 1
+[126752]	2026-11-03 23:31:16.151	= Debug =	keyboard event 0xd 0
+[126752]	2026-11-03 23:31:16.232	= Debug =	keyboard event 0xd 1
+[126660]	2026-11-03 23:31:17.347	= Debug =	[monitor]PRIMARY, left=0, top=0, right=3392, bottom=2400, string=OPDisplayDriver Device
+[126660]	2026-11-03 23:31:17.347	= Debug =	MonitorManager::reset, count=1
+[126660]	2026-11-03 23:31:19.338	= Debug =	[monitor]PRIMARY, left=0, top=0, right=3392, bottom=2400, string=OPDisplayDriver Device
+[126660]	2026-11-03 23:31:19.338	= Debug =	MonitorManager::reset, count=1
+[126712]	2026-11-03 23:31:20.147	= Debug =	[EncoderQualityCalc] limit=0(isdrop=0, 1.00), bandwidth=161255(recv=382089,0), fps=13, diff=27(0,0), 45, crf(cqp)=28-->27, drop=0, send=14, line=187
+[126700]	2026-11-03 23:31:20.167	= Debug =	[AmfEnc] Calculated bitrate from CRF 27: 12319378 bps
+[126700]	2026-11-03 23:31:20.168	- Info  -	[AmfEnc] UpdateRCParams VBR: h264 target=12319 Kbps, peak=15399 Kbps, res=0/0
+[126700]	2026-11-03 23:31:20.168	- Info  -	[SaddcStream] reconfig crf 27 @ 2133
+[126660]	2026-11-03 23:31:21.353	= Debug =	[monitor]PRIMARY, left=0, top=0, right=3392, bottom=2400, string=OPDisplayDriver Device
+[126660]	2026-11-03 23:31:21.353	= Debug =	MonitorManager::reset, count=1
+[126660]	2026-11-03 23:31:23.341	= Debug =	[monitor]PRIMARY, left=0, top=0, right=3392, bottom=2400, string=OPDisplayDriver Device
+[126660]	2026-11-03 23:31:23.341	= Debug =	MonitorManager::reset, count=1
+[126712]	2026-11-03 23:31:26.147	= Debug =	[EncoderQualityCalc] limit=0(isdrop=0, 1.00), bandwidth=161255(recv=382089,40453), fps=12, diff=28(1,1), 45, crf(cqp)=27-->26, drop=0, send=13, line=202
+[126700]	2026-11-03 23:31:26.169	= Debug =	[AmfEnc] Calculated bitrate from CRF 26: 12319378 bps
+[126700]	2026-11-03 23:31:26.169	- Info  -	[AmfEnc] UpdateRCParams VBR: h264 target=12319 Kbps, peak=15399 Kbps, res=0/0
+[126700]	2026-11-03 23:31:26.169	- Info  -	[SaddcStream] reconfig crf 26 @ 2133
+[126712]	2026-11-03 23:31:31.148	= Debug =	[EncoderQualityCalc] limit=0(isdrop=0, 1.00), bandwidth=161255(recv=382089,437), fps=14, diff=26(-1,1), 45, crf(cqp)=26-->25, drop=0, send=13, line=187
+[126700]	2026-11-03 23:31:31.173	= Debug =	[AmfEnc] Calculated bitrate from CRF 25: 12319378 bps
+[126700]	2026-11-03 23:31:31.173	- Info  -	[AmfEnc] UpdateRCParams VBR: h264 target=12319 Kbps, peak=15399 Kbps, res=0/0
+[126700]	2026-11-03 23:31:31.173	- Info  -	[SaddcStream] reconfig crf 25 @ 2133
+[126712]	2026-11-03 23:31:37.150	= Debug =	[EncoderQualityCalc] limit=0(isdrop=0, 1.00), bandwidth=161255(recv=382089,0), fps=13, diff=27(0,0), 45, crf(cqp)=25-->24, drop=0, send=14, line=187
+[126700]	2026-11-03 23:31:37.160	= Debug =	[AmfEnc] Calculated bitrate from CRF 24: 12319378 bps
+[126700]	2026-11-03 23:31:37.160	- Info  -	[AmfEnc] UpdateRCParams VBR: h264 target=12319 Kbps, peak=15399 Kbps, res=0/0
+[126700]	2026-11-03 23:31:37.160	- Info  -	[SaddcStream] reconfig crf 24 @ 2133
+[126752]	2026-11-03 23:31:41.076	= Debug =	keyboard event 0xa2 0
+[126752]	2026-11-03 23:31:41.430	= Debug =	keyboard event 0x43 0
+[126752]	2026-11-03 23:31:41.594	= Debug =	keyboard event 0xa2 1
+[126752]	2026-11-03 23:31:41.597	= Debug =	keyboard event 0x43 1
+[126712]	2026-11-03 23:31:42.150	= Debug =	[EncoderQualityCalc] limit=0(isdrop=0, 1.00), bandwidth=161255(recv=382089,490), fps=12, diff=28(0,1), 45, crf(cqp)=24-->23, drop=0, send=13, line=187
+[126700]	2026-11-03 23:31:42.184	= Debug =	[AmfEnc] Calculated bitrate from CRF 23: 12319378 bps
+[126700]	2026-11-03 23:31:42.184	- Info  -	[AmfEnc] UpdateRCParams VBR: h264 target=12319 Kbps, peak=15399 Kbps, res=0/0
+[126700]	2026-11-03 23:31:42.184	- Info  -	[SaddcStream] reconfig crf 23 @ 2133
+[126712]	2026-11-03 23:31:48.149	= Debug =	[EncoderQualityCalc] limit=0(isdrop=0, 1.00), bandwidth=161255(recv=382089,0), fps=12, diff=28(0,0), 45, crf(cqp)=23-->22, drop=0, send=13, line=187
+[126700]	2026-11-03 23:31:48.174	= Debug =	[AmfEnc] Calculated bitrate from CRF 22: 12319378 bps
+[126700]	2026-11-03 23:31:48.174	- Info  -	[AmfEnc] UpdateRCParams VBR: h264 target=12319 Kbps, peak=15399 Kbps, res=0/0
+[126700]	2026-11-03 23:31:48.174	- Info  -	[SaddcStream] reconfig crf 22 @ 2133
+[126752]	2026-11-03 23:31:50.398	= Debug =	keyboard event 0xa2 0
+[126752]	2026-11-03 23:31:50.602	= Debug =	keyboard event 0x56 0
+[126752]	2026-11-03 23:31:50.742	= Debug =	keyboard event 0x56 1
+[126752]	2026-11-03 23:31:50.784	= Debug =	keyboard event 0xa2 1
+[126752]	2026-11-03 23:31:51.166	= Debug =	keyboard event 0x10 0
+[126752]	2026-11-03 23:31:51.314	= Debug =	keyboard event 0xd 0
+[126752]	2026-11-03 23:31:51.405	= Debug =	keyboard event 0xd 1
+[126752]	2026-11-03 23:31:51.441	= Debug =	keyboard event 0xd 0
+[126752]	2026-11-03 23:31:51.543	= Debug =	keyboard event 0xd 1
+[126752]	2026-11-03 23:31:51.643	= Debug =	keyboard event 0xd 0
+[126752]	2026-11-03 23:31:51.713	= Debug =	keyboard event 0xd 1
+[126752]	2026-11-03 23:31:51.909	= Debug =	keyboard event 0x10 1
+[126752]	2026-11-03 23:31:52.403	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:31:52.511	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:31:53.060	= Debug =	keyboard event 0x4a 0
+[126752]	2026-11-03 23:31:53.139	= Debug =	keyboard event 0x49 0
+[126752]	2026-11-03 23:31:53.221	= Debug =	keyboard event 0x4a 1
+[126752]	2026-11-03 23:31:53.264	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:31:53.378	= Debug =	keyboard event 0x59 0
+[126752]	2026-11-03 23:31:53.469	= Debug =	keyboard event 0x55 0
+[126752]	2026-11-03 23:31:53.480	= Debug =	keyboard event 0x59 1
+[126752]	2026-11-03 23:31:53.563	= Debug =	keyboard event 0x55 1
+[126752]	2026-11-03 23:31:53.888	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:31:53.954	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:31:54.029	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:31:54.104	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:31:54.184	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:31:54.285	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:31:54.787	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:31:54.885	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:31:55.078	= Debug =	keyboard event 0x10 0
+[126752]	2026-11-03 23:31:55.164	= Debug =	keyboard event 0x10 1
+[126752]	2026-11-03 23:31:55.408	= Debug =	keyboard event 0x4a 0
+[126752]	2026-11-03 23:31:55.484	= Debug =	keyboard event 0x49 0
+[126752]	2026-11-03 23:31:55.552	= Debug =	keyboard event 0x4a 1
+[126752]	2026-11-03 23:31:55.600	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:31:55.692	= Debug =	keyboard event 0x59 0
+[126752]	2026-11-03 23:31:55.783	= Debug =	keyboard event 0x55 0
+[126752]	2026-11-03 23:31:55.806	= Debug =	keyboard event 0x59 1
+[126752]	2026-11-03 23:31:55.903	= Debug =	keyboard event 0x55 1
+[126752]	2026-11-03 23:31:56.023	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:31:56.124	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:31:56.159	= Debug =	keyboard event 0x5a 0
+[126752]	2026-11-03 23:31:56.295	= Debug =	keyboard event 0x5a 1
+[126752]	2026-11-03 23:31:56.296	= Debug =	keyboard event 0x48 0
+[126752]	2026-11-03 23:31:56.340	= Debug =	keyboard event 0x45 0
+[126752]	2026-11-03 23:31:56.373	= Debug =	keyboard event 0x48 1
+[126752]	2026-11-03 23:31:56.439	= Debug =	keyboard event 0x45 1
+[126752]	2026-11-03 23:31:56.520	= Debug =	keyboard event 0x47 0
+[126752]	2026-11-03 23:31:56.636	= Debug =	keyboard event 0x47 1
+[126752]	2026-11-03 23:31:56.681	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:31:56.831	= Debug =	keyboard event 0x58 0
+[126752]	2026-11-03 23:31:56.854	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:31:56.979	= Debug =	keyboard event 0x58 1
+[126752]	2026-11-03 23:31:57.467	= Debug =	keyboard event 0x49 0
+[126752]	2026-11-03 23:31:57.539	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:31:57.579	= Debug =	keyboard event 0x41 0
+[126752]	2026-11-03 23:31:57.636	= Debug =	keyboard event 0x4e 0
+[126752]	2026-11-03 23:31:57.694	= Debug =	keyboard event 0x41 1
+[126752]	2026-11-03 23:31:57.705	= Debug =	keyboard event 0x4e 1
+[126752]	2026-11-03 23:31:57.760	= Debug =	keyboard event 0x47 0
+[126752]	2026-11-03 23:31:57.796	= Debug =	keyboard event 0x4d 0
+[126752]	2026-11-03 23:31:57.851	= Debug =	keyboard event 0x47 1
+[126752]	2026-11-03 23:31:57.871	= Debug =	keyboard event 0x4d 1
+[126752]	2026-11-03 23:31:57.967	= Debug =	keyboard event 0x55 0
+[126752]	2026-11-03 23:31:58.058	= Debug =	keyboard event 0x55 1
+[126752]	2026-11-03 23:31:58.081	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:31:58.161	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:31:58.303	= Debug =	keyboard event 0xbc 0
+[126752]	2026-11-03 23:31:58.419	= Debug =	keyboard event 0xbc 1
+[126752]	2026-11-03 23:31:58.636	= Debug =	keyboard event 0x4e 0
+[126752]	2026-11-03 23:31:58.714	= Debug =	keyboard event 0x4e 1
+[126752]	2026-11-03 23:31:58.726	= Debug =	keyboard event 0x45 0
+[126752]	2026-11-03 23:31:58.821	= Debug =	keyboard event 0x4e 0
+[126752]	2026-11-03 23:31:58.840	= Debug =	keyboard event 0x45 1
+[126752]	2026-11-03 23:31:58.928	= Debug =	keyboard event 0x4e 1
+[126752]	2026-11-03 23:31:58.930	= Debug =	keyboard event 0x47 0
+[126752]	2026-11-03 23:31:59.022	= Debug =	keyboard event 0x47 1
+[126752]	2026-11-03 23:31:59.140	= Debug =	keyboard event 0x42 0
+[126752]	2026-11-03 23:31:59.242	= Debug =	keyboard event 0x42 1
+[126752]	2026-11-03 23:31:59.304	= Debug =	keyboard event 0x55 0
+[126752]	2026-11-03 23:31:59.392	= Debug =	keyboard event 0x55 1
+[126752]	2026-11-03 23:31:59.727	= Debug =	keyboard event 0x4e 0
+[126752]	2026-11-03 23:31:59.799	= Debug =	keyboard event 0x4e 1
+[126752]	2026-11-03 23:31:59.813	= Debug =	keyboard event 0x45 0
+[126752]	2026-11-03 23:31:59.902	= Debug =	keyboard event 0x45 1
+[126752]	2026-11-03 23:31:59.904	= Debug =	keyboard event 0x4e 0
+[126752]	2026-11-03 23:32:00.007	= Debug =	keyboard event 0x4e 1
+[126752]	2026-11-03 23:32:00.012	= Debug =	keyboard event 0x47 0
+[126752]	2026-11-03 23:32:00.078	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:32:00.108	= Debug =	keyboard event 0x47 1
+[126752]	2026-11-03 23:32:00.168	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:32:00.219	= Debug =	keyboard event 0x42 0
+[126752]	2026-11-03 23:32:00.315	= Debug =	keyboard event 0x42 1
+[126752]	2026-11-03 23:32:00.336	= Debug =	keyboard event 0x41 0
+[126752]	2026-11-03 23:32:00.399	= Debug =	keyboard event 0x4e 0
+[126752]	2026-11-03 23:32:00.439	= Debug =	keyboard event 0x41 1
+[126752]	2026-11-03 23:32:00.479	= Debug =	keyboard event 0x47 0
+[126752]	2026-11-03 23:32:00.528	= Debug =	keyboard event 0x4e 1
+[126752]	2026-11-03 23:32:00.568	= Debug =	keyboard event 0x47 1
+[126752]	2026-11-03 23:32:00.594	= Debug =	keyboard event 0x57 0
+[126752]	2026-11-03 23:32:00.648	= Debug =	keyboard event 0x4f 0
+[126752]	2026-11-03 23:32:00.682	= Debug =	keyboard event 0x57 1
+[126752]	2026-11-03 23:32:00.762	= Debug =	keyboard event 0x4f 1
+[126752]	2026-11-03 23:32:00.765	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:32:00.859	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:32:00.892	= Debug =	keyboard event 0x5a 0
+[126752]	2026-11-03 23:32:00.988	= Debug =	keyboard event 0x55 0
+[126752]	2026-11-03 23:32:01.026	= Debug =	keyboard event 0x5a 1
+[126752]	2026-11-03 23:32:01.048	= Debug =	keyboard event 0x4f 0
+[126752]	2026-11-03 23:32:01.135	= Debug =	keyboard event 0x55 1
+[126752]	2026-11-03 23:32:01.162	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:32:01.184	= Debug =	keyboard event 0x4f 1
+[126752]	2026-11-03 23:32:01.214	= Debug =	keyboard event 0x4f 0
+[126752]	2026-11-03 23:32:01.252	= Debug =	keyboard event 0x4f 1
+[126752]	2026-11-03 23:32:01.295	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:32:01.326	= Debug =	keyboard event 0x59 0
+[126752]	2026-11-03 23:32:01.415	= Debug =	keyboard event 0x49 0
+[126752]	2026-11-03 23:32:01.445	= Debug =	keyboard event 0x59 1
+[126752]	2026-11-03 23:32:01.473	= Debug =	keyboard event 0x47 0
+[126752]	2026-11-03 23:32:01.540	= Debug =	keyboard event 0x45 0
+[126752]	2026-11-03 23:32:01.555	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:32:01.611	= Debug =	keyboard event 0x47 1
+[126752]	2026-11-03 23:32:01.642	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:32:01.709	= Debug =	keyboard event 0x45 1
+[126752]	2026-11-03 23:32:01.783	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:32:02.486	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:32:02.565	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:32:02.641	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:32:02.735	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:32:03.204	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:32:03.303	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:32:04.041	= Debug =	keyboard event 0x59 0
+[126752]	2026-11-03 23:32:04.142	= Debug =	keyboard event 0x49 0
+[126752]	2026-11-03 23:32:04.167	= Debug =	keyboard event 0x59 1
+[126752]	2026-11-03 23:32:04.260	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:32:04.267	= Debug =	keyboard event 0x47 0
+[126752]	2026-11-03 23:32:04.352	= Debug =	keyboard event 0x45 0
+[126752]	2026-11-03 23:32:04.404	= Debug =	keyboard event 0x47 1
+[126752]	2026-11-03 23:32:04.524	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:32:04.541	= Debug =	keyboard event 0x45 1
+[126752]	2026-11-03 23:32:04.644	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:32:15.074	= Debug =	keyboard event 0x44 0
+[126752]	2026-11-03 23:32:15.162	= Debug =	keyboard event 0x41 0
+[126752]	2026-11-03 23:32:15.204	= Debug =	keyboard event 0x44 1
+[126752]	2026-11-03 23:32:15.218	= Debug =	keyboard event 0x49 0
+[126752]	2026-11-03 23:32:15.284	= Debug =	keyboard event 0x41 1
+[126752]	2026-11-03 23:32:15.316	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:32:15.937	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:32:16.054	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:32:16.108	= Debug =	keyboard event 0x46 0
+[126752]	2026-11-03 23:32:16.178	= Debug =	keyboard event 0x41 0
+[126752]	2026-11-03 23:32:16.254	= Debug =	keyboard event 0x46 1
+[126752]	2026-11-03 23:32:16.286	= Debug =	keyboard event 0x4e 0
+[126752]	2026-11-03 23:32:16.297	= Debug =	keyboard event 0x41 1
+[126752]	2026-11-03 23:32:16.389	= Debug =	keyboard event 0x4e 1
+[126752]	2026-11-03 23:32:16.564	= Debug =	keyboard event 0x53 0
+[126752]	2026-11-03 23:32:16.660	= Debug =	keyboard event 0x48 0
+[126752]	2026-11-03 23:32:16.695	= Debug =	keyboard event 0x53 1
+[126752]	2026-11-03 23:32:16.757	= Debug =	keyboard event 0x48 1
+[126752]	2026-11-03 23:32:16.763	= Debug =	keyboard event 0x45 0
+[126752]	2026-11-03 23:32:16.854	= Debug =	keyboard event 0x45 1
+[126752]	2026-11-03 23:32:17.244	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:32:17.339	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:32:17.433	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:32:17.520	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:32:17.604	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:32:17.685	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:32:17.937	= Debug =	keyboard event 0x47 0
+[126752]	2026-11-03 23:32:18.057	= Debug =	keyboard event 0x55 0
+[126752]	2026-11-03 23:32:18.076	= Debug =	keyboard event 0x47 1
+[126752]	2026-11-03 23:32:18.124	= Debug =	keyboard event 0x55 1
+[126752]	2026-11-03 23:32:18.127	= Debug =	keyboard event 0x41 0
+[126752]	2026-11-03 23:32:18.241	= Debug =	keyboard event 0x41 1
+[126752]	2026-11-03 23:32:18.244	= Debug =	keyboard event 0x4e 0
+[126752]	2026-11-03 23:32:18.267	= Debug =	keyboard event 0x47 0
+[126752]	2026-11-03 23:32:18.353	= Debug =	keyboard event 0x47 1
+[126752]	2026-11-03 23:32:18.355	= Debug =	keyboard event 0x4e 1
+[126752]	2026-11-03 23:32:18.419	= Debug =	keyboard event 0x58 0
+[126752]	2026-11-03 23:32:18.503	= Debug =	keyboard event 0x49 0
+[126752]	2026-11-03 23:32:18.519	= Debug =	keyboard event 0x58 1
+[126752]	2026-11-03 23:32:18.584	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:32:18.586	= Debug =	keyboard event 0x41 0
+[126752]	2026-11-03 23:32:18.671	= Debug =	keyboard event 0x41 1
+[126752]	2026-11-03 23:32:18.674	= Debug =	keyboard event 0x4e 0
+[126752]	2026-11-03 23:32:18.767	= Debug =	keyboard event 0x4e 1
+[126752]	2026-11-03 23:32:19.017	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:32:19.132	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:32:19.253	= Debug =	keyboard event 0x46 0
+[126752]	2026-11-03 23:32:19.367	= Debug =	keyboard event 0x41 0
+[126752]	2026-11-03 23:32:19.409	= Debug =	keyboard event 0x46 1
+[126752]	2026-11-03 23:32:19.411	= Debug =	keyboard event 0x4e 0
+[126752]	2026-11-03 23:32:19.437	= Debug =	keyboard event 0x41 1
+[126752]	2026-11-03 23:32:19.504	= Debug =	keyboard event 0x4e 1
+[126752]	2026-11-03 23:32:19.691	= Debug =	keyboard event 0x48 0
+[126752]	2026-11-03 23:32:19.765	= Debug =	keyboard event 0x48 1
+[126752]	2026-11-03 23:32:19.768	= Debug =	keyboard event 0x45 0
+[126752]	2026-11-03 23:32:19.821	= Debug =	keyboard event 0x45 1
+[126752]	2026-11-03 23:32:19.878	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:32:19.961	= Debug =	keyboard event 0x44 0
+[126752]	2026-11-03 23:32:20.029	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:32:20.074	= Debug =	keyboard event 0x44 1
+[126752]	2026-11-03 23:32:20.147	= Debug =	keyboard event 0x45 0
+[126752]	2026-11-03 23:32:20.222	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:32:20.276	= Debug =	keyboard event 0x45 1
+[126752]	2026-11-03 23:32:20.324	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:32:20.731	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:32:20.804	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:32:20.879	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:32:20.948	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:32:21.035	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:32:21.140	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:32:21.307	= Debug =	keyboard event 0x46 0
+[126752]	2026-11-03 23:32:21.395	= Debug =	keyboard event 0x41 0
+[126752]	2026-11-03 23:32:21.472	= Debug =	keyboard event 0x46 1
+[126752]	2026-11-03 23:32:21.488	= Debug =	keyboard event 0x41 1
+[126752]	2026-11-03 23:32:21.490	= Debug =	keyboard event 0x4e 0
+[126752]	2026-11-03 23:32:21.568	= Debug =	keyboard event 0x4e 1
+[126752]	2026-11-03 23:32:21.632	= Debug =	keyboard event 0x53 0
+[126752]	2026-11-03 23:32:21.743	= Debug =	keyboard event 0x53 1
+[126752]	2026-11-03 23:32:21.760	= Debug =	keyboard event 0x48 0
+[126752]	2026-11-03 23:32:21.831	= Debug =	keyboard event 0x48 1
+[126752]	2026-11-03 23:32:21.834	= Debug =	keyboard event 0x45 0
+[126752]	2026-11-03 23:32:21.885	= Debug =	keyboard event 0x45 1
+[126752]	2026-11-03 23:32:22.052	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:32:22.112	= Debug =	keyboard event 0x44 0
+[126752]	2026-11-03 23:32:22.176	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:32:22.231	= Debug =	keyboard event 0x44 1
+[126752]	2026-11-03 23:32:22.313	= Debug =	keyboard event 0x45 0
+[126752]	2026-11-03 23:32:22.384	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:32:22.420	= Debug =	keyboard event 0x45 1
+[126752]	2026-11-03 23:32:22.477	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:32:22.659	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:32:22.782	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:32:22.919	= Debug =	keyboard event 0x4c 0
+[126752]	2026-11-03 23:32:23.081	= Debug =	keyboard event 0x4c 1
+[126752]	2026-11-03 23:32:23.192	= Debug =	keyboard event 0x49 0
+[126752]	2026-11-03 23:32:23.292	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:32:23.787	= Debug =	keyboard event 0x51 0
+[126752]	2026-11-03 23:32:23.871	= Debug =	keyboard event 0x51 1
+[126752]	2026-11-03 23:32:23.910	= Debug =	keyboard event 0x55 0
+[126752]	2026-11-03 23:32:23.978	= Debug =	keyboard event 0x55 1
+[126752]	2026-11-03 23:32:24.187	= Debug =	keyboard event 0x49 0
+[126752]	2026-11-03 23:32:24.289	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:32:24.964	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:32:25.080	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:32:25.256	= Debug =	keyboard event 0x10 0
+[126752]	2026-11-03 23:32:25.363	= Debug =	keyboard event 0x10 1
+[126752]	2026-11-03 23:32:25.568	= Debug =	keyboard event 0xbd 0
+[126752]	2026-11-03 23:32:25.668	= Debug =	keyboard event 0xbd 1
+[126752]	2026-11-03 23:32:25.911	= Debug =	keyboard event 0x47 0
+[126752]	2026-11-03 23:32:26.037	= Debug =	keyboard event 0x47 1
+[126752]	2026-11-03 23:32:26.120	= Debug =	keyboard event 0x41 0
+[126752]	2026-11-03 23:32:26.261	= Debug =	keyboard event 0x41 1
+[126752]	2026-11-03 23:32:26.291	= Debug =	keyboard event 0x4c 0
+[126752]	2026-11-03 23:32:26.397	= Debug =	keyboard event 0x4c 1
+[126752]	2026-11-03 23:32:26.893	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:32:26.973	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:32:27.051	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:32:27.100	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:32:27.279	= Debug =	keyboard event 0x4c 0
+[126752]	2026-11-03 23:32:27.381	= Debug =	keyboard event 0x4c 1
+[126752]	2026-11-03 23:32:27.409	= Debug =	keyboard event 0x41 0
+[126752]	2026-11-03 23:32:27.496	= Debug =	keyboard event 0x41 1
+[126752]	2026-11-03 23:32:27.748	= Debug =	keyboard event 0x53 0
+[126752]	2026-11-03 23:32:27.900	= Debug =	keyboard event 0x53 1
+[126752]	2026-11-03 23:32:28.417	= Debug =	keyboard event 0x53 0
+[126752]	2026-11-03 23:32:28.557	= Debug =	keyboard event 0x53 1
+[126752]	2026-11-03 23:32:29.243	= Debug =	keyboard event 0x10 0
+[126752]	2026-11-03 23:32:29.357	= Debug =	keyboard event 0x10 1
+[126752]	2026-11-03 23:32:30.594	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:32:30.687	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:32:31.333	= Debug =	keyboard event 0x4f 0
+[126752]	2026-11-03 23:32:31.399	= Debug =	keyboard event 0x4f 1
+[126752]	2026-11-03 23:32:31.576	= Debug =	keyboard event 0x42 0
+[126752]	2026-11-03 23:32:31.668	= Debug =	keyboard event 0x42 1
+[126752]	2026-11-03 23:32:32.023	= Debug =	keyboard event 0x53 0
+[126752]	2026-11-03 23:32:32.119	= Debug =	keyboard event 0x53 1
+[126752]	2026-11-03 23:32:32.131	= Debug =	keyboard event 0x49 0
+[126752]	2026-11-03 23:32:32.204	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:32:32.787	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:32:32.879	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:32:33.058	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:32:33.180	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:32:34.536	= Debug =	keyboard event 0x5a 0
+[126752]	2026-11-03 23:32:34.605	= Debug =	keyboard event 0x48 0
+[126752]	2026-11-03 23:32:34.646	= Debug =	keyboard event 0x5a 1
+[126752]	2026-11-03 23:32:34.681	= Debug =	keyboard event 0x55 0
+[126752]	2026-11-03 23:32:34.724	= Debug =	keyboard event 0x48 1
+[126752]	2026-11-03 23:32:34.763	= Debug =	keyboard event 0x55 1
+[126752]	2026-11-03 23:32:34.933	= Debug =	keyboard event 0x49 0
+[126752]	2026-11-03 23:32:35.030	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:32:36.109	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:32:36.233	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:32:36.545	= Debug =	keyboard event 0x54 0
+[126752]	2026-11-03 23:32:36.625	= Debug =	keyboard event 0x49 0
+[126752]	2026-11-03 23:32:36.648	= Debug =	keyboard event 0x54 1
+[126752]	2026-11-03 23:32:36.701	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:32:36.882	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:32:36.977	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:32:37.083	= Debug =	keyboard event 0xbc 0
+[126752]	2026-11-03 23:32:37.212	= Debug =	keyboard event 0xbc 1
+[126752]	2026-11-03 23:32:37.858	= Debug =	keyboard event 0x59 0
+[126752]	2026-11-03 23:32:37.952	= Debug =	keyboard event 0x59 1
+[126752]	2026-11-03 23:32:37.957	= Debug =	keyboard event 0x41 0
+[126752]	2026-11-03 23:32:38.038	= Debug =	keyboard event 0x4f 0
+[126752]	2026-11-03 23:32:38.082	= Debug =	keyboard event 0x41 1
+[126752]	2026-11-03 23:32:38.141	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:32:38.164	= Debug =	keyboard event 0x4f 1
+[126752]	2026-11-03 23:32:38.263	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:32:38.289	= Debug =	keyboard event 0x54 0
+[126752]	2026-11-03 23:32:38.334	= Debug =	keyboard event 0x4f 0
+[126752]	2026-11-03 23:32:38.407	= Debug =	keyboard event 0x54 1
+[126752]	2026-11-03 23:32:38.434	= Debug =	keyboard event 0x4f 1
+[126752]	2026-11-03 23:32:38.519	= Debug =	keyboard event 0x4e 0
+[126752]	2026-11-03 23:32:38.545	= Debug =	keyboard event 0x47 0
+[126752]	2026-11-03 23:32:38.594	= Debug =	keyboard event 0x4e 1
+[126752]	2026-11-03 23:32:38.602	= Debug =	keyboard event 0x53 0
+[126752]	2026-11-03 23:32:38.634	= Debug =	keyboard event 0x47 1
+[126752]	2026-11-03 23:32:38.712	= Debug =	keyboard event 0x48 0
+[126752]	2026-11-03 23:32:38.748	= Debug =	keyboard event 0x53 1
+[126752]	2026-11-03 23:32:38.797	= Debug =	keyboard event 0x49 0
+[126752]	2026-11-03 23:32:38.840	= Debug =	keyboard event 0x48 1
+[126752]	2026-11-03 23:32:38.892	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:32:39.531	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:32:39.635	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:32:41.775	= Debug =	keyboard event 0x53 0
+[126752]	2026-11-03 23:32:41.822	= Debug =	keyboard event 0x48 0
+[126752]	2026-11-03 23:32:41.896	= Debug =	keyboard event 0x53 1
+[126752]	2026-11-03 23:32:41.898	= Debug =	keyboard event 0x49 0
+[126752]	2026-11-03 23:32:41.950	= Debug =	keyboard event 0x48 1
+[126752]	2026-11-03 23:32:41.976	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:32:42.070	= Debug =	keyboard event 0x50 0
+[126752]	2026-11-03 23:32:42.183	= Debug =	keyboard event 0x45 0
+[126752]	2026-11-03 23:32:42.193	= Debug =	keyboard event 0x50 1
+[126752]	2026-11-03 23:32:42.252	= Debug =	keyboard event 0x45 1
+[126752]	2026-11-03 23:32:42.283	= Debug =	keyboard event 0x49 0
+[126752]	2026-11-03 23:32:42.371	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:32:42.413	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:32:42.510	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:32:44.148	= Debug =	keyboard event 0x53 0
+[126752]	2026-11-03 23:32:44.204	= Debug =	keyboard event 0x53 1
+[126752]	2026-11-03 23:32:44.226	= Debug =	keyboard event 0x48 0
+[126752]	2026-11-03 23:32:44.369	= Debug =	keyboard event 0x48 1
+[126752]	2026-11-03 23:32:44.749	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:32:44.811	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:32:44.894	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:32:44.984	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:32:45.281	= Debug =	keyboard event 0x59 0
+[126752]	2026-11-03 23:32:45.381	= Debug =	keyboard event 0x49 0
+[126752]	2026-11-03 23:32:45.407	= Debug =	keyboard event 0x59 1
+[126752]	2026-11-03 23:32:45.494	= Debug =	keyboard event 0x44 0
+[126752]	2026-11-03 23:32:45.501	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:32:45.599	= Debug =	keyboard event 0x4f 0
+[126752]	2026-11-03 23:32:45.627	= Debug =	keyboard event 0x44 1
+[126752]	2026-11-03 23:32:45.699	= Debug =	keyboard event 0x4f 1
+[126752]	2026-11-03 23:32:45.773	= Debug =	keyboard event 0x4e 0
+[126752]	2026-11-03 23:32:45.804	= Debug =	keyboard event 0x47 0
+[126752]	2026-11-03 23:32:45.874	= Debug =	keyboard event 0x4e 1
+[126752]	2026-11-03 23:32:45.890	= Debug =	keyboard event 0x47 1
+[126752]	2026-11-03 23:32:45.992	= Debug =	keyboard event 0x44 0
+[126752]	2026-11-03 23:32:46.104	= Debug =	keyboard event 0x44 1
+[126752]	2026-11-03 23:32:46.119	= Debug =	keyboard event 0x55 0
+[126752]	2026-11-03 23:32:46.210	= Debug =	keyboard event 0x55 1
+[126752]	2026-11-03 23:32:46.241	= Debug =	keyboard event 0x41 0
+[126752]	2026-11-03 23:32:46.314	= Debug =	keyboard event 0x4e 0
+[126752]	2026-11-03 23:32:46.337	= Debug =	keyboard event 0x41 1
+[126752]	2026-11-03 23:32:46.412	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:32:46.441	= Debug =	keyboard event 0x4e 1
+[126752]	2026-11-03 23:32:46.516	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:32:46.552	= Debug =	keyboard event 0x48 0
+[126752]	2026-11-03 23:32:46.606	= Debug =	keyboard event 0x45 0
+[126752]	2026-11-03 23:32:46.635	= Debug =	keyboard event 0x48 1
+[126752]	2026-11-03 23:32:46.689	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:32:46.727	= Debug =	keyboard event 0x45 1
+[126752]	2026-11-03 23:32:46.781	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:32:46.855	= Debug =	keyboard event 0x5a 0
+[126752]	2026-11-03 23:32:46.925	= Debug =	keyboard event 0x48 0
+[126752]	2026-11-03 23:32:46.990	= Debug =	keyboard event 0x55 0
+[126752]	2026-11-03 23:32:47.008	= Debug =	keyboard event 0x5a 1
+[126752]	2026-11-03 23:32:47.042	= Debug =	keyboard event 0x48 1
+[126752]	2026-11-03 23:32:47.083	= Debug =	keyboard event 0x55 1
+[126752]	2026-11-03 23:32:47.208	= Debug =	keyboard event 0x4a 0
+[126752]	2026-11-03 23:32:47.283	= Debug =	keyboard event 0x49 0
+[126752]	2026-11-03 23:32:47.365	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:32:47.368	= Debug =	keyboard event 0x4a 1
+[126752]	2026-11-03 23:32:47.395	= Debug =	keyboard event 0x44 0
+[126752]	2026-11-03 23:32:47.501	= Debug =	keyboard event 0x55 0
+[126752]	2026-11-03 23:32:47.516	= Debug =	keyboard event 0x44 1
+[126752]	2026-11-03 23:32:47.549	= Debug =	keyboard event 0x41 0
+[126752]	2026-11-03 23:32:47.592	= Debug =	keyboard event 0x55 1
+[126752]	2026-11-03 23:32:47.666	= Debug =	keyboard event 0x41 1
+[126752]	2026-11-03 23:32:47.691	= Debug =	keyboard event 0x4e 0
+[126752]	2026-11-03 23:32:47.771	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:32:47.820	= Debug =	keyboard event 0x4e 1
+[126752]	2026-11-03 23:32:47.889	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:32:50.280	= Debug =	keyboard event 0xbc 0
+[126752]	2026-11-03 23:32:50.354	= Debug =	keyboard event 0xbc 1
+[126752]	2026-11-03 23:32:57.384	= Debug =	keyboard event 0x4c 0
+[126752]	2026-11-03 23:32:57.506	= Debug =	keyboard event 0x49 0
+[126752]	2026-11-03 23:32:57.571	= Debug =	keyboard event 0x4c 1
+[126752]	2026-11-03 23:32:57.616	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:32:57.709	= Debug =	keyboard event 0x4e 0
+[126752]	2026-11-03 23:32:57.738	= Debug =	keyboard event 0x47 0
+[126752]	2026-11-03 23:32:57.823	= Debug =	keyboard event 0x47 1
+[126752]	2026-11-03 23:32:57.877	= Debug =	keyboard event 0x4e 1
+[126752]	2026-11-03 23:32:57.881	= Debug =	keyboard event 0x57 0
+[126752]	2026-11-03 23:32:57.953	= Debug =	keyboard event 0x57 1
+[126752]	2026-11-03 23:32:58.022	= Debug =	keyboard event 0x41 0
+[126752]	2026-11-03 23:32:58.093	= Debug =	keyboard event 0x49 0
+[126752]	2026-11-03 23:32:58.136	= Debug =	keyboard event 0x41 1
+[126752]	2026-11-03 23:32:58.201	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:32:58.275	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:32:58.368	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:32:58.597	= Debug =	keyboard event 0x58 0
+[126752]	2026-11-03 23:32:58.698	= Debug =	keyboard event 0x55 0
+[126752]	2026-11-03 23:32:58.748	= Debug =	keyboard event 0x58 1
+[126752]	2026-11-03 23:32:58.756	= Debug =	keyboard event 0x55 1
+[126752]	2026-11-03 23:32:58.858	= Debug =	keyboard event 0x59 0
+[126752]	2026-11-03 23:32:58.954	= Debug =	keyboard event 0x59 1
+[126752]	2026-11-03 23:32:58.956	= Debug =	keyboard event 0x41 0
+[126752]	2026-11-03 23:32:59.023	= Debug =	keyboard event 0x4f 0
+[126752]	2026-11-03 23:32:59.048	= Debug =	keyboard event 0x41 1
+[126752]	2026-11-03 23:32:59.164	= Debug =	keyboard event 0x4f 1
+[126752]	2026-11-03 23:32:59.324	= Debug =	keyboard event 0x5a 0
+[126752]	2026-11-03 23:32:59.384	= Debug =	keyboard event 0x48 0
+[126752]	2026-11-03 23:32:59.468	= Debug =	keyboard event 0x5a 1
+[126752]	2026-11-03 23:32:59.479	= Debug =	keyboard event 0x49 0
+[126752]	2026-11-03 23:32:59.523	= Debug =	keyboard event 0x48 1
+[126752]	2026-11-03 23:32:59.566	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:32:59.586	= Debug =	keyboard event 0x43 0
+[126752]	2026-11-03 23:32:59.661	= Debug =	keyboard event 0x48 0
+[126752]	2026-11-03 23:32:59.721	= Debug =	keyboard event 0x43 1
+[126752]	2026-11-03 23:32:59.731	= Debug =	keyboard event 0x49 0
+[126752]	2026-11-03 23:32:59.807	= Debug =	keyboard event 0x48 1
+[126752]	2026-11-03 23:32:59.832	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:32:59.849	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:32:59.931	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:33:02.544	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:33:02.620	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:33:02.710	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:33:02.841	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:33:03.147	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:33:03.263	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:33:03.480	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:33:03.588	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:33:04.069	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:33:04.167	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:33:04.283	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:33:04.378	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:33:05.016	= Debug =	keyboard event 0x4c 0
+[126752]	2026-11-03 23:33:05.139	= Debug =	keyboard event 0x49 0
+[126752]	2026-11-03 23:33:05.177	= Debug =	keyboard event 0x4c 1
+[126752]	2026-11-03 23:33:05.243	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:33:06.413	= Debug =	keyboard event 0x51 0
+[126752]	2026-11-03 23:33:06.524	= Debug =	keyboard event 0x49 0
+[126752]	2026-11-03 23:33:06.541	= Debug =	keyboard event 0x51 1
+[126752]	2026-11-03 23:33:06.623	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:33:06.789	= Debug =	keyboard event 0x55 0
+[126752]	2026-11-03 23:33:06.866	= Debug =	keyboard event 0x55 1
+[126752]	2026-11-03 23:33:07.624	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:33:07.693	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:33:07.772	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:33:07.877	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:33:10.355	= Debug =	keyboard event 0x55 0
+[126752]	2026-11-03 23:33:10.415	= Debug =	keyboard event 0x55 1
+[126752]	2026-11-03 23:33:10.606	= Debug =	keyboard event 0x49 0
+[126752]	2026-11-03 23:33:10.669	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:33:10.759	= Debug =	keyboard event 0x44 0
+[126752]	2026-11-03 23:33:10.872	= Debug =	keyboard event 0x44 1
+[126752]	2026-11-03 23:33:11.255	= Debug =	keyboard event 0x10 0
+[126752]	2026-11-03 23:33:11.338	= Debug =	keyboard event 0x10 1
+[126752]	2026-11-03 23:33:11.625	= Debug =	keyboard event 0xbd 0
+[126752]	2026-11-03 23:33:11.735	= Debug =	keyboard event 0xbd 1
+[126752]	2026-11-03 23:33:12.200	= Debug =	keyboard event 0x47 0
+[126752]	2026-11-03 23:33:12.315	= Debug =	keyboard event 0x47 1
+[126752]	2026-11-03 23:33:12.379	= Debug =	keyboard event 0x4c 0
+[126752]	2026-11-03 23:33:12.490	= Debug =	keyboard event 0x4c 1
+[126752]	2026-11-03 23:33:12.493	= Debug =	keyboard event 0x41 0
+[126752]	2026-11-03 23:33:12.594	= Debug =	keyboard event 0x41 1
+[126752]	2026-11-03 23:33:13.356	= Debug =	keyboard event 0x53 0
+[126752]	2026-11-03 23:33:13.428	= Debug =	keyboard event 0x53 1
+[126752]	2026-11-03 23:33:13.528	= Debug =	keyboard event 0x53 0
+[126752]	2026-11-03 23:33:13.600	= Debug =	keyboard event 0x53 1
+[126752]	2026-11-03 23:33:14.106	= Debug =	keyboard event 0x10 0
+[126752]	2026-11-03 23:33:14.247	= Debug =	keyboard event 0x10 1
+[126752]	2026-11-03 23:33:18.695	= Debug =	keyboard event 0x59 0
+[126752]	2026-11-03 23:33:18.775	= Debug =	keyboard event 0x41 0
+[126752]	2026-11-03 23:33:18.782	= Debug =	keyboard event 0x59 1
+[126752]	2026-11-03 23:33:18.899	= Debug =	keyboard event 0x41 1
+[126752]	2026-11-03 23:33:18.902	= Debug =	keyboard event 0x4f 0
+[126752]	2026-11-03 23:33:18.998	= Debug =	keyboard event 0x4f 1
+[126752]	2026-11-03 23:33:19.002	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:33:19.105	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:33:19.321	= Debug =	keyboard event 0x5a 0
+[126752]	2026-11-03 23:33:19.432	= Debug =	keyboard event 0x48 0
+[126752]	2026-11-03 23:33:19.488	= Debug =	keyboard event 0x5a 1
+[126752]	2026-11-03 23:33:19.520	= Debug =	keyboard event 0x49 0
+[126752]	2026-11-03 23:33:19.569	= Debug =	keyboard event 0x48 1
+[126752]	2026-11-03 23:33:19.599	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:33:19.601	= Debug =	keyboard event 0x43 0
+[126752]	2026-11-03 23:33:19.671	= Debug =	keyboard event 0x48 0
+[126752]	2026-11-03 23:33:19.718	= Debug =	keyboard event 0x43 1
+[126752]	2026-11-03 23:33:19.742	= Debug =	keyboard event 0x49 0
+[126752]	2026-11-03 23:33:19.810	= Debug =	keyboard event 0x48 1
+[126752]	2026-11-03 23:33:19.824	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:33:19.844	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:33:19.931	= Debug =	keyboard event 0x20 1
+[38480]	2026-11-03 23:35:58.639	- Info  -	[DXGI] retry dxgi
+[38480]	2026-11-03 23:35:58.655	- Info  -	[DXGI] Uninitialize device.
+[38480]	2026-11-03 23:35:58.655	- Info  -	[DXGI] Current desktop(0) size -> (3392, 2400)
+[38480]	2026-11-03 23:35:58.659	= Debug =	[DXGIUtilsHelper] Find adapter: (0, 0, 3392, 2400)
+[38480]	2026-11-03 23:35:58.705	- Info  -	[DXGI] Initialize DXGI duplication device ok!
+[38480]	2026-11-03 23:35:58.705	- Info  -	[DuplMgr] output(0) left(0), top(0), right(3392), bottom(2400), rotation(1)
+[38480]	2026-11-03 23:35:58.706	- Info  -	[DuplMgr] DXGI DuplicateOutput use IDXGIOutput1
+[38480]	2026-11-03 23:35:58.710	- Info  -	[DXGI] Support gpu pre process
+[38480]	2026-11-03 23:35:58.710	- Info  -	[DXGI] use dxgi mode rotation 1
+[38480]	2026-11-03 23:35:58.710	= Debug =	[DXGI] force capture
+[126712]	2026-11-03 23:36:01.149	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 7, fps 40
+[126712]	2026-11-03 23:36:02.149	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:36:03.145	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:36:04.150	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 5, fps 40
+[126712]	2026-11-03 23:36:05.149	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 5, fps 40
+[126712]	2026-11-03 23:36:06.148	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 5, fps 40
+[126712]	2026-11-03 23:36:07.145	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:36:08.150	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 5, fps 40
+[126712]	2026-11-03 23:36:09.144	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 5, fps 40
+[126712]	2026-11-03 23:36:10.146	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 5, fps 40
+[126712]	2026-11-03 23:36:11.148	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 5, fps 40
+[126712]	2026-11-03 23:36:12.150	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:36:13.149	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:36:14.151	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:36:15.146	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:36:16.149	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 5, fps 40
+[126712]	2026-11-03 23:36:17.145	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 5, fps 40
+[126712]	2026-11-03 23:36:18.151	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 5, fps 40
+[126712]	2026-11-03 23:36:19.147	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:36:20.148	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:36:21.148	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:36:22.149	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:36:23.150	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:36:24.145	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:36:25.150	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:36:26.145	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:36:27.147	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:36:28.150	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:36:29.149	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:36:30.147	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:36:31.147	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 6, fps 40
+[126712]	2026-11-03 23:36:53.163	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:36:54.163	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:36:55.163	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:36:56.165	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:36:57.165	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:36:58.166	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:36:59.168	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:37:00.163	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 5, fps 40
+[126712]	2026-11-03 23:37:01.162	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 5, fps 40
+[126712]	2026-11-03 23:37:02.163	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 5, fps 40
+[126712]	2026-11-03 23:37:03.165	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 5, fps 40
+[126712]	2026-11-03 23:37:04.163	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:37:05.161	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:37:06.165	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:37:07.164	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:37:08.164	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:37:09.163	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 5, fps 40
+[126712]	2026-11-03 23:37:10.166	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 5, fps 40
+[126712]	2026-11-03 23:37:18.162	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:37:19.163	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:37:20.161	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:37:33.162	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 7, fps 40
+[126712]	2026-11-03 23:37:34.162	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:37:41.166	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 7, fps 40
+[126712]	2026-11-03 23:37:42.161	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:37:43.161	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:37:44.163	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:37:45.167	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:37:46.164	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:37:47.166	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:37:48.163	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:37:49.164	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 5, fps 40
+[126712]	2026-11-03 23:37:50.165	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 5, fps 40
+[126712]	2026-11-03 23:37:51.165	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 5, fps 40
+[126712]	2026-11-03 23:37:52.167	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:37:53.165	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:37:54.164	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:37:55.162	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:37:56.165	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:37:57.163	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:37:58.165	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:37:59.162	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:38:00.166	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:38:01.167	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 5, fps 40
+[126712]	2026-11-03 23:38:02.165	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:38:03.160	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:38:04.162	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:38:05.164	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:38:06.165	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:38:07.165	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:38:08.164	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:38:09.167	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 5, fps 40
+[126712]	2026-11-03 23:38:10.162	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 5, fps 40
+[126712]	2026-11-03 23:38:11.162	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 5, fps 40
+[126712]	2026-11-03 23:38:12.162	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:38:13.162	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:38:26.163	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:38:27.161	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:38:28.166	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 5, fps 40
+[126712]	2026-11-03 23:38:39.163	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 7, fps 40
+[126712]	2026-11-03 23:38:47.164	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:38:48.165	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:38:49.160	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 5, fps 40
+[126712]	2026-11-03 23:38:50.162	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 5, fps 40
+[126712]	2026-11-03 23:38:51.166	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 5, fps 40
+[126712]	2026-11-03 23:38:52.162	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:38:53.163	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 3, fps 40
+[126712]	2026-11-03 23:38:54.163	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 3, fps 40
+[126712]	2026-11-03 23:38:55.166	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:38:56.166	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:38:57.161	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:38:58.162	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:38:59.162	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:39:00.162	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 5, fps 40
+[126712]	2026-11-03 23:39:01.164	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 5, fps 40
+[126712]	2026-11-03 23:39:02.161	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126712]	2026-11-03 23:39:03.161	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 4, fps 40
+[126752]	2026-11-03 23:39:27.236	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:39:27.300	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:39:27.385	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:39:27.454	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:39:27.514	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:39:27.611	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:39:27.997	= Debug =	keyboard event 0x5a 0
+[126752]	2026-11-03 23:39:28.083	= Debug =	keyboard event 0x48 0
+[126752]	2026-11-03 23:39:28.158	= Debug =	keyboard event 0x5a 1
+[126752]	2026-11-03 23:39:28.166	= Debug =	keyboard event 0x49 0
+[126752]	2026-11-03 23:39:28.213	= Debug =	keyboard event 0x48 1
+[126752]	2026-11-03 23:39:28.251	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:39:28.328	= Debug =	keyboard event 0x59 0
+[126752]	2026-11-03 23:39:28.391	= Debug =	keyboard event 0x59 1
+[126752]	2026-11-03 23:39:28.394	= Debug =	keyboard event 0x41 0
+[126752]	2026-11-03 23:39:28.486	= Debug =	keyboard event 0x41 1
+[126752]	2026-11-03 23:39:28.509	= Debug =	keyboard event 0x4f 0
+[126752]	2026-11-03 23:39:28.566	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:39:28.654	= Debug =	keyboard event 0x4f 1
+[126752]	2026-11-03 23:39:28.663	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:39:29.093	= Debug =	keyboard event 0x5a 0
+[126752]	2026-11-03 23:39:29.178	= Debug =	keyboard event 0x48 0
+[126752]	2026-11-03 23:39:29.257	= Debug =	keyboard event 0x49 0
+[126752]	2026-11-03 23:39:29.281	= Debug =	keyboard event 0x5a 1
+[126752]	2026-11-03 23:39:29.297	= Debug =	keyboard event 0x48 1
+[126752]	2026-11-03 23:39:29.330	= Debug =	keyboard event 0x43 0
+[126752]	2026-11-03 23:39:29.344	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:39:29.414	= Debug =	keyboard event 0x48 0
+[126752]	2026-11-03 23:39:29.454	= Debug =	keyboard event 0x43 1
+[126752]	2026-11-03 23:39:29.480	= Debug =	keyboard event 0x49 0
+[126752]	2026-11-03 23:39:29.534	= Debug =	keyboard event 0x48 1
+[126752]	2026-11-03 23:39:29.558	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:39:29.589	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:39:29.654	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:39:34.049	= Debug =	keyboard event 0x41 0
+[126752]	2026-11-03 23:39:34.109	= Debug =	keyboard event 0x4e 0
+[126752]	2026-11-03 23:39:34.142	= Debug =	keyboard event 0x41 1
+[126752]	2026-11-03 23:39:34.195	= Debug =	keyboard event 0x4e 1
+[126752]	2026-11-03 23:39:34.320	= Debug =	keyboard event 0x4a 0
+[126752]	2026-11-03 23:39:34.393	= Debug =	keyboard event 0x49 0
+[126752]	2026-11-03 23:39:34.443	= Debug =	keyboard event 0x41 0
+[126752]	2026-11-03 23:39:34.447	= Debug =	keyboard event 0x4a 1
+[126752]	2026-11-03 23:39:34.467	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:39:34.520	= Debug =	keyboard event 0x41 1
+[126752]	2026-11-03 23:39:34.560	= Debug =	keyboard event 0x4e 0
+[126752]	2026-11-03 23:39:34.616	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:39:34.672	= Debug =	keyboard event 0x4e 1
+[126752]	2026-11-03 23:39:34.720	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:39:34.834	= Debug =	keyboard event 0x5a 0
+[126752]	2026-11-03 23:39:34.953	= Debug =	keyboard event 0x5a 1
+[126752]	2026-11-03 23:39:34.956	= Debug =	keyboard event 0x55 0
+[126752]	2026-11-03 23:39:35.053	= Debug =	keyboard event 0x55 1
+[126752]	2026-11-03 23:39:35.167	= Debug =	keyboard event 0x4a 0
+[126752]	2026-11-03 23:39:35.230	= Debug =	keyboard event 0x49 0
+[126752]	2026-11-03 23:39:35.261	= Debug =	keyboard event 0x4a 1
+[126752]	2026-11-03 23:39:35.274	= Debug =	keyboard event 0x41 0
+[126752]	2026-11-03 23:39:35.304	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:39:35.376	= Debug =	keyboard event 0x41 1
+[126752]	2026-11-03 23:39:35.385	= Debug =	keyboard event 0x4e 0
+[126752]	2026-11-03 23:39:35.466	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:39:35.512	= Debug =	keyboard event 0x4e 1
+[126752]	2026-11-03 23:39:35.546	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:39:35.859	= Debug =	keyboard event 0xbe 0
+[126752]	2026-11-03 23:39:35.987	= Debug =	keyboard event 0xbe 1
+[126752]	2026-11-03 23:39:37.236	= Debug =	keyboard event 0x4c 0
+[126752]	2026-11-03 23:39:37.315	= Debug =	keyboard event 0x49 0
+[126752]	2026-11-03 23:39:37.357	= Debug =	keyboard event 0x4c 1
+[126752]	2026-11-03 23:39:37.431	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:39:37.518	= Debug =	keyboard event 0x4e 0
+[126752]	2026-11-03 23:39:37.532	= Debug =	keyboard event 0x47 0
+[126752]	2026-11-03 23:39:37.651	= Debug =	keyboard event 0x47 1
+[126752]	2026-11-03 23:39:37.654	= Debug =	keyboard event 0x4e 1
+[126752]	2026-11-03 23:39:37.670	= Debug =	keyboard event 0x57 0
+[126752]	2026-11-03 23:39:37.742	= Debug =	keyboard event 0x57 1
+[126752]	2026-11-03 23:39:37.773	= Debug =	keyboard event 0x41 0
+[126752]	2026-11-03 23:39:37.839	= Debug =	keyboard event 0x49 0
+[126752]	2026-11-03 23:39:37.914	= Debug =	keyboard event 0x41 1
+[126752]	2026-11-03 23:39:37.960	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:39:37.990	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:39:38.114	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:39:38.315	= Debug =	keyboard event 0xbc 0
+[126752]	2026-11-03 23:39:38.421	= Debug =	keyboard event 0xbc 1
+[126752]	2026-11-03 23:39:41.468	= Debug =	keyboard event 0x53 0
+[126752]	2026-11-03 23:39:41.560	= Debug =	keyboard event 0x48 0
+[126752]	2026-11-03 23:39:41.589	= Debug =	keyboard event 0x53 1
+[126752]	2026-11-03 23:39:41.652	= Debug =	keyboard event 0x48 1
+[126752]	2026-11-03 23:39:41.672	= Debug =	keyboard event 0x45 0
+[126752]	2026-11-03 23:39:41.798	= Debug =	keyboard event 0x45 1
+[126752]	2026-11-03 23:39:41.824	= Debug =	keyboard event 0x4a 0
+[126752]	2026-11-03 23:39:41.897	= Debug =	keyboard event 0x49 0
+[126752]	2026-11-03 23:39:41.956	= Debug =	keyboard event 0x4a 1
+[126752]	2026-11-03 23:39:41.999	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:39:42.588	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:39:42.674	= Debug =	keyboard event 0x44 0
+[126752]	2026-11-03 23:39:42.693	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:39:42.789	= Debug =	keyboard event 0x44 1
+[126752]	2026-11-03 23:39:42.863	= Debug =	keyboard event 0x45 0
+[126752]	2026-11-03 23:39:42.905	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:39:42.954	= Debug =	keyboard event 0x45 1
+[126752]	2026-11-03 23:39:43.015	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:39:43.137	= Debug =	keyboard event 0x43 0
+[126752]	2026-11-03 23:39:43.232	= Debug =	keyboard event 0x41 0
+[126752]	2026-11-03 23:39:43.288	= Debug =	keyboard event 0x43 1
+[126752]	2026-11-03 23:39:43.342	= Debug =	keyboard event 0x4e 0
+[126752]	2026-11-03 23:39:43.396	= Debug =	keyboard event 0x41 1
+[126752]	2026-11-03 23:39:43.434	= Debug =	keyboard event 0x4e 1
+[126752]	2026-11-03 23:39:43.528	= Debug =	keyboard event 0x4b 0
+[126752]	2026-11-03 23:39:43.629	= Debug =	keyboard event 0x41 0
+[126752]	2026-11-03 23:39:43.643	= Debug =	keyboard event 0x4b 1
+[126752]	2026-11-03 23:39:43.720	= Debug =	keyboard event 0x41 1
+[126752]	2026-11-03 23:39:43.742	= Debug =	keyboard event 0x4f 0
+[126752]	2026-11-03 23:39:43.845	= Debug =	keyboard event 0x4f 1
+[126752]	2026-11-03 23:39:44.072	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:39:44.203	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:39:44.957	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:39:45.033	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:39:45.124	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:39:45.349	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:39:45.788	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:39:45.870	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:39:46.370	= Debug =	keyboard event 0x48 0
+[126752]	2026-11-03 23:39:46.406	= Debug =	keyboard event 0x48 1
+[126752]	2026-11-03 23:39:46.433	= Debug =	keyboard event 0x45 0
+[126752]	2026-11-03 23:39:46.520	= Debug =	keyboard event 0x45 1
+[126752]	2026-11-03 23:39:46.580	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:39:46.697	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:39:46.800	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:39:46.901	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:39:46.962	= Debug =	keyboard event 0x10 0
+[126752]	2026-11-03 23:39:47.082	= Debug =	keyboard event 0x55 0
+[126752]	2026-11-03 23:39:47.169	= Debug =	keyboard event 0x49 0
+[126752]	2026-11-03 23:39:47.238	= Debug =	keyboard event 0x55 1
+[126752]	2026-11-03 23:39:47.271	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:39:47.392	= Debug =	keyboard event 0x10 1
+[126752]	2026-11-03 23:39:47.482	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:39:47.595	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:39:47.663	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:39:47.761	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:39:47.804	= Debug =	keyboard event 0x42 0
+[126752]	2026-11-03 23:39:47.877	= Debug =	keyboard event 0x55 0
+[126752]	2026-11-03 23:39:47.920	= Debug =	keyboard event 0x42 1
+[126752]	2026-11-03 23:39:47.984	= Debug =	keyboard event 0x55 1
+[126752]	2026-11-03 23:39:48.072	= Debug =	keyboard event 0x4a 0
+[126752]	2026-11-03 23:39:48.148	= Debug =	keyboard event 0x4a 1
+[126752]	2026-11-03 23:39:48.199	= Debug =	keyboard event 0x55 0
+[126752]	2026-11-03 23:39:48.267	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:39:48.313	= Debug =	keyboard event 0x55 1
+[126752]	2026-11-03 23:39:48.348	= Debug =	keyboard event 0x44 0
+[126752]	2026-11-03 23:39:48.383	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:39:48.442	= Debug =	keyboard event 0x44 1
+[126752]	2026-11-03 23:39:48.535	= Debug =	keyboard event 0x45 0
+[126752]	2026-11-03 23:39:48.586	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:39:48.650	= Debug =	keyboard event 0x45 1
+[126752]	2026-11-03 23:39:48.678	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:39:48.786	= Debug =	keyboard event 0x43 0
+[126752]	2026-11-03 23:39:48.876	= Debug =	keyboard event 0x41 0
+[126752]	2026-11-03 23:39:48.918	= Debug =	keyboard event 0x4e 0
+[126752]	2026-11-03 23:39:48.945	= Debug =	keyboard event 0x43 1
+[126752]	2026-11-03 23:39:49.013	= Debug =	keyboard event 0x41 1
+[126752]	2026-11-03 23:39:49.028	= Debug =	keyboard event 0x4e 1
+[126752]	2026-11-03 23:39:49.179	= Debug =	keyboard event 0x4b 0
+[126752]	2026-11-03 23:39:49.292	= Debug =	keyboard event 0x4b 1
+[126752]	2026-11-03 23:39:49.303	= Debug =	keyboard event 0x41 0
+[126752]	2026-11-03 23:39:49.424	= Debug =	keyboard event 0x41 1
+[126752]	2026-11-03 23:39:49.496	= Debug =	keyboard event 0x4f 0
+[126752]	2026-11-03 23:39:49.621	= Debug =	keyboard event 0x4f 1
+[126752]	2026-11-03 23:39:49.699	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:39:49.810	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:39:49.912	= Debug =	keyboard event 0xbc 0
+[126752]	2026-11-03 23:39:50.048	= Debug =	keyboard event 0xbc 1
+[126752]	2026-11-03 23:39:50.156	= Debug =	keyboard event 0x43 0
+[126752]	2026-11-03 23:39:50.268	= Debug =	keyboard event 0x41 0
+[126752]	2026-11-03 23:39:50.304	= Debug =	keyboard event 0x43 1
+[126752]	2026-11-03 23:39:50.306	= Debug =	keyboard event 0x4e 0
+[126752]	2026-11-03 23:39:50.382	= Debug =	keyboard event 0x41 1
+[126752]	2026-11-03 23:39:50.407	= Debug =	keyboard event 0x4e 1
+[126752]	2026-11-03 23:39:50.484	= Debug =	keyboard event 0x4b 0
+[126752]	2026-11-03 23:39:50.604	= Debug =	keyboard event 0x4b 1
+[126752]	2026-11-03 23:39:50.608	= Debug =	keyboard event 0x41 0
+[126752]	2026-11-03 23:39:50.671	= Debug =	keyboard event 0x4f 0
+[126752]	2026-11-03 23:39:50.682	= Debug =	keyboard event 0x41 1
+[126752]	2026-11-03 23:39:50.782	= Debug =	keyboard event 0x4f 1
+[126752]	2026-11-03 23:39:50.816	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:39:50.900	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:39:51.002	= Debug =	keyboard event 0x50 0
+[126752]	2026-11-03 23:39:51.105	= Debug =	keyboard event 0x50 1
+[126752]	2026-11-03 23:39:51.240	= Debug =	keyboard event 0x49 0
+[126752]	2026-11-03 23:39:51.346	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:39:51.445	= Debug =	keyboard event 0x4e 0
+[126752]	2026-11-03 23:39:51.534	= Debug =	keyboard event 0x4e 1
+[126752]	2026-11-03 23:39:51.544	= Debug =	keyboard event 0x47 0
+[126752]	2026-11-03 23:39:51.598	= Debug =	keyboard event 0x47 1
+[126752]	2026-11-03 23:39:51.701	= Debug =	keyboard event 0x47 0
+[126752]	2026-11-03 23:39:51.827	= Debug =	keyboard event 0x47 1
+[126752]	2026-11-03 23:39:51.861	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:39:51.981	= Debug =	keyboard event 0x44 0
+[126752]	2026-11-03 23:39:51.992	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:39:52.066	= Debug =	keyboard event 0x44 1
+[126752]	2026-11-03 23:39:52.158	= Debug =	keyboard event 0x45 0
+[126752]	2026-11-03 23:39:52.207	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:39:52.238	= Debug =	keyboard event 0x45 1
+[126752]	2026-11-03 23:39:52.303	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:39:52.384	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:39:52.495	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:39:52.514	= Debug =	keyboard event 0x49 0
+[126752]	2026-11-03 23:39:52.589	= Debug =	keyboard event 0x4f 0
+[126752]	2026-11-03 23:39:52.656	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:39:52.703	= Debug =	keyboard event 0x4f 1
+[126752]	2026-11-03 23:39:52.705	= Debug =	keyboard event 0x53 0
+[126752]	2026-11-03 23:39:52.811	= Debug =	keyboard event 0x53 1
+[126752]	2026-11-03 23:39:53.234	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:39:53.328	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:39:53.449	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:39:53.545	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:39:53.742	= Debug =	keyboard event 0x32 0
+[126752]	2026-11-03 23:39:53.826	= Debug =	keyboard event 0x32 1
+[126752]	2026-11-03 23:39:55.920	= Debug =	keyboard event 0x36 0
+[126752]	2026-11-03 23:39:56.087	= Debug =	keyboard event 0x36 1
+[126752]	2026-11-03 23:39:59.981	= Debug =	keyboard event 0xbc 0
+[126752]	2026-11-03 23:40:00.067	= Debug =	keyboard event 0xbc 1
+[126752]	2026-11-03 23:40:00.273	= Debug =	keyboard event 0x42 0
+[126752]	2026-11-03 23:40:00.366	= Debug =	keyboard event 0x41 0
+[126752]	2026-11-03 23:40:00.407	= Debug =	keyboard event 0x42 1
+[126752]	2026-11-03 23:40:00.416	= Debug =	keyboard event 0x4f 0
+[126752]	2026-11-03 23:40:00.483	= Debug =	keyboard event 0x41 1
+[126752]	2026-11-03 23:40:00.498	= Debug =	keyboard event 0x4f 1
+[126752]	2026-11-03 23:40:00.570	= Debug =	keyboard event 0x4b 0
+[126752]	2026-11-03 23:40:00.680	= Debug =	keyboard event 0x4b 1
+[126752]	2026-11-03 23:40:00.775	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:40:00.909	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:40:01.394	= Debug =	keyboard event 0x59 0
+[126752]	2026-11-03 23:40:01.467	= Debug =	keyboard event 0x59 1
+[126752]	2026-11-03 23:40:01.511	= Debug =	keyboard event 0x41 0
+[126752]	2026-11-03 23:40:01.594	= Debug =	keyboard event 0x41 1
+[126752]	2026-11-03 23:40:01.625	= Debug =	keyboard event 0x4e 0
+[126752]	2026-11-03 23:40:01.682	= Debug =	keyboard event 0x53 0
+[126752]	2026-11-03 23:40:01.720	= Debug =	keyboard event 0x4e 1
+[126752]	2026-11-03 23:40:01.768	= Debug =	keyboard event 0x53 1
+[126752]	2026-11-03 23:40:01.853	= Debug =	keyboard event 0x45 0
+[126752]	2026-11-03 23:40:01.951	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:40:01.980	= Debug =	keyboard event 0x45 1
+[126752]	2026-11-03 23:40:02.066	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:40:02.142	= Debug =	keyboard event 0x50 0
+[126752]	2026-11-03 23:40:02.220	= Debug =	keyboard event 0x45 0
+[126752]	2026-11-03 23:40:02.236	= Debug =	keyboard event 0x50 1
+[126752]	2026-11-03 23:40:02.313	= Debug =	keyboard event 0x45 1
+[126752]	2026-11-03 23:40:02.323	= Debug =	keyboard event 0x49 0
+[126752]	2026-11-03 23:40:02.408	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:40:02.410	= Debug =	keyboard event 0x53 0
+[126752]	2026-11-03 23:40:02.491	= Debug =	keyboard event 0x53 1
+[126752]	2026-11-03 23:40:02.555	= Debug =	keyboard event 0x45 0
+[126752]	2026-11-03 23:40:02.647	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:40:02.665	= Debug =	keyboard event 0x45 1
+[126752]	2026-11-03 23:40:02.754	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:40:03.203	= Debug =	keyboard event 0xbc 0
+[126752]	2026-11-03 23:40:03.314	= Debug =	keyboard event 0xbc 1
+[126752]	2026-11-03 23:40:04.570	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:40:04.661	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:40:05.166	= Debug =	keyboard event 0xd 0
+[126752]	2026-11-03 23:40:05.247	= Debug =	keyboard event 0xd 1
+[126752]	2026-11-03 23:40:16.842	= Debug =	keyboard event 0x44 0
+[126752]	2026-11-03 23:40:16.920	= Debug =	keyboard event 0x4f 0
+[126752]	2026-11-03 23:40:17.008	= Debug =	keyboard event 0x44 1
+[126752]	2026-11-03 23:40:17.019	= Debug =	keyboard event 0x4f 1
+[126752]	2026-11-03 23:40:17.074	= Debug =	keyboard event 0x4e 0
+[126752]	2026-11-03 23:40:17.131	= Debug =	keyboard event 0x47 0
+[126752]	2026-11-03 23:40:17.181	= Debug =	keyboard event 0x4e 1
+[126752]	2026-11-03 23:40:17.234	= Debug =	keyboard event 0x47 1
+[126752]	2026-11-03 23:40:17.586	= Debug =	keyboard event 0x31 0
+[126752]	2026-11-03 23:40:17.695	= Debug =	keyboard event 0x31 1
+[126752]	2026-11-03 23:40:17.828	= Debug =	keyboard event 0x10 0
+[126752]	2026-11-03 23:40:17.904	= Debug =	keyboard event 0x39 0
+[126752]	2026-11-03 23:40:18.002	= Debug =	keyboard event 0x39 1
+[126752]	2026-11-03 23:40:18.018	= Debug =	keyboard event 0x10 1
+[126752]	2026-11-03 23:40:18.401	= Debug =	keyboard event 0x27 0
+[126752]	2026-11-03 23:40:18.531	= Debug =	keyboard event 0x27 1
+[126752]	2026-11-03 23:40:18.801	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:40:18.918	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:40:19.057	= Debug =	keyboard event 0xd 0
+[126752]	2026-11-03 23:40:19.197	= Debug =	keyboard event 0xd 1
+[126752]	2026-11-03 23:43:37.288	= Debug =	keyboard event 0x58 0
+[126752]	2026-11-03 23:43:37.407	= Debug =	keyboard event 0x58 1
+[126752]	2026-11-03 23:43:37.409	= Debug =	keyboard event 0x49 0
+[126752]	2026-11-03 23:43:37.484	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:43:37.488	= Debug =	keyboard event 0x41 0
+[126752]	2026-11-03 23:43:37.562	= Debug =	keyboard event 0x41 1
+[126752]	2026-11-03 23:43:37.590	= Debug =	keyboard event 0x4e 0
+[126752]	2026-11-03 23:43:37.655	= Debug =	keyboard event 0x4e 1
+[126752]	2026-11-03 23:43:37.859	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:43:37.935	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:43:38.312	= Debug =	keyboard event 0x54 0
+[126752]	2026-11-03 23:43:38.423	= Debug =	keyboard event 0x54 1
+[126752]	2026-11-03 23:43:38.438	= Debug =	keyboard event 0x49 0
+[126752]	2026-11-03 23:43:38.517	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:43:38.629	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:43:38.728	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:43:38.794	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:43:38.880	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:43:38.960	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:43:39.046	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:43:39.106	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:43:39.199	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:43:39.497	= Debug =	keyboard event 0x54 0
+[126752]	2026-11-03 23:43:39.540	= Debug =	keyboard event 0x49 0
+[126752]	2026-11-03 23:43:39.577	= Debug =	keyboard event 0x54 1
+[126752]	2026-11-03 23:43:39.625	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:43:39.707	= Debug =	keyboard event 0x4e 0
+[126752]	2026-11-03 23:43:39.741	= Debug =	keyboard event 0x47 0
+[126752]	2026-11-03 23:43:39.835	= Debug =	keyboard event 0x4e 1
+[126752]	2026-11-03 23:43:39.904	= Debug =	keyboard event 0x47 1
+[126752]	2026-11-03 23:43:39.906	= Debug =	keyboard event 0x53 0
+[126752]	2026-11-03 23:43:39.963	= Debug =	keyboard event 0x48 0
+[126752]	2026-11-03 23:43:39.999	= Debug =	keyboard event 0x53 1
+[126752]	2026-11-03 23:43:40.005	= Debug =	keyboard event 0x55 0
+[126752]	2026-11-03 23:43:40.103	= Debug =	keyboard event 0x48 1
+[126752]	2026-11-03 23:43:40.106	= Debug =	keyboard event 0x4f 0
+[126752]	2026-11-03 23:43:40.134	= Debug =	keyboard event 0x55 1
+[126752]	2026-11-03 23:43:40.155	= Debug =	keyboard event 0x4f 1
+[126752]	2026-11-03 23:43:40.201	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:43:40.296	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:43:40.649	= Debug =	keyboard event 0x58 0
+[126752]	2026-11-03 23:43:40.743	= Debug =	keyboard event 0x58 1
+[126752]	2026-11-03 23:43:40.745	= Debug =	keyboard event 0x49 0
+[126752]	2026-11-03 23:43:40.814	= Debug =	keyboard event 0x41 0
+[126752]	2026-11-03 23:43:40.836	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:43:40.906	= Debug =	keyboard event 0x41 1
+[126752]	2026-11-03 23:43:40.928	= Debug =	keyboard event 0x4e 0
+[126752]	2026-11-03 23:43:40.994	= Debug =	keyboard event 0x4e 1
+[126752]	2026-11-03 23:43:40.996	= Debug =	keyboard event 0x5a 0
+[126752]	2026-11-03 23:43:41.105	= Debug =	keyboard event 0x5a 1
+[126752]	2026-11-03 23:43:41.170	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:43:41.265	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:43:42.851	= Debug =	keyboard event 0xa2 0
+[126752]	2026-11-03 23:43:43.075	= Debug =	keyboard event 0x41 0
+[126752]	2026-11-03 23:43:43.242	= Debug =	keyboard event 0x41 1
+[126752]	2026-11-03 23:43:43.335	= Debug =	keyboard event 0xa2 1
+[126752]	2026-11-03 23:43:43.681	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:43:43.747	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:43:49.055	= Debug =	keyboard event 0x4c 0
+[126752]	2026-11-03 23:43:49.153	= Debug =	keyboard event 0x4c 1
+[126752]	2026-11-03 23:43:49.194	= Debug =	keyboard event 0x41 0
+[126752]	2026-11-03 23:43:49.237	= Debug =	keyboard event 0x4f 0
+[126752]	2026-11-03 23:43:49.289	= Debug =	keyboard event 0x41 1
+[126752]	2026-11-03 23:43:49.329	= Debug =	keyboard event 0x4f 1
+[126752]	2026-11-03 23:43:49.577	= Debug =	keyboard event 0x54 0
+[126752]	2026-11-03 23:43:49.647	= Debug =	keyboard event 0x4f 0
+[126752]	2026-11-03 23:43:49.686	= Debug =	keyboard event 0x54 1
+[126752]	2026-11-03 23:43:49.743	= Debug =	keyboard event 0x4f 1
+[126752]	2026-11-03 23:43:49.788	= Debug =	keyboard event 0x55 0
+[126752]	2026-11-03 23:43:49.866	= Debug =	keyboard event 0x55 1
+[126752]	2026-11-03 23:43:50.000	= Debug =	keyboard event 0x4c 0
+[126752]	2026-11-03 23:43:50.061	= Debug =	keyboard event 0x45 0
+[126752]	2026-11-03 23:43:50.101	= Debug =	keyboard event 0x4c 1
+[126752]	2026-11-03 23:43:50.132	= Debug =	keyboard event 0x45 1
+[126752]	2026-11-03 23:43:50.588	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:43:50.696	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:43:51.613	= Debug =	keyboard event 0x48 0
+[126752]	2026-11-03 23:43:51.704	= Debug =	keyboard event 0x48 1
+[126752]	2026-11-03 23:43:51.709	= Debug =	keyboard event 0x41 0
+[126752]	2026-11-03 23:43:51.778	= Debug =	keyboard event 0x41 1
+[126752]	2026-11-03 23:43:51.801	= Debug =	keyboard event 0x4f 0
+[126752]	2026-11-03 23:43:51.868	= Debug =	keyboard event 0x58 0
+[126752]	2026-11-03 23:43:51.894	= Debug =	keyboard event 0x4f 1
+[126752]	2026-11-03 23:43:51.961	= Debug =	keyboard event 0x58 1
+[126752]	2026-11-03 23:43:51.977	= Debug =	keyboard event 0x49 0
+[126752]	2026-11-03 23:43:52.012	= Debug =	keyboard event 0x41 0
+[126752]	2026-11-03 23:43:52.047	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:43:52.127	= Debug =	keyboard event 0x41 1
+[126752]	2026-11-03 23:43:52.131	= Debug =	keyboard event 0x4e 0
+[126752]	2026-11-03 23:43:52.204	= Debug =	keyboard event 0x47 0
+[126752]	2026-11-03 23:43:52.246	= Debug =	keyboard event 0x4e 1
+[126752]	2026-11-03 23:43:52.275	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:43:52.290	= Debug =	keyboard event 0x47 1
+[126752]	2026-11-03 23:43:52.382	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:43:52.480	= Debug =	keyboard event 0x53 0
+[126752]	2026-11-03 23:43:52.566	= Debug =	keyboard event 0x48 0
+[126752]	2026-11-03 23:43:52.623	= Debug =	keyboard event 0x53 1
+[126752]	2026-11-03 23:43:52.660	= Debug =	keyboard event 0x49 0
+[126752]	2026-11-03 23:43:52.681	= Debug =	keyboard event 0x48 1
+[126752]	2026-11-03 23:43:52.690	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:43:52.727	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:43:52.796	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:43:53.188	= Debug =	keyboard event 0xd 0
+[126752]	2026-11-03 23:43:53.279	= Debug =	keyboard event 0xd 1
+[126752]	2026-11-03 23:43:58.964	= Debug =	keyboard event 0x54 0
+[126752]	2026-11-03 23:43:59.075	= Debug =	keyboard event 0x45 0
+[126752]	2026-11-03 23:43:59.116	= Debug =	keyboard event 0x54 1
+[126752]	2026-11-03 23:43:59.249	= Debug =	keyboard event 0x45 1
+[126752]	2026-11-03 23:43:59.838	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:43:59.909	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:44:00.005	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:44:00.071	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:44:00.161	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:44:00.236	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:44:02.047	= Debug =	keyboard event 0x44 0
+[126752]	2026-11-03 23:44:02.158	= Debug =	keyboard event 0x41 0
+[126752]	2026-11-03 23:44:02.188	= Debug =	keyboard event 0x4e 0
+[126752]	2026-11-03 23:44:02.204	= Debug =	keyboard event 0x44 1
+[126752]	2026-11-03 23:44:02.268	= Debug =	keyboard event 0x41 1
+[126752]	2026-11-03 23:44:02.283	= Debug =	keyboard event 0x4e 1
+[126752]	2026-11-03 23:44:02.835	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:44:02.946	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:44:06.228	= Debug =	keyboard event 0x42 0
+[126752]	2026-11-03 23:44:06.331	= Debug =	keyboard event 0x55 0
+[126752]	2026-11-03 23:44:06.357	= Debug =	keyboard event 0x42 1
+[126752]	2026-11-03 23:44:06.418	= Debug =	keyboard event 0x55 1
+[126752]	2026-11-03 23:44:06.464	= Debug =	keyboard event 0x44 0
+[126752]	2026-11-03 23:44:06.566	= Debug =	keyboard event 0x44 1
+[126752]	2026-11-03 23:44:06.631	= Debug =	keyboard event 0x45 0
+[126752]	2026-11-03 23:44:06.706	= Debug =	keyboard event 0x45 1
+[126752]	2026-11-03 23:44:06.868	= Debug =	keyboard event 0x42 0
+[126752]	2026-11-03 23:44:06.931	= Debug =	keyboard event 0x55 0
+[126752]	2026-11-03 23:44:06.950	= Debug =	keyboard event 0x42 1
+[126752]	2026-11-03 23:44:07.019	= Debug =	keyboard event 0x55 1
+[126752]	2026-11-03 23:44:07.056	= Debug =	keyboard event 0x53 0
+[126752]	2026-11-03 23:44:07.166	= Debug =	keyboard event 0x48 0
+[126752]	2026-11-03 23:44:07.169	= Debug =	keyboard event 0x53 1
+[126752]	2026-11-03 23:44:07.196	= Debug =	keyboard event 0x55 0
+[126752]	2026-11-03 23:44:07.268	= Debug =	keyboard event 0x48 1
+[126752]	2026-11-03 23:44:07.273	= Debug =	keyboard event 0x4f 0
+[126752]	2026-11-03 23:44:07.319	= Debug =	keyboard event 0x55 1
+[126752]	2026-11-03 23:44:07.320	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:44:07.353	= Debug =	keyboard event 0x4f 1
+[126752]	2026-11-03 23:44:07.389	= Debug =	keyboard event 0x44 0
+[126752]	2026-11-03 23:44:07.433	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:44:07.479	= Debug =	keyboard event 0x44 1
+[126752]	2026-11-03 23:44:07.576	= Debug =	keyboard event 0x45 0
+[126752]	2026-11-03 23:44:07.618	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:44:07.643	= Debug =	keyboard event 0x45 1
+[126752]	2026-11-03 23:44:07.720	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:44:07.729	= Debug =	keyboard event 0x53 0
+[126752]	2026-11-03 23:44:07.811	= Debug =	keyboard event 0x48 0
+[126752]	2026-11-03 23:44:07.846	= Debug =	keyboard event 0x53 1
+[126752]	2026-11-03 23:44:07.885	= Debug =	keyboard event 0x49 0
+[126752]	2026-11-03 23:44:07.931	= Debug =	keyboard event 0x48 1
+[126752]	2026-11-03 23:44:07.936	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:44:07.986	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:44:08.025	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:44:08.583	= Debug =	keyboard event 0xbc 0
+[126752]	2026-11-03 23:44:08.673	= Debug =	keyboard event 0xbc 1
+[126752]	2026-11-03 23:44:09.950	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:44:10.452	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:44:10.552	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:44:10.653	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:44:10.752	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:44:10.867	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:44:10.982	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:44:11.055	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:44:11.182	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:44:11.256	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:44:11.312	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:44:11.878	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:44:12.020	= Debug =	keyboard event 0x8 1
+[126712]	2026-11-03 23:46:01.164	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 6, fps 40
+[126712]	2026-11-03 23:46:02.162	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 3, fps 40
+[126712]	2026-11-03 23:46:06.163	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 3, fps 40
+[126712]	2026-11-03 23:46:07.164	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 7, fps 40
+[126752]	2026-11-03 23:46:12.714	= Debug =	keyboard event 0xa4 0
+[126752]	2026-11-03 23:46:12.872	= Debug =	keyboard event 0x41 0
+[126752]	2026-11-03 23:46:12.958	= Debug =	keyboard event 0xa4 1
+[126752]	2026-11-03 23:46:12.997	= Debug =	keyboard event 0x41 1
+[126752]	2026-11-03 23:46:36.507	= Debug =	keyboard event 0xa2 0
+[126752]	2026-11-03 23:46:36.912	= Debug =	keyboard event 0x56 0
+[126752]	2026-11-03 23:46:37.035	= Debug =	keyboard event 0x56 1
+[126752]	2026-11-03 23:46:37.113	= Debug =	keyboard event 0xa2 1
+[126752]	2026-11-03 23:46:38.668	= Debug =	keyboard event 0x26 0
+[126752]	2026-11-03 23:46:38.829	= Debug =	keyboard event 0x26 1
+[126712]	2026-11-03 23:46:39.166	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 6, fps 40
+[126752]	2026-11-03 23:46:39.170	= Debug =	keyboard event 0x27 0
+[126752]	2026-11-03 23:46:39.337	= Debug =	keyboard event 0x27 1
+[126752]	2026-11-03 23:46:39.934	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:46:40.026	= Debug =	keyboard event 0x8 1
+[126712]	2026-11-03 23:46:40.167	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 6, fps 40
+[126752]	2026-11-03 23:46:40.875	= Debug =	keyboard event 0xd 0
+[126752]	2026-11-03 23:46:40.939	= Debug =	keyboard event 0xd 1
+[126712]	2026-11-03 23:46:41.164	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 5, fps 40
+[126700]	2026-11-03 23:46:54.859	* Error *	[AmfEnc] encode fail,QueryOutput repeat timeout
+[126700]	2026-11-03 23:46:54.859	+Warning+	[HWAccelComp] transfer failed, reinit and try agin
+[126700]	2026-11-03 23:46:54.863	- Info  -	[AmfEnc] uninit amf environment
+[126700]	2026-11-03 23:46:54.889	- Info  -	[HWAccelComp] UnInit ok
+[126700]	2026-11-03 23:46:54.890	- Info  -	[HWAccelComp] AMD card, vendorId=0x1002, desc=AMD Radeon(TM) 8060S Graphics
+[126700]	2026-11-03 23:46:54.890	- Info  -	[AmfEnc] set encode type h264
+[54880]	2026-11-03 23:46:54.890	= Debug =	[thread] set thread name codec-pre 49425b00 / 54880
+[126700]	2026-11-03 23:46:54.920	= Debug =	[AmfEnc] Resolution range [128, 4096], [128, 4096]
+[126700]	2026-11-03 23:46:54.921	= Debug =	[AmfEnc] Calculated bitrate from CRF 22: 12319378 bps
+[126700]	2026-11-03 23:46:54.921	- Info  -	[AmfEnc] UpdateRCParams VBR: h264 target=12319 Kbps, peak=15399 Kbps, res=0/0
+[126700]	2026-11-03 23:46:54.928	- Info  -	[AmfEnc] init amf environment ok, use avc
+[126700]	2026-11-03 23:46:54.928	- Info  -	[HWAccelComp] encoder init h264 ok, 3392x2400
+[126724]	2026-11-03 23:46:54.958	- Info  -	[ClientDesktopMgr] time 3093 msg 1:25
+[126712]	2026-11-03 23:46:55.164	= Debug =	[CSingleDesktop] Too few frames sent, drop 0, send 3, fps 40
+[126752]	2026-11-03 23:46:55.794	= Debug =	keyboard event 0x54 0
+[126752]	2026-11-03 23:46:55.928	= Debug =	keyboard event 0x54 1
+[126752]	2026-11-03 23:46:55.931	= Debug =	keyboard event 0x49 0
+[126752]	2026-11-03 23:46:55.988	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:46:56.053	= Debug =	keyboard event 0x4e 0
+[126752]	2026-11-03 23:46:56.140	= Debug =	keyboard event 0x47 0
+[126752]	2026-11-03 23:46:56.182	= Debug =	keyboard event 0x4e 1
+[126752]	2026-11-03 23:46:56.214	= Debug =	keyboard event 0x47 1
+[126752]	2026-11-03 23:46:56.220	= Debug =	keyboard event 0x53 0
+[126752]	2026-11-03 23:46:56.334	= Debug =	keyboard event 0x53 1
+[126752]	2026-11-03 23:46:56.337	= Debug =	keyboard event 0x48 0
+[126752]	2026-11-03 23:46:56.382	= Debug =	keyboard event 0x55 0
+[126752]	2026-11-03 23:46:56.478	= Debug =	keyboard event 0x48 1
+[126752]	2026-11-03 23:46:56.481	= Debug =	keyboard event 0x4f 0
+[126752]	2026-11-03 23:46:56.522	= Debug =	keyboard event 0x55 1
+[126752]	2026-11-03 23:46:56.569	= Debug =	keyboard event 0x4f 1
+[126752]	2026-11-03 23:46:56.596	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:46:56.699	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:46:57.161	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:46:57.250	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:46:57.421	= Debug =	keyboard event 0x4a 0
+[126752]	2026-11-03 23:46:57.503	= Debug =	keyboard event 0x4a 1
+[126752]	2026-11-03 23:46:57.534	= Debug =	keyboard event 0x44 0
+[126752]	2026-11-03 23:46:57.662	= Debug =	keyboard event 0x44 1
+[126752]	2026-11-03 23:46:57.774	= Debug =	keyboard event 0x47 0
+[126752]	2026-11-03 23:46:57.870	= Debug =	keyboard event 0x47 1
+[126752]	2026-11-03 23:46:58.021	= Debug =	keyboard event 0x10 0
+[126752]	2026-11-03 23:46:58.100	= Debug =	keyboard event 0x10 1
+[126752]	2026-11-03 23:46:58.276	= Debug =	keyboard event 0x10 0
+[126752]	2026-11-03 23:46:58.371	= Debug =	keyboard event 0x10 1
+[126752]	2026-11-03 23:46:58.622	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:46:58.729	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:46:58.953	= Debug =	keyboard event 0x59 0
+[126752]	2026-11-03 23:46:59.035	= Debug =	keyboard event 0x59 1
+[126752]	2026-11-03 23:46:59.037	= Debug =	keyboard event 0x45 0
+[126752]	2026-11-03 23:46:59.104	= Debug =	keyboard event 0x45 1
+[126752]	2026-11-03 23:46:59.336	= Debug =	keyboard event 0x58 0
+[126752]	2026-11-03 23:46:59.448	= Debug =	keyboard event 0x58 1
+[126752]	2026-11-03 23:46:59.478	= Debug =	keyboard event 0x49 0
+[126752]	2026-11-03 23:46:59.530	= Debug =	keyboard event 0x41 0
+[126752]	2026-11-03 23:46:59.554	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:46:59.602	= Debug =	keyboard event 0x41 1
+[126752]	2026-11-03 23:46:59.632	= Debug =	keyboard event 0x4e 0
+[126752]	2026-11-03 23:46:59.729	= Debug =	keyboard event 0x4e 1
+[126752]	2026-11-03 23:46:59.731	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:46:59.848	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:47:00.293	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:47:00.357	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:47:00.424	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:47:00.509	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:47:00.580	= Debug =	keyboard event 0x58 0
+[126752]	2026-11-03 23:47:00.675	= Debug =	keyboard event 0x49 0
+[126752]	2026-11-03 23:47:00.695	= Debug =	keyboard event 0x58 1
+[126752]	2026-11-03 23:47:00.759	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:47:00.782	= Debug =	keyboard event 0x41 0
+[126752]	2026-11-03 23:47:00.837	= Debug =	keyboard event 0x4e 0
+[126752]	2026-11-03 23:47:00.844	= Debug =	keyboard event 0x41 1
+[126752]	2026-11-03 23:47:00.941	= Debug =	keyboard event 0x4e 1
+[126752]	2026-11-03 23:47:00.943	= Debug =	keyboard event 0x5a 0
+[126752]	2026-11-03 23:47:01.059	= Debug =	keyboard event 0x5a 1
+[126752]	2026-11-03 23:47:01.122	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:47:01.216	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:47:01.345	= Debug =	keyboard event 0x59 0
+[126752]	2026-11-03 23:47:01.414	= Debug =	keyboard event 0x45 0
+[126752]	2026-11-03 23:47:01.439	= Debug =	keyboard event 0x59 1
+[126752]	2026-11-03 23:47:01.499	= Debug =	keyboard event 0x45 1
+[126752]	2026-11-03 23:47:01.593	= Debug =	keyboard event 0x5a 0
+[126752]	2026-11-03 23:47:01.686	= Debug =	keyboard event 0x5a 1
+[126752]	2026-11-03 23:47:01.777	= Debug =	keyboard event 0x41 0
+[126752]	2026-11-03 23:47:01.851	= Debug =	keyboard event 0x41 1
+[126752]	2026-11-03 23:47:01.855	= Debug =	keyboard event 0x49 0
+[126752]	2026-11-03 23:47:01.937	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:47:01.947	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:47:02.047	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:47:02.557	= Debug =	keyboard event 0x5a 0
+[126752]	2026-11-03 23:47:02.642	= Debug =	keyboard event 0x48 0
+[126752]	2026-11-03 23:47:02.665	= Debug =	keyboard event 0x5a 1
+[126752]	2026-11-03 23:47:02.727	= Debug =	keyboard event 0x48 1
+[126752]	2026-11-03 23:47:02.749	= Debug =	keyboard event 0x41 0
+[126752]	2026-11-03 23:47:02.794	= Debug =	keyboard event 0x4f 0
+[126752]	2026-11-03 23:47:02.825	= Debug =	keyboard event 0x41 1
+[126752]	2026-11-03 23:47:02.924	= Debug =	keyboard event 0x4f 1
+[126752]	2026-11-03 23:47:02.926	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:47:03.032	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:47:03.494	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:47:03.597	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:47:04.050	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:47:04.119	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:47:04.203	= Debug =	keyboard event 0x8 0
+[126752]	2026-11-03 23:47:04.286	= Debug =	keyboard event 0x8 1
+[126752]	2026-11-03 23:47:04.361	= Debug =	keyboard event 0x5a 0
+[126752]	2026-11-03 23:47:04.483	= Debug =	keyboard event 0x5a 1
+[126752]	2026-11-03 23:47:04.488	= Debug =	keyboard event 0x48 0
+[126752]	2026-11-03 23:47:04.569	= Debug =	keyboard event 0x48 1
+[126752]	2026-11-03 23:47:04.571	= Debug =	keyboard event 0x41 0
+[126752]	2026-11-03 23:47:04.655	= Debug =	keyboard event 0x41 1
+[126752]	2026-11-03 23:47:04.657	= Debug =	keyboard event 0x4f 0
+[126752]	2026-11-03 23:47:04.728	= Debug =	keyboard event 0x4f 1
+[126752]	2026-11-03 23:47:05.353	= Debug =	keyboard event 0x32 0
+[126752]	2026-11-03 23:47:05.497	= Debug =	keyboard event 0x32 1
+[126752]	2026-11-03 23:47:05.712	= Debug =	keyboard event 0x4b 0
+[126752]	2026-11-03 23:47:05.714	= Debug =	keyboard event 0x4b 1
+[126752]	2026-11-03 23:47:05.742	= Debug =	keyboard event 0x4b 0
+[126752]	2026-11-03 23:47:05.843	= Debug =	keyboard event 0x4b 1
+[126752]	2026-11-03 23:47:06.032	= Debug =	keyboard event 0xd 0
+[126752]	2026-11-03 23:47:06.122	= Debug =	keyboard event 0xd 1
+[126752]	2026-11-03 23:47:06.624	= Debug =	keyboard event 0x42 0
+[126752]	2026-11-03 23:47:06.711	= Debug =	keyboard event 0x41 0
+[126752]	2026-11-03 23:47:06.734	= Debug =	keyboard event 0x42 1
+[126752]	2026-11-03 23:47:06.764	= Debug =	keyboard event 0x4f 0
+[126752]	2026-11-03 23:47:06.835	= Debug =	keyboard event 0x41 1
+[126752]	2026-11-03 23:47:06.880	= Debug =	keyboard event 0x4f 1
+[126752]	2026-11-03 23:47:06.924	= Debug =	keyboard event 0x4a 0
+[126752]	2026-11-03 23:47:06.995	= Debug =	keyboard event 0x49 0
+[126752]	2026-11-03 23:47:07.045	= Debug =	keyboard event 0x41 0
+[126752]	2026-11-03 23:47:07.048	= Debug =	keyboard event 0x4a 1
+[126752]	2026-11-03 23:47:07.082	= Debug =	keyboard event 0x49 1
+[126752]	2026-11-03 23:47:07.129	= Debug =	keyboard event 0x41 1
+[126752]	2026-11-03 23:47:07.699	= Debug =	keyboard event 0x20 0
+[126752]	2026-11-03 23:47:07.805	= Debug =	keyboard event 0x20 1
+[126752]	2026-11-03 23:47:07.834	= Debug =	keyboard event 0xd 0
+[126752]	2026-11-03 23:47:07.938	= Debug =	keyboard event 0xd 1
+[126680]	2026-11-03 23:47:10.791	- Info  -	[client::handler] disconnected
+[126680]	2026-11-03 23:47:10.791	- Info  -	[DesktopAgentClient] on_disconnect ok.
+[126724]	2026-11-03 23:47:10.791	= Debug =	m_queInput.PopFrontBuffer == 0, timeout(0)
+[126724]	2026-11-03 23:47:10.791	= Debug =	ClientDesktopMgr::ExitInstance in
+[126724]	2026-11-03 23:47:10.791	= Debug =	[ClientDesktopMgr] ExitInstance -- stop desktop start
+[126724]	2026-11-03 23:47:10.791	= Debug =	[ClientDesktopMgr] stop blackscreen
+[126724]	2026-11-03 23:47:10.792	= Debug =	[WinBlackScreen] InternalProc val: 0
+[126468]	2026-11-03 23:47:10.798	- Info  -	[agent] stop last plugin.
+[126884]	2026-11-03 23:47:10.809	- Info  -	[BlackScreen] NotifyBlackScreen state:power_normal
+[126884]	2026-11-03 23:47:10.809	= Debug =	[agentclient] write message data size(0), cmd 31
+[126880]	2026-11-03 23:47:10.815	- Info  -	[FilterWindowBlackScreen] loop finish
+[126724]	2026-11-03 23:47:10.819	= Debug =	[ClientDesktopMgr] ExitInstance -- stop sub desktop start 0
+[126724]	2026-11-03 23:47:10.819	= Debug =	[ClientDesktopMgr] StopDesk 0 CancelTask
+[126724]	2026-11-03 23:47:10.819	= Debug =	[ClientDesktopMgr] StopDesk 0 Stop
+[126724]	2026-11-03 23:47:10.819	= Debug =	[CSingleDesktop][4942c4a0] Stop BufferSender
+[126724]	2026-11-03 23:47:10.819	= Debug =	[CSingleDesktop] Stop KillTimer
+[126724]	2026-11-03 23:47:10.819	= Debug =	[CSingleDesktop] Stop RecordFile
+[126724]	2026-11-03 23:47:10.819	= Debug =	[CSingleDesktop] Stop upload
+[126724]	2026-11-03 23:47:10.819	= Debug =	[CSingleDesktop] Stop Input
+[126884]	2026-11-03 23:47:10.829	- Info  -	[BlackScreen] NotifyBlackScreen state:power_normal
+[126724]	2026-11-03 23:47:10.829	= Debug =	[CSingleDesktop] Stop Plugin dragserver
+[126884]	2026-11-03 23:47:10.831	= Debug =	[agentclient] write message data size(0), cmd 31
+[126724]	2026-11-03 23:47:10.831	= Debug =	[dragproxy] CDragServer::Stop ipc
+[126724]	2026-11-03 23:47:10.831	- Info  -	[clipboard::handler] agent(0) client disconnected!
+[126724]	2026-11-03 23:47:10.831	= Debug =	[dragproxy] CDragServer::Stop process
+[126724]	2026-11-03 23:47:12.831	= Debug =	[CSingleDesktop] Stop Plugin sysmgr
+[126724]	2026-11-03 23:47:12.831	= Debug =	[WinSysMgr] DisplayConfig mode 8
+[126724]	2026-11-03 23:47:12.832	= Debug =	[WinSysMgr] sourceInfo id: 0, targetInfo id: 256, GdiDeviceName: \\.\DISPLAY487, Monitor name: OPExtScreen
+[126724]	2026-11-03 23:47:12.832	= Debug =	[WinSysMgr] resolution: 3392 x 2400, bpp: 32, position: (0,0)
+[126724]	2026-11-03 23:47:12.833	= Debug =	[CSingleDesktop] Stop Display
+[126724]	2026-11-03 23:47:12.833	- Info  -	[dxgi][0000022F45D1BEE0] stop capture 
+[126724]	2026-11-03 23:47:12.833	- Info  -	[DXGI] Uninitialize device.
+[38480]	2026-11-03 23:47:12.842	- Info  -	[DXGI] exit detected
+[38480]	2026-11-03 23:47:12.882	= Debug =	[DXGI] threadloop end.
+[126724]	2026-11-03 23:47:12.884	= Debug =	[ClientDesktopMgr] StopDesk 0 Start delete desktop
+[126724]	2026-11-03 23:47:12.884	= Debug =	[ClientDesktopMgr] ExitInstance -- stop sub desktop finish 0
+[126724]	2026-11-03 23:47:12.884	= Debug =	[ClientDesktopMgr] ExitInstance -- stop pub plugins start
+[126724]	2026-11-03 23:47:12.884	= Debug =	[ClientDesktopMgr] ExitInstance -- stop plugin start blackscreen
+[126724]	2026-11-03 23:47:12.885	= Debug =	[ClientDesktopMgr] ExitInstance -- stop plugin finish blackscreen
+[126724]	2026-11-03 23:47:12.885	= Debug =	[ClientDesktopMgr] ExitInstance -- stop plugin start cursorsender
+[126724]	2026-11-03 23:47:12.885	= Debug =	[ClientDesktopMgr] ExitInstance -- stop plugin finish cursorsender
+[126724]	2026-11-03 23:47:12.885	= Debug =	[ClientDesktopMgr] ExitInstance -- stop plugin start file
+[126724]	2026-11-03 23:47:12.885	= Debug =	[ClientDesktopMgr] ExitInstance -- stop plugin finish file
+[126724]	2026-11-03 23:47:12.885	= Debug =	[ClientDesktopMgr] ExitInstance -- stop plugin start printer
+[126724]	2026-11-03 23:47:12.885	= Debug =	[ClientDesktopMgr] ExitInstance -- stop plugin finish printer
+[126724]	2026-11-03 23:47:12.885	= Debug =	[ClientDesktopMgr] ExitInstance -- stop pub plugins finish
+[126724]	2026-11-03 23:47:12.885	= Debug =	[ClientDesktopMgr] ExitInstance -- stop reactor start
+[126724]	2026-11-03 23:47:12.888	= Debug =	[ClientDesktopMgr] ExitInstance -- stop dataproxy reactor start
+[126724]	2026-11-03 23:47:12.888	= Debug =	[ClientDesktopMgr] ExitInstance -- stop message reactor start
+[126724]	2026-11-03 23:47:12.888	= Debug =	[ClientDesktopMgr] ExitInstance -- stop work reactor start
+[126724]	2026-11-03 23:47:12.890	= Debug =	EnumMonitors count:1
+[126724]	2026-11-03 23:47:12.892	= Debug =	EnumMonitors count:1
+[126724]	2026-11-03 23:47:12.892	= Debug =	EnumMonitors count:1
+[126724]	2026-11-03 23:47:12.892	= Debug =	DPMS DeviceOpen(0,100) successed.
+[126724]	2026-11-03 23:47:12.892	= Debug =	EnumMonitors count:1
+[126724]	2026-11-03 23:47:12.892	= Debug =	DPMS DeviceOpen(1,100) successed.
+[126724]	2026-11-03 23:47:12.892	= Debug =	EnumMonitors count:1
+[126724]	2026-11-03 23:47:12.893	- Info  -	[dxgi][0000022F45D1BEE0] stop capture 
+[126724]	2026-11-03 23:47:12.893	- Info  -	[DXGI] Uninitialize device.
+[126724]	2026-11-03 23:47:12.901	- Info  -	[AmfEnc] uninit amf environment
+[126724]	2026-11-03 23:47:12.932	- Info  -	[HWAccelComp] UnInit ok
+[126724]	2026-11-03 23:47:12.932	= Debug =	[LockStateInterFace::SetStream] [lock_state] received stream
+[126724]	2026-11-03 23:47:12.932	+Warning+	[LockStateInterFace::OnSendLockStateThread] [lock_state] dont send lock state init protocol
+[126724]	2026-11-03 23:47:12.932	- Info  -	[oray::plugin::SysFunc::ResumeThemeSettings] resume settings
+[126724]	2026-11-03 23:47:12.932	- Info  -	[CursorMonitor][CursorMonitor::stop] WM_STOP_CURSOR_MONITOR
+[126740]	2026-11-03 23:47:12.933	- Info  -	[CursorMonitor] recv STOP_CURSOR_MONITOR, end thread.
+[126724]	2026-11-03 23:47:12.935	= Debug =	ClientDesktopMgr::ExitInstance out
+[126468]	2026-11-03 23:47:12.936	= Debug =	[IddListener] UnInit
+[126660]	2026-11-03 23:47:12.937	- Info  -	[DisplayMonitorImpl] recv WM_CLOSE, end thread.
+[126468]	2026-11-03 23:47:12.939	= Debug =	ClientDesktopMgr::ExitInstance in
+[126468]	2026-11-03 23:47:12.939	= Debug =	[ClientDesktopMgr] ExitInstance -- stop desktop start
+[126468]	2026-11-03 23:47:12.939	= Debug =	[ClientDesktopMgr] ExitInstance -- stop pub plugins start
+[126468]	2026-11-03 23:47:12.939	= Debug =	[ClientDesktopMgr] ExitInstance -- stop pub plugins finish
+[126468]	2026-11-03 23:47:12.939	= Debug =	[ClientDesktopMgr] ExitInstance -- stop reactor start
+[126468]	2026-11-03 23:47:12.939	= Debug =	[ClientDesktopMgr] ExitInstance -- stop dataproxy reactor start
+[126468]	2026-11-03 23:47:12.939	= Debug =	[ClientDesktopMgr] ExitInstance -- stop message reactor start
+[126468]	2026-11-03 23:47:12.939	= Debug =	[ClientDesktopMgr] ExitInstance -- stop work reactor start
+[126468]	2026-11-03 23:47:12.939	= Debug =	[LockStateInterFace::SetStream] [lock_state] received stream
+[126468]	2026-11-03 23:47:12.939	+Warning+	[LockStateInterFace::OnSendLockStateThread] [lock_state] dont send lock state init protocol
+[126468]	2026-11-03 23:47:12.939	- Info  -	[oray::plugin::SysFunc::ResumeThemeSettings] resume settings
+[126468]	2026-11-03 23:47:12.939	- Info  -	[CursorMonitor][CursorMonitor::stop] WM_STOP_CURSOR_MONITOR
+[126468]	2026-11-03 23:47:12.939	= Debug =	ClientDesktopMgr::ExitInstance out
+[126468]	2026-11-03 23:47:12.939	= Debug =	[call] SLDestroyClient
+[126468]	2026-11-03 23:47:12.939	- Info  -	[RtmpClient] call CRtmpClientPublish::StopLive 
+[126468]	2026-11-03 23:47:12.940	- Info  -	Terminate OK
+[126468]	2026-11-03 23:47:12.941	- Info  -	Terminate OK
+[126468]	2026-11-03 23:47:12.941	= Debug =	[call] SLUninitialize

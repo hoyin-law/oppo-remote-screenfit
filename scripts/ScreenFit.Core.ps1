@@ -4,7 +4,7 @@
   不碰显示拓扑、不启动进程、不写状态文件。
 #>
 
-$script:ScreenFitVersion = '1.2.5'
+$script:ScreenFitVersion = '1.2.6'
 $script:ScreenFitLogDir = $null
 $script:ScreenFitStateDir = $null
 $script:logOffsets = @{}
@@ -252,6 +252,26 @@ function Get-ScreenFitDecision {
     if ($ViewerActive) { return 'switch' }
     if ($State -eq 'on' -and $NoViewerSeconds -ne $null -and $NoViewerSeconds -ge $ViewerGraceSeconds) { return 'restore' }
     return 'stay'
+}
+
+<#
+  Get-RestoreAction —— 会话结束后的布局恢复策略（纯函数，无 IO）。
+  用户的硬性要求：只要外接屏还在，断开远控后必须是「扩展」，不能塌缩成「仅电脑屏幕」。
+    外接屏存在但活动屏不足 2 块 -> extend（强制扩展）
+    没有外接屏且一块屏都没有   -> internal（兜底回内屏）
+    其余情况                   -> none（布局已正确）
+#>
+function Get-RestoreAction {
+    param(
+        [bool]$HasSnapshot,
+        [bool]$RestoreFailed,
+        [bool]$ExternalPresent,
+        [int]$ActiveCount,
+        [bool]$StateOn
+    )
+    if ($ExternalPresent -and $ActiveCount -lt 2) { return 'extend' }
+    if (-not $ExternalPresent -and $ActiveCount -lt 1) { return 'internal' }
+    return 'none'
 }
 
 $script:DeviceMap = @(

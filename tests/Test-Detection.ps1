@@ -64,7 +64,21 @@ foreach ($c in $cases) {
     Check ($d -eq $c.expect) ("decision:session=" + $c.session + ",viewer=" + $c.viewer + ",state=" + $c.state + ",gap=" + $c.gap) ("expected=" + $c.expect + " got=" + $d)
 }
 
-Write-Host '== 3. 版本一致性 =='
+Write-Host '== 3. 布局恢复策略（外接屏必须回到扩展） =='
+$restoreCases = @(
+    @{ external = $true;  active = 1; failed = $false; snap = $true;  expect = 'extend' },
+    @{ external = $true;  active = 0; failed = $true;  snap = $true;  expect = 'extend' },
+    @{ external = $true;  active = 2; failed = $false; snap = $true;  expect = 'none' },
+    @{ external = $false; active = 0; failed = $false; snap = $false; expect = 'internal' },
+    @{ external = $false; active = 1; failed = $false; snap = $true;  expect = 'none' },
+    @{ external = $false; active = 1; failed = $true;  snap = $true;  expect = 'none' }
+)
+foreach ($c in $restoreCases) {
+    $a = Get-RestoreAction -HasSnapshot $c.snap -RestoreFailed $c.failed -ExternalPresent $c.external -ActiveCount $c.active -StateOn $true
+    Check ($a -eq $c.expect) ("restore:external=" + $c.external + ",active=" + $c.active + ",failed=" + $c.failed) ("expected=" + $c.expect + " got=" + $a)
+}
+
+Write-Host '== 4. 版本一致性 =='
 $ver = Get-ScreenFitVersion
 Check ($ver -match '^\d+\.\d+\.\d+$') 'version-format' ("got=" + $ver)
 $verFile = Join-Path $RepoRoot 'VERSION'

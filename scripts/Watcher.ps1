@@ -185,7 +185,33 @@ public static class ScreenFitTopo {
     return "";
   }
   public static string Extend() {
-    return "err=" + SetDisplayConfig(0, null, 0, null, APPLY | 0x8);
+    // SDC_TOPOLOGY_EXTEND = 0x4（此前误写成 0x8 = SDC_TOPOLOGY_EXTERNAL「仅外接屏」）
+    return "err=" + SetDisplayConfig(0, null, 0, null, APPLY | 0x4);
+  }
+  // 真实外接屏数量：排除内屏（outputTechnology=0x80000000）与 OPPO 虚拟屏
+  public static int ExternalMonitorCount() {
+    var seen = new System.Collections.Generic.HashSet<string>();
+    foreach (var p in Query()) {
+      if (IsVirtualPath(p)) continue;
+      if (p.targetInfo.outputTechnology == 0x80000000) continue;
+      var n = Name(p);
+      if (string.IsNullOrEmpty(n)) continue;
+      int bar = n.IndexOf('|');
+      string dn = bar >= 0 ? n.Substring(0, bar) : n;
+      if (string.IsNullOrEmpty(dn)) continue;   // 幽灵 target 的 Name() 是 "|"，必须排除
+      seen.Add(dn);
+    }
+    return seen.Count;
+  }
+  public static string ActiveNames() {
+    var list = new System.Collections.Generic.List<string>();
+    foreach (var p in QueryActive()) {
+      var n = Name(p);
+      if (string.IsNullOrEmpty(n)) continue;
+      int bar = n.IndexOf('|'); if (bar >= 0) n = n.Substring(0, bar);
+      list.Add(n);
+    }
+    return string.Join(",", list.ToArray());
   }
   public static string DeactivateVirtual() {
     uint np, nm; int e = GetDisplayConfigBufferSizes(2, out np, out nm); if (e != 0) return "buf=" + e;
@@ -481,29 +507,65 @@ function Restore-WindowLayout {
     } catch { return 0 }
 }
 
-# 所有退出路径共用：恢复拓扑 -> 等系统稳定 -> 回搬窗口 -> 拆除虚拟屏
+# 所有退出路径共用：恢复拓扑（外接屏必须回到扩展）-> 等系统稳定 -> 回搬窗口 -> 拆除虚拟屏
 function Restore-Layout {
     $did = $false
+    $restoreFailed = $false
     if ([ScreenFitTopo]::HasSnapshot()) {
         $r = [ScreenFitTopo]::RestoreSnapshot()
         Remove-Item $SnapshotFile -Force -ErrorAction SilentlyContinue
         WLog ("   恢复连接前布局: " + $r)
-        if ($r -ne 'err=0') { Set-OnlyInternal }
+        $restoreFailed = ($r -ne 'err=0')
         $did = $true
     } elseif ((GetState) -eq 'on' -or $script:topoState -eq 'virtual') {
-        Set-OnlyInternal
         $did = $true
     }
-    if ($did) {
-        SetState 'off'
-        Start-Sleep -Milliseconds 600
-        Restore-WindowLayout | Out-Null
-        if ([ScreenFitTopo]::VirtualPathExists()) { CleanDevice }
+    if (-not $did) {
+        $script:snapshotTried = $false
+        $script:windowsMoved = $false
+        return $false
     }
+
+    SetState 'off'
+    Start-Sleep -Milliseconds 600
+
+    $external = 0
+    try { $external = [ScreenFitTopo]::ExternalMonitorCount() } catch { }
+    $active = 0
+    try { $active = [ScreenFitTopo]::ActiveCount() } catch { }
+    $action = Get-RestoreAction -HasSnapshot $true -RestoreFailed $restoreFailed -ExternalPresent ($external -gt 0) -ActiveCount $active -StateOn $true
+
+    if ($action -eq 'extend') {
+        # 用户的硬性要求：只要外接屏还在，断开远控后必须是扩展，不能塌缩成「仅电脑屏幕」
+        for ($i = 1; $i -le 2; $i++) {
+            $r2 = [ScreenFitTopo]::Extend()
+            Start-Sleep -Milliseconds 800
+            $active = [ScreenFitTopo]::ActiveCount()
+            WLog ("   恢复扩展布局(第" + $i + "次): " + $r2 + "，活动屏 " + $active + " 块 [外接屏 " + $external + "]")
+            if ($active -ge 2) { break }
+        }
+        $script:postRestoreUntil = (Get-Date).AddSeconds(30)
+    } elseif ($action -eq 'internal') {
+        Set-OnlyInternal
+    }
+
+    Restore-WindowLayout | Out-Null
+    if ([ScreenFitTopo]::VirtualPathExists()) { CleanDevice }
+
+    # 拆除虚拟屏后 Windows 可能再次塌缩成单屏：做一次收尾校验
+    Start-Sleep -Milliseconds 500
+    try {
+        if ([ScreenFitTopo]::ExternalMonitorCount() -gt 0 -and [ScreenFitTopo]::ActiveCount() -lt 2) {
+            [void][ScreenFitTopo]::Extend()
+            $script:postRestoreUntil = (Get-Date).AddSeconds(30)
+            WLog ("   拆除虚拟屏后布局塌缩，已再次恢复扩展（活动屏 " + [ScreenFitTopo]::ActiveCount() + " 块：" + [ScreenFitTopo]::ActiveNames() + "）")
+        }
+    } catch { }
+
     $script:snapshotTried = $false
     $script:windowsMoved = $false
     $script:noViewerSince = $null
-    return $did
+    return $true
 }
 
 function Set-OnlyVirtual {
@@ -560,6 +622,8 @@ $script:lastReapply = [datetime]::MinValue
 $script:reapplyFails = 0
 $script:noViewerSince = $null
 $script:lastStayLog = $null
+$script:postRestoreUntil = [datetime]::MinValue
+$script:lastGuardExtend = [datetime]::MinValue
 # 日志清理：只保留最近 40 个工具输出，watcher.log 超过 5MB 截断
 try {
     Get-ChildItem $LogDir -Filter 'tool_*' | Sort-Object LastWriteTime -Descending |
@@ -723,6 +787,17 @@ while ($true) {
     } else {
         # 会话结束（或本来就没有会话）：统一走 Restore-Layout，含窗口位置回搬
         if (Restore-Layout) { WLog '远程结束 -> 已恢复连接前屏幕布局' }
+        # 恢复后 30 秒内持续盯外接屏：OPPO 或系统可能再次把外接屏关掉（用户要求断开后保持扩展）
+        if ($script:postRestoreUntil -and (Get-Date) -lt $script:postRestoreUntil -and
+            ((Get-Date) - $script:lastGuardExtend).TotalSeconds -ge 3) {
+            try {
+                if ([ScreenFitTopo]::ExternalMonitorCount() -gt 0 -and [ScreenFitTopo]::ActiveCount() -lt 2) {
+                    $script:lastGuardExtend = Get-Date
+                    [void][ScreenFitTopo]::Extend()
+                    WLog ("   外接屏被关闭，已恢复扩展布局（活动屏 " + [ScreenFitTopo]::ActiveCount() + " 块：" + [ScreenFitTopo]::ActiveNames() + "）")
+                }
+            } catch { }
+        }
         $script:snapshotTried = $false
         $script:windowsMoved = $false
         $script:noViewerSince = $null

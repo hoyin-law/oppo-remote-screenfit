@@ -662,16 +662,21 @@ while ($true) {
     $s = Get-Session
     if ($s.Active) {
         $live = Get-RemoteLiveness
-        if (-not $live.AgentRunning) {
-            # 远程引擎进程已消失 = 会话确实结束；只恢复布局，不做任何 kill
+        if (-not $s.Cast -and -not $live.AgentRunning) {
+            # 远程控制引擎进程已消失 = 会话确实结束；只恢复布局，不做任何 kill
             if (Restore-Layout) { WLog '远程引擎已退出 -> 已恢复原布局' }
             Start-Sleep -Milliseconds 500
             continue
         }
 
-        # 观看端门禁：OPPO 的「远控态 = true」只说明设备连上了，不等于有人在看画面。
+        # 观看端门禁：远程控制模式下，OPPO 的「远控态 = true」只说明设备连上了，不等于有人在看画面。
         # 只有最近 ViewerWindowSec 秒内确有 send>0 的帧（观看端在消费画面）才允许切屏。
-        $viewer = Test-ViewerActive -WindowSeconds $ViewerWindowSec
+        # 投屏（仅观看）模式由 screenshare_ipc 状态显式触发，本身就意味着有人在看，直接放行。
+        if ($s.Cast) {
+            $viewer = [pscustomobject]@{ Active = $true; LogName = 'cast'; SecondsSinceConsumed = 0; LastConsumedTs = $null }
+        } else {
+            $viewer = Test-ViewerActive -WindowSeconds $ViewerWindowSec
+        }
         if (-not $viewer.Active) {
             if (-not $script:noViewerSince) { $script:noViewerSince = Get-Date }
         } else {

@@ -80,21 +80,16 @@ function Get-Session {
         if (Test-Path $devFile) { $dev = (Get-Content $devFile -Raw -ErrorAction SilentlyContinue).Trim() }
     }
 
-    # 兜底：日志轮转后可能读不到 start，但心跳仍在（说明会话语义上还活着）
+    # 兜底：日志轮转后读不到 start 时，用“远程引擎进程 + 引擎日志新鲜度”判断。
+    # 注意：主日志里的 ws.heartbeat 是控制通道心跳，空闲时也存在，不能当会话依据（会误判）。
     if (-not $active) {
-        $ackAge = 9999
-        $newest = $files[0]
-        $tail = Get-Content $newest.FullName -Tail 400 -ErrorAction SilentlyContinue
-        for ($i = $tail.Count - 1; $i -ge 0; $i--) {
-            if ($tail[$i] -match 'ws\.heartbeat\.ack') {
-                if ($tail[$i] -match '(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})') {
-                    try { $ackAge = ((Get-Date) - [datetime]::ParseExact($matches[1], 'yyyy-MM-dd HH:mm:ss', $null)).TotalSeconds } catch { }
-                }
-                break
-            }
-        }
+        $agentAge = 9999
+        $a = Get-ChildItem (Join-Path $dir 'desktop_agent.*.log') -ErrorAction SilentlyContinue |
+            Sort-Object LastWriteTime -Descending | Select-Object -First 1
+        if ($a) { $agentAge = ((Get-Date) - $a.LastWriteTime).TotalSeconds }
+        $agentRunning = @(Get-Process SLDesktopAgent -ErrorAction SilentlyContinue).Count -gt 0
         $devFile = Join-Path $LogDir 'last-device.txt'
-        if ($ackAge -lt 90 -and (Test-Path $devFile)) {
+        if ($agentRunning -and $agentAge -lt 60 -and (Test-Path $devFile)) {
             $dev = (Get-Content $devFile -Raw -ErrorAction SilentlyContinue).Trim()
             $active = $true
             $startTs = $null

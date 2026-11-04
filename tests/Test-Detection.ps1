@@ -78,44 +78,7 @@ foreach ($c in $restoreCases) {
     Check ($a -eq $c.expect) ("restore:external=" + $c.external + ",active=" + $c.active + ",failed=" + $c.failed) ("expected=" + $c.expect + " got=" + $a)
 }
 
-Write-Host '== 4. 日志轮转与投屏识别 =='
-$tmp = Join-Path $env:TEMP ("sf-rot-" + [guid]::NewGuid().ToString('N').Substring(0, 8))
-New-Item -ItemType Directory -Force $tmp | Out-Null
-$oldLogDir = $env:SCREENFIT_LOG_DIR
-try {
-    # 轮转文件名：2026-11-04_main.1.log 必须能被识别（旧代码只匹配 *_main.log）
-    $mainTxt = @(
-        '[16.2.20][info][pid:1] 2026-11-04 22:56:00.671 - [WsClient.js] start remote control: {"content":{"body":{"currentDevice":{"deviceName":"OPPO Pad 5 Pro"}}}}'
-    ) -join "`n"
-    [System.IO.File]::WriteAllText((Join-Path $tmp '2026-11-04_main.1.log'), $mainTxt + "`n", (New-Object System.Text.UTF8Encoding($false)))
-    $env:SCREENFIT_LOG_DIR = $tmp
-    Initialize-ScreenFit -StateDir $tmp
-    $s1 = Get-Session
-    Check ($s1.Active -eq $true) 'rotated-main-log-session-active' ("active=" + $s1.Active)
-    Check ($s1.Device -eq 'OPPO Pad 5 Pro') 'rotated-main-log-device' ("device=" + $s1.Device)
-    Check ($s1.Cast -eq $false) 'rotated-main-log-not-cast' ("cast=" + $s1.Cast)
-
-    # 投屏状态：任一模式非 0 -> Active/Cast；回落 0 -> 不再投屏
-    [System.IO.File]::AppendAllText((Join-Path $tmp '2026-11-04_main.1.log'),
-        ('[16.2.20][info][pid:1] 2026-11-04 23:10:00.000 - [screenshare_ipc] castScreenStatusChanged to screenShare: {"castMirrorScreenStatus":1,"gameCastStatus":0,"appMirrorScreenStatus":0,"isHaveScreenShareAbility":true}' + "`n"),
-        (New-Object System.Text.UTF8Encoding($false)))
-    Initialize-ScreenFit -StateDir $tmp
-    $s2 = Get-Session
-    Check ($s2.Cast -eq $true) 'cast-mirror-detected' ("cast=" + $s2.Cast)
-    Check ($s2.Active -eq $true) 'cast-makes-session-active' ("active=" + $s2.Active)
-
-    [System.IO.File]::AppendAllText((Join-Path $tmp '2026-11-04_main.1.log'),
-        ('[16.2.20][info][pid:1] 2026-11-04 23:20:00.000 - [screenshare_ipc] castScreenStatusChanged to screenShare: {"castMirrorScreenStatus":0,"gameCastStatus":0,"appMirrorScreenStatus":0,"isHaveScreenShareAbility":false}' + "`n"),
-        (New-Object System.Text.UTF8Encoding($false)))
-    Initialize-ScreenFit -StateDir $tmp
-    $s3 = Get-Session
-    Check ($s3.Cast -eq $false) 'cast-stop-detected' ("cast=" + $s3.Cast)
-} finally {
-    $env:SCREENFIT_LOG_DIR = $oldLogDir
-    Remove-Item $tmp -Recurse -Force -ErrorAction SilentlyContinue
-}
-
-Write-Host '== 5. 版本一致性 =='
+Write-Host '== 4. 版本一致性 =='
 $ver = Get-ScreenFitVersion
 Check ($ver -match '^\d+\.\d+\.\d+$') 'version-format' ("got=" + $ver)
 $verFile = Join-Path $RepoRoot 'VERSION'

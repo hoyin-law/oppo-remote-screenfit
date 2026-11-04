@@ -4,7 +4,7 @@
   不碰显示拓扑、不启动进程、不写状态文件。
 #>
 
-$script:ScreenFitVersion = '1.2.8'
+$script:ScreenFitVersion = '1.2.7'
 $script:ScreenFitLogDir = $null
 $script:ScreenFitStateDir = $null
 $script:logOffsets = @{}
@@ -81,10 +81,9 @@ function Read-NewLines([string]$path) {
 
 function Get-Session {
     $dir = Get-ScreenFitLogDir
-    # OPPO 主日志会轮转成 *_main.1.log / *_main.2.log，只匹配 *_main.log 会漏掉当前实例
-    $files = Get-ChildItem (Join-Path $dir '*_main*.log') -ErrorAction SilentlyContinue |
-        Sort-Object LastWriteTime -Descending | Select-Object -First 3
-    if (-not $files) { return @{ Active = $false; Device = $null; StartTs = $null; Cast = $false } }
+    $files = Get-ChildItem (Join-Path $dir '*_main.log') -ErrorAction SilentlyContinue |
+        Sort-Object LastWriteTime -Descending | Select-Object -First 2
+    if (-not $files) { return @{ Active = $false; Device = $null; StartTs = $null } }
 
     foreach ($f in ($files | Sort-Object LastWriteTime)) {
         foreach ($l in (Read-NewLines $f.FullName)) {
@@ -135,48 +134,7 @@ function Get-Session {
         }
     }
 
-    # 投屏 / 屏幕共享（仅观看，不控制）：主日志 screenshare_ipc 状态里任一模式非 0 即视为在投屏
-    $cast = Get-CastState
-    if (-not $active -and $cast.Active) {
-        $active = $true
-        if (-not $dev -and (Test-Path $devFile)) { $dev = (Get-Content $devFile -Raw -ErrorAction SilentlyContinue).Trim() }
-    }
-
-    return @{ Active = $active; Device = $dev; StartTs = $startTs; Cast = [bool]$cast.Active }
-}
-
-<#
-  Get-CastState —— 识别 OPPO 互联「投屏 / 屏幕共享」状态（只观看，不控制）。
-  日志依据（main 日志，可能带转义引号）：
-    [screenshare_ipc] castScreenStatusChanged to screenShare: {"castMirrorScreenStatus":0,"gameCastStatus":0,"appMirrorScreenStatus":0,...}
-  任一状态 > 0 即投屏中；取最近两份主日志的最后一条状态。
-#>
-function Get-CastState {
-    param([int]$TailLines = 3000)
-    $result = [pscustomobject]@{ Active = $false; Mirror = $false; AppMirror = $false; GameCast = $false; LastTs = $null }
-    $dir = Get-ScreenFitLogDir
-    $files = Get-ChildItem (Join-Path $dir '*_main*.log') -ErrorAction SilentlyContinue |
-        Sort-Object LastWriteTime -Descending | Select-Object -First 2
-    if (-not $files) { return $result }
-    foreach ($f in ($files | Sort-Object LastWriteTime)) {
-        foreach ($l in (Get-Content $f.FullName -Tail $TailLines -ErrorAction SilentlyContinue)) {
-            if ($l -notmatch 'castScreenStatusChanged') { continue }
-            $m1 = [regex]::Match($l, '\\?"castMirrorScreenStatus\\?"\s*:\s*(\d+)')
-            $m2 = [regex]::Match($l, '\\?"gameCastStatus\\?"\s*:\s*(\d+)')
-            $m3 = [regex]::Match($l, '\\?"appMirrorScreenStatus\\?"\s*:\s*(\d+)')
-            if (-not ($m1.Success -or $m2.Success -or $m3.Success)) { continue }
-            $mir = if ($m1.Success) { [int]$m1.Groups[1].Value } else { 0 }
-            $game = if ($m2.Success) { [int]$m2.Groups[1].Value } else { 0 }
-            $app = if ($m3.Success) { [int]$m3.Groups[1].Value } else { 0 }
-            $result.Mirror = ($mir -gt 0)
-            $result.AppMirror = ($app -gt 0)
-            $result.GameCast = ($game -gt 0)
-            $result.Active = ($mir -gt 0 -or $app -gt 0 -or $game -gt 0)
-            $mt = [regex]::Match($l, '(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})')
-            if ($mt.Success) { $result.LastTs = $mt.Groups[1].Value }
-        }
-    }
-    return $result
+    return @{ Active = $active; Device = $dev; StartTs = $startTs }
 }
 
 function Get-RemoteLiveness {

@@ -78,7 +78,45 @@ foreach ($c in $restoreCases) {
     Check ($a -eq $c.expect) ("restore:external=" + $c.external + ",active=" + $c.active + ",failed=" + $c.failed) ("expected=" + $c.expect + " got=" + $a)
 }
 
-Write-Host '== 4. 版本一致性 =='
+Write-Host '== 4. 原生屏幕扩展（screenshare）识别 =='
+$nativeCases = @(
+    @{ native = $true; state = 'off'; expect = 'observe' },
+    @{ native = $true; state = 'native'; expect = 'observe' },
+    @{ native = $false; state = 'native'; expect = 'restore' },
+    @{ native = $false; state = 'off'; expect = 'idle' },
+    @{ native = $false; state = 'on'; expect = 'idle' }
+)
+foreach ($c in $nativeCases) {
+    $d = Get-NativeExtendDecision -NativeActive $c.native -State $c.state
+    Check ($d -eq $c.expect) ("native-decision:native=" + $c.native + ",state=" + $c.state) ("expected=" + $c.expect + " got=" + $d)
+}
+
+$castTmp = Join-Path $env:TEMP ("sf-cast-" + [guid]::NewGuid().ToString('N').Substring(0, 8))
+New-Item -ItemType Directory -Force $castTmp | Out-Null
+$oldCastLogDir = $env:SCREENFIT_LOG_DIR
+try {
+    $castLog = Join-Path $castTmp '2026-11-04_main.1.log'
+    [System.IO.File]::WriteAllText($castLog,
+        ('[16.2.20][info][pid:1] 2026-11-04 23:10:00.000 - [screenshare_ipc] castScreenStatusChanged to screenShare: {"castMirrorScreenStatus":1,"gameCastStatus":0,"appMirrorScreenStatus":0,"isHaveScreenShareAbility":true}' + "`n"),
+        (New-Object System.Text.UTF8Encoding($false)))
+    $env:SCREENFIT_LOG_DIR = $castTmp
+    Initialize-ScreenFit -StateDir $castTmp
+    $c1 = Get-CastState
+    Check ($c1.Active -eq $true) 'cast-active-detected' ("active=" + $c1.Active)
+    Check ($c1.Mirror -eq $true) 'cast-mirror-flag' ("mirror=" + $c1.Mirror)
+
+    [System.IO.File]::AppendAllText($castLog,
+        ('[16.2.20][info][pid:1] 2026-11-04 23:20:00.000 - [screenshare_ipc] castScreenStatusChanged to screenShare: {"castMirrorScreenStatus":0,"gameCastStatus":0,"appMirrorScreenStatus":0,"isHaveScreenShareAbility":false}' + "`n"),
+        (New-Object System.Text.UTF8Encoding($false)))
+    Initialize-ScreenFit -StateDir $castTmp
+    $c2 = Get-CastState
+    Check ($c2.Active -eq $false) 'cast-stop-detected' ("active=" + $c2.Active)
+} finally {
+    $env:SCREENFIT_LOG_DIR = $oldCastLogDir
+    Remove-Item $castTmp -Recurse -Force -ErrorAction SilentlyContinue
+}
+
+Write-Host '== 5. 版本一致性 =='
 $ver = Get-ScreenFitVersion
 Check ($ver -match '^\d+\.\d+\.\d+$') 'version-format' ("got=" + $ver)
 $verFile = Join-Path $RepoRoot 'VERSION'

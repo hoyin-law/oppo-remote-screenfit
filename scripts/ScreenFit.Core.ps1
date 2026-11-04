@@ -4,7 +4,7 @@
   不碰显示拓扑、不启动进程、不写状态文件。
 #>
 
-$script:ScreenFitVersion = '1.2.7'
+$script:ScreenFitVersion = '1.2.8'
 $script:ScreenFitLogDir = $null
 $script:ScreenFitStateDir = $null
 $script:logOffsets = @{}
@@ -144,6 +144,73 @@ function Get-RemoteLiveness {
     if ($a) { $agentAge = ((Get-Date) - $a.LastWriteTime).TotalSeconds }
     $agentRunning = @(Get-Process SLDesktopAgent -ErrorAction SilentlyContinue).Count -gt 0
     return @{ AgentAge = $agentAge; AgentRunning = $agentRunning }
+}
+
+<#
+  Get-CastState —— 识别 OPPO「屏幕扩展 / 屏幕镜像 / 屏幕共享」状态（原生链路）。
+  日志依据（main 日志，可能带转义引号）：
+    [screenshare_ipc] castScreenStatusChanged to screenShare: {"castMirrorScreenStatus":0,"gameCastStatus":0,"appMirrorScreenStatus":0,...}
+  任一状态 > 0 即为原生屏幕协同中；取最近两份主日志的最后一条状态。
+#>
+function Get-CastState {
+    param([int]$TailLines = 3000)
+    $result = [pscustomobject]@{ Active = $false; Mirror = $false; AppMirror = $false; GameCast = $false; LastTs = $null }
+    $dir = Get-ScreenFitLogDir
+    $files = Get-ChildItem (Join-Path $dir '*_main*.log') -ErrorAction SilentlyContinue |
+        Sort-Object LastWriteTime -Descending | Select-Object -First 2
+    if (-not $files) { return $result }
+    foreach ($f in ($files | Sort-Object LastWriteTime)) {
+        foreach ($l in (Get-Content $f.FullName -Tail $TailLines -ErrorAction SilentlyContinue)) {
+            if ($l -notmatch 'castScreenStatusChanged') { continue }
+            $m1 = [regex]::Match($l, '\\?"castMirrorScreenStatus\\?"\s*:\s*(\d+)')
+            $m2 = [regex]::Match($l, '\\?"gameCastStatus\\?"\s*:\s*(\d+)')
+            $m3 = [regex]::Match($l, '\\?"appMirrorScreenStatus\\?"\s*:\s*(\d+)')
+            if (-not ($m1.Success -or $m2.Success -or $m3.Success)) { continue }
+            $mir = if ($m1.Success) { [int]$m1.Groups[1].Value } else { 0 }
+            $game = if ($m2.Success) { [int]$m2.Groups[1].Value } else { 0 }
+            $app = if ($m3.Success) { [int]$m3.Groups[1].Value } else { 0 }
+            $result.Mirror = ($mir -gt 0)
+            $result.AppMirror = ($app -gt 0)
+            $result.GameCast = ($game -gt 0)
+            $result.Active = ($mir -gt 0 -or $app -gt 0 -or $game -gt 0)
+            $mt = [regex]::Match($l, '(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})')
+            if ($mt.Success) { $result.LastTs = $mt.Groups[1].Value }
+        }
+    }
+    return $result
+}
+
+<#
+  Get-NativeExtendState —— OPPO 原生「屏幕扩展/镜像」是否在进行。
+  原生链路由 app_process\screenshare.exe 负责建屏与推流，不经过 SunLogin 远控内核，
+  因此插件在此模式下只做守护（不自行建屏），结束后负责恢复扩展布局。
+#>
+function Get-NativeExtendState {
+    param([int]$TailLines = 3000, [int]$GraceSeconds = 120)
+    $sharing = @(Get-Process screenshare -ErrorAction SilentlyContinue).Count -gt 0
+    $cast = Get-CastState -TailLines $TailLines
+    $recent = $false
+    if ($cast.LastTs) {
+        try {
+            $ts = [datetime]::ParseExact($cast.LastTs, 'yyyy-MM-dd HH:mm:ss', $null)
+            $recent = ((Get-Date) - $ts).TotalSeconds -le $GraceSeconds
+        } catch { }
+    }
+    $active = [bool]($cast.Active -and ($sharing -or $recent))
+    return [pscustomobject]@{
+        Active  = $active
+        Sharing = $sharing
+        Cast    = $cast.Active
+        LastTs  = $cast.LastTs
+    }
+}
+
+<# 原生协同模式下的行为决策（纯函数）：observe=守护不建屏，restore=结束后恢复布局，idle=无关 #>
+function Get-NativeExtendDecision {
+    param([bool]$NativeActive, [string]$State = 'off')
+    if ($NativeActive) { return 'observe' }
+    if ($State -eq 'native') { return 'restore' }
+    return 'idle'
 }
 
 <#

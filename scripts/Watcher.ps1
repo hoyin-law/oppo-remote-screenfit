@@ -624,6 +624,7 @@ $script:noViewerSince = $null
 $script:lastStayLog = $null
 $script:postRestoreUntil = [datetime]::MinValue
 $script:lastGuardExtend = [datetime]::MinValue
+$script:remoteDisabledLogged = $false
 # 日志清理：只保留最近 40 个工具输出，watcher.log 超过 5MB 截断
 try {
     Get-ChildItem $LogDir -Filter 'tool_*' | Sort-Object LastWriteTime -Descending |
@@ -637,18 +638,22 @@ try {
 WLog 'watcher-run 启动（仅远程信号触发 + 退出恢复布局）'
 
 # 空闲启动：恢复残留快照，清理虚拟屏，保持用户原布局
-$s0 = Get-Session
-if (-not $s0.Active) {
-    if (Test-Path $SnapshotFile) {
-        [ScreenFitTopo]::LoadSnapshot($SnapshotFile) | Out-Null
-        $r = [ScreenFitTopo]::RestoreSnapshot()
-        WLog ("启动恢复上次屏幕布局: " + $r)
-        Remove-Item $SnapshotFile -Force -ErrorAction SilentlyContinue
-        Start-Sleep -Milliseconds 600
-        Restore-WindowLayout | Out-Null
+# 若 OPPO 原生屏幕扩展/镜像正在进行，则不要动布局（那条链路自己建屏推流）
+$native0 = Get-NativeExtendState
+if (-not $native0.Active) {
+    $s0 = Get-Session
+    if (-not $s0.Active) {
+        if (Test-Path $SnapshotFile) {
+            [ScreenFitTopo]::LoadSnapshot($SnapshotFile) | Out-Null
+            $r = [ScreenFitTopo]::RestoreSnapshot()
+            WLog ("启动恢复上次屏幕布局: " + $r)
+            Remove-Item $SnapshotFile -Force -ErrorAction SilentlyContinue
+            Start-Sleep -Milliseconds 600
+            Restore-WindowLayout | Out-Null
+        }
+        if ([ScreenFitTopo]::VirtualPathExists()) { CleanDevice }
+        SetState 'off'
     }
-    if ([ScreenFitTopo]::VirtualPathExists()) { CleanDevice }
-    SetState 'off'
 }
 
 while ($true) {
@@ -659,7 +664,43 @@ while ($true) {
         exit
     }
 
+    # OPPO 原生「屏幕扩展 / 屏幕镜像」：由 screenshare.exe 自行建屏推流，插件只守护
+    $native = Get-NativeExtendState
+    $nativeDecision = Get-NativeExtendDecision -NativeActive $native.Active -State (GetState)
+    if ($nativeDecision -eq 'observe') {
+        if ((GetState) -ne 'native') {
+            SetState 'native'
+            WLog ("检测到 OPPO 原生屏幕扩展/镜像（screenshare=" + $native.Sharing + "）-> 原生模式，插件不自行建屏")
+        }
+        Start-Sleep -Milliseconds 500
+        continue
+    }
+    if ($nativeDecision -eq 'restore') {
+        WLog 'OPPO 原生屏幕扩展结束 -> 检查并恢复扩展布局'
+        SetState 'off'
+        try {
+            if ([ScreenFitTopo]::ExternalMonitorCount() -gt 0 -and [ScreenFitTopo]::ActiveCount() -lt 2) {
+                [void][ScreenFitTopo]::Extend()
+                Start-Sleep -Milliseconds 800
+                WLog ("   已恢复扩展布局（活动屏 " + [ScreenFitTopo]::ActiveCount() + " 块：" + [ScreenFitTopo]::ActiveNames() + "）")
+            }
+        } catch { }
+        $script:postRestoreUntil = (Get-Date).AddSeconds(30)
+        Start-Sleep -Milliseconds 500
+        continue
+    }
+
     $s = Get-Session
+    # 可选的模式开关：NO_REMOTE_ADAPT.txt 存在时，只保留「原生屏幕扩展守护 + 恢复扩展」，
+    # 不再尝试为远程控制自建虚拟屏（当前 OPPO 16.2.20.0 下该路线已证伪）
+    if ($s.Active -and -not $s.Cast -and (Test-Path (Join-Path $Root 'NO_REMOTE_ADAPT.txt'))) {
+        if (-not $script:remoteDisabledLogged) {
+            WLog '远程控制自适应已关闭（NO_REMOTE_ADAPT.txt）：仅守护原生屏幕扩展与恢复布局'
+            $script:remoteDisabledLogged = $true
+        }
+        Start-Sleep -Milliseconds 500
+        continue
+    }
     if ($s.Active) {
         $live = Get-RemoteLiveness
         if (-not $live.AgentRunning) {

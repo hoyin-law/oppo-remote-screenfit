@@ -662,6 +662,12 @@ $script:remoteDisabledLogged = $false
 $script:nativeCache = $null
 $script:lastNativeCheck = [datetime]::MinValue
 $script:lastAliveLog = Get-Date
+$script:stateCacheValue = $null
+$script:stateCacheTs = [datetime]::MinValue
+$script:sharingCache = $false
+$script:sharingCacheTs = [datetime]::MinValue
+$script:sessionCache = $null
+$script:sessionCacheTs = [datetime]::MinValue
 # 日志清理：只保留最近 40 个工具输出，watcher.log 超过 5MB 截断
 try {
     Get-ChildItem $LogDir -Filter 'tool_*' | Sort-Object LastWriteTime -Descending |
@@ -704,6 +710,12 @@ while ($true) {
     # 每 10 分钟写一次存活心跳，便于判断进程是否还在正常工作
     if (((Get-Date) - $script:lastAliveLog).TotalSeconds -ge 600) {
         $script:lastAliveLog = Get-Date
+$script:stateCacheValue = $null
+$script:stateCacheTs = [datetime]::MinValue
+$script:sharingCache = $false
+$script:sharingCacheTs = [datetime]::MinValue
+$script:sessionCache = $null
+$script:sessionCacheTs = [datetime]::MinValue
         try {
             $aliveNative = if ($script:nativeCache) { $script:nativeCache.Active } else { '?' }
             WLog ("存活：state=" + (GetState) + " native=" + $aliveNative + " 活动屏=" + [ScreenFitTopo]::ActiveCount() + " 虚拟屏=" + [ScreenFitTopo]::VirtualActive())
@@ -714,7 +726,11 @@ while ($true) {
     # 性能：主日志可达数 MB，不能每 500ms 全量 tail 解析。策略：
     #   - 没有 screenshare 进程且上次判定为非原生模式 -> 沿用缓存，最多每 15 秒复查一次
     #   - 其余情况最多每 3 秒解析一次
-    $sharingNow = @(Get-Process screenshare -ErrorAction SilentlyContinue).Count -gt 0
+    if (-not $script:sharingCacheTs -or ((Get-Date) - $script:sharingCacheTs).TotalSeconds -ge 2) {
+        $script:sharingCache = @(Get-Process screenshare -ErrorAction SilentlyContinue).Count -gt 0
+        $script:sharingCacheTs = Get-Date
+    }
+    $sharingNow = $script:sharingCache
     $sinceNativeCheck = ((Get-Date) - $script:lastNativeCheck).TotalSeconds
     $needNativeCheck = $false
     if (-not $script:nativeCache) {
@@ -757,7 +773,14 @@ while ($true) {
         continue
     }
 
-    $s = Get-Session
+    # 会话检测 1 秒缓存（空闲时减少日志解析压力；检测延迟最多 1 秒）
+    if (-not $script:sessionCache -or ((Get-Date) - $script:sessionCacheTs).TotalSeconds -ge 1) {
+        $s = Get-Session
+        $script:sessionCache = $s
+        $script:sessionCacheTs = Get-Date
+    } else {
+        $s = $script:sessionCache
+    }
 
     # ===== 预建屏模式（会话前就绪）=====
     # 由 Prepare-Remote.ps1 写入 PREARM.txt 触发；建屏后等待平板发起远控，

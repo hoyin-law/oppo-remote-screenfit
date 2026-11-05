@@ -4,7 +4,7 @@
   不碰显示拓扑、不启动进程、不写状态文件。
 #>
 
-$script:ScreenFitVersion = '1.2.10'
+$script:ScreenFitVersion = '1.2.11'
 $script:ScreenFitLogDir = $null
 $script:ScreenFitStateDir = $null
 $script:logOffsets = @{}
@@ -153,11 +153,11 @@ function Get-RemoteLiveness {
   任一状态 > 0 即为原生屏幕协同中；取最近两份主日志的最后一条状态。
 #>
 function Get-CastState {
-    param([int]$TailLines = 3000)
+    param([int]$TailLines = 1500, [int]$MaxFiles = 1)
     $result = [pscustomobject]@{ Active = $false; Mirror = $false; AppMirror = $false; GameCast = $false; LastTs = $null }
     $dir = Get-ScreenFitLogDir
     $files = Get-ChildItem (Join-Path $dir '*_main*.log') -ErrorAction SilentlyContinue |
-        Sort-Object LastWriteTime -Descending | Select-Object -First 2
+        Sort-Object LastWriteTime -Descending | Select-Object -First $MaxFiles
     if (-not $files) { return $result }
     foreach ($f in ($files | Sort-Object LastWriteTime)) {
         foreach ($l in (Get-Content $f.FullName -Tail $TailLines -ErrorAction SilentlyContinue)) {
@@ -186,7 +186,7 @@ function Get-CastState {
   因此插件在此模式下只做守护（不自行建屏），结束后负责恢复扩展布局。
 #>
 function Get-NativeExtendState {
-    param([int]$TailLines = 3000, [int]$GraceSeconds = 120)
+    param([int]$TailLines = 1500, [int]$GraceSeconds = 120)
     $sharing = @(Get-Process screenshare -ErrorAction SilentlyContinue).Count -gt 0
     $cast = Get-CastState -TailLines $TailLines
     $recent = $false

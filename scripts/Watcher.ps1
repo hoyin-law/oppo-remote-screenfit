@@ -716,9 +716,17 @@ while ($true) {
     #   - 其余情况最多每 3 秒解析一次
     $sharingNow = @(Get-Process screenshare -ErrorAction SilentlyContinue).Count -gt 0
     $sinceNativeCheck = ((Get-Date) - $script:lastNativeCheck).TotalSeconds
-    if ($script:nativeCache -and -not $sharingNow -and -not $script:nativeCache.Active -and $sinceNativeCheck -lt 15) {
-        $native = $script:nativeCache
-    } elseif (-not $script:nativeCache -or $sinceNativeCheck -ge 3) {
+    $needNativeCheck = $false
+    if (-not $script:nativeCache) {
+        $needNativeCheck = $true
+    } elseif ($sharingNow -or $script:nativeCache.Active) {
+        # 原生协同进行中，或刚结束：每 2 秒复查
+        $needNativeCheck = ($sinceNativeCheck -ge 2)
+    } else {
+        # 空闲：每 60 秒复查一次即可（主日志读取是主要 CPU 开销）
+        $needNativeCheck = ($sinceNativeCheck -ge 60)
+    }
+    if ($needNativeCheck) {
         $native = Get-NativeExtendState
         $script:nativeCache = $native
         $script:lastNativeCheck = Get-Date

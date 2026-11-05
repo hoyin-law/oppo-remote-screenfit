@@ -726,7 +726,7 @@ $script:sessionCacheTs = [datetime]::MinValue
     # 性能：主日志可达数 MB，不能每 500ms 全量 tail 解析。策略：
     #   - 没有 screenshare 进程且上次判定为非原生模式 -> 沿用缓存，最多每 15 秒复查一次
     #   - 其余情况最多每 3 秒解析一次
-    if (-not $script:sharingCacheTs -or ((Get-Date) - $script:sharingCacheTs).TotalSeconds -ge 2) {
+    if (-not $script:sharingCacheTs -or ((Get-Date) - $script:sharingCacheTs).TotalSeconds -ge 5) {
         $script:sharingCache = @(Get-Process screenshare -ErrorAction SilentlyContinue).Count -gt 0
         $script:sharingCacheTs = Get-Date
     }
@@ -774,7 +774,7 @@ $script:sessionCacheTs = [datetime]::MinValue
     }
 
     # 会话检测 1 秒缓存（空闲时减少日志解析压力；检测延迟最多 1 秒）
-    $sessionTtl = if ((GetState) -in @('on','prearmed','native')) { 1 } else { 2 }
+    $sessionTtl = if ((GetState) -in @('on','prearmed','native')) { 1 } else { 4 }
     if (-not $script:sessionCache -or ((Get-Date) - $script:sessionCacheTs).TotalSeconds -ge $sessionTtl) {
         $s = Get-Session
         $script:sessionCache = $s

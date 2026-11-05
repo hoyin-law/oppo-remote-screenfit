@@ -789,7 +789,7 @@ $script:sessionCacheTs = [datetime]::MinValue
     # 性能：主日志可达数 MB，不能每 500ms 全量 tail 解析。策略：
     #   - 没有 screenshare 进程且上次判定为非原生模式 -> 沿用缓存，最多每 15 秒复查一次
     #   - 其余情况最多每 3 秒解析一次
-    if (-not $script:sharingCacheTs -or ((Get-Date) - $script:sharingCacheTs).TotalSeconds -ge 5) {
+    if (-not $script:sharingCacheTs -or ((Get-Date) - $script:sharingCacheTs).TotalSeconds -ge 15) {
         $script:sharingCache = @(Get-Process screenshare -ErrorAction SilentlyContinue).Count -gt 0
         $script:sharingCacheTs = Get-Date
     }
@@ -841,7 +841,7 @@ $script:sessionCacheTs = [datetime]::MinValue
     $adaptiveDisabled = Test-Path (Join-Path $Root 'NO_REMOTE_ADAPT.txt')
     $armedNow = Test-Path $PreArmFile
     if ($adaptiveDisabled -and -not $armedNow -and (GetState) -eq 'off') {
-        [void](Wait-ScreenFitWake 4000)
+        [void](Wait-ScreenFitWake 20000)
         continue
     }
 
@@ -1058,7 +1058,7 @@ $script:sessionCacheTs = [datetime]::MinValue
         $script:noViewerSince = $null
     }
     if (-not $s.Active -and (GetState) -eq 'off' -and -not (Test-Path $PreArmFile)) {
-        [void](Wait-ScreenFitWake 4000)
+        [void](Wait-ScreenFitWake 20000)
     } else {
         [void](Wait-ScreenFitWake 700)
     }

@@ -659,6 +659,9 @@ $script:lastStayLog = $null
 $script:postRestoreUntil = [datetime]::MinValue
 $script:lastGuardExtend = [datetime]::MinValue
 $script:remoteDisabledLogged = $false
+$script:nativeCache = $null
+$script:lastNativeCheck = [datetime]::MinValue
+$script:lastAliveLog = Get-Date
 # 日志清理：只保留最近 40 个工具输出，watcher.log 超过 5MB 截断
 try {
     Get-ChildItem $LogDir -Filter 'tool_*' | Sort-Object LastWriteTime -Descending |
@@ -698,8 +701,30 @@ while ($true) {
         exit
     }
 
+    # 每 10 分钟写一次存活心跳，便于判断进程是否还在正常工作
+    if (((Get-Date) - $script:lastAliveLog).TotalSeconds -ge 600) {
+        $script:lastAliveLog = Get-Date
+        try {
+            $aliveNative = if ($script:nativeCache) { $script:nativeCache.Active } else { '?' }
+            WLog ("存活：state=" + (GetState) + " native=" + $aliveNative + " 活动屏=" + [ScreenFitTopo]::ActiveCount() + " 虚拟屏=" + [ScreenFitTopo]::VirtualActive())
+        } catch { }
+    }
+
     # OPPO 原生「屏幕扩展 / 屏幕镜像」：由 screenshare.exe 自行建屏推流，插件只守护
-    $native = Get-NativeExtendState
+    # 性能：主日志可达数 MB，不能每 500ms 全量 tail 解析。策略：
+    #   - 没有 screenshare 进程且上次判定为非原生模式 -> 沿用缓存，最多每 15 秒复查一次
+    #   - 其余情况最多每 3 秒解析一次
+    $sharingNow = @(Get-Process screenshare -ErrorAction SilentlyContinue).Count -gt 0
+    $sinceNativeCheck = ((Get-Date) - $script:lastNativeCheck).TotalSeconds
+    if ($script:nativeCache -and -not $sharingNow -and -not $script:nativeCache.Active -and $sinceNativeCheck -lt 15) {
+        $native = $script:nativeCache
+    } elseif (-not $script:nativeCache -or $sinceNativeCheck -ge 3) {
+        $native = Get-NativeExtendState
+        $script:nativeCache = $native
+        $script:lastNativeCheck = Get-Date
+    } else {
+        $native = $script:nativeCache
+    }
     $nativeDecision = Get-NativeExtendDecision -NativeActive $native.Active -State (GetState)
     if ($nativeDecision -eq 'observe') {
         if ((GetState) -ne 'native') {

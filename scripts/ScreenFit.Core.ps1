@@ -4,7 +4,7 @@
   不碰显示拓扑、不启动进程、不写状态文件。
 #>
 
-$script:ScreenFitVersion = '1.2.9'
+$script:ScreenFitVersion = '1.2.10'
 $script:ScreenFitLogDir = $null
 $script:ScreenFitStateDir = $null
 $script:logOffsets = @{}
@@ -379,27 +379,53 @@ function Get-RestoreAction {
     return 'none'
 }
 
+# 设备原生分辨率（横屏）。匹配顺序：越具体的型号必须越靠前。
+# Verified=false 表示规格未经官方页面逐项核实，仅作候选（不影响已核实型号）。
 $script:DeviceMap = @(
-    @{ Match = @('Pad 5 Pro');    W = 3392; H = 2400 },
-    @{ Match = @('Pad 4 Pro');    W = 3392; H = 2400 },
-    @{ Match = @('Pad 3 Pro');    W = 3000; H = 2120 },
-    @{ Match = @('Pad 5');        W = 3000; H = 2120 },
-    @{ Match = @('Pad 3');        W = 2800; H = 2000 },
-    @{ Match = @('Pad mini', 'Pad Mini'); W = 2520; H = 1680 },
-    @{ Match = @('Pad Air5');     W = 2800; H = 1980 },
-    @{ Match = @('Find N6');      W = 2480; H = 2248 },
-    @{ Match = @('OnePlus Pad 3 Pro', '一加平板 3 Pro'); W = 3392; H = 2400 },
-    @{ Match = @('OnePlus Pad 2 Pro', '一加平板 2 Pro'); W = 3392; H = 2400 },
-    @{ Match = @('OnePlus Pad Pro', '一加平板 Pro');     W = 3000; H = 2120 },
-    @{ Match = @('OnePlus Pad 2', '一加平板 2');         W = 3000; H = 2120 },
-    @{ Match = @('OnePlus Pad', '一加平板');             W = 2800; H = 2000 }
+    # --- OPPO 折叠屏（内屏横屏） ---
+    @{ Match = @('Find N6'); W = 2480; H = 2248; Label = 'OPPO Find N6'; Verified = $true },
+    @{ Match = @('Find N5'); W = 2480; H = 2248; Label = 'OPPO Find N5'; Verified = $true },
+    @{ Match = @('Find N3 Flip', 'Find N2 Flip'); W = 2520; H = 1080; Label = 'OPPO Find N 折叠竖屏机型'; Verified = $false },
+    @{ Match = @('Find N3'); W = 2440; H = 2268; Label = 'OPPO Find N3'; Verified = $false },
+    @{ Match = @('Find N2'); W = 1920; H = 1792; Label = 'OPPO Find N2'; Verified = $false },
+    @{ Match = @('Find N');  W = 1920; H = 1792; Label = 'OPPO Find N（一代）'; Verified = $false },
+    # --- 一加平板（必须排在 OPPO Pad 规则之前，否则 "OnePlus Pad 3 Pro" 会被 "Pad 3 Pro" 抢先匹配） ---
+    @{ Match = @('OnePlus Pad 3 Pro', '一加平板 3 Pro'); W = 3392; H = 2400; Label = 'OnePlus Pad 3 Pro'; Verified = $true },
+    @{ Match = @('OnePlus Pad 2 Pro', '一加平板 2 Pro'); W = 3392; H = 2400; Label = 'OnePlus Pad 2 Pro'; Verified = $true },
+    @{ Match = @('OnePlus Pad Pro', '一加平板 Pro');     W = 3000; H = 2120; Label = 'OnePlus Pad Pro'; Verified = $true },
+    @{ Match = @('OnePlus Pad 2', '一加平板 2');         W = 3000; H = 2120; Label = 'OnePlus Pad 2'; Verified = $true },
+    @{ Match = @('OnePlus Pad Go 2', '一加平板 Go 2');   W = 2800; H = 2000; Label = 'OnePlus Pad Go 2'; Verified = $false },
+    @{ Match = @('OnePlus Pad Go', '一加平板 Go');       W = 2408; H = 1720; Label = 'OnePlus Pad Go'; Verified = $false },
+    # --- OPPO 平板 ---
+    @{ Match = @('Pad 5 Pro', 'Pad 4 Pro', 'Pad 5Pro', 'Pad 4Pro'); W = 3392; H = 2400; Label = 'OPPO Pad 5 Pro / Pad 4 Pro'; Verified = $true },
+    @{ Match = @('Pad 3 Pro'); W = 3000; H = 2120; Label = 'OPPO Pad 3 Pro'; Verified = $true },
+    @{ Match = @('Pad 5');     W = 3000; H = 2120; Label = 'OPPO Pad 5'; Verified = $true },
+    @{ Match = @('Pad 6');     W = 3000; H = 2120; Label = 'OPPO Pad 6'; Verified = $false },
+    @{ Match = @('Pad Air5');  W = 2800; H = 1980; Label = 'OPPO Pad Air5'; Verified = $true },
+    @{ Match = @('Pad Air2', 'Pad Air 2', 'Pad Neo'); W = 2408; H = 1720; Label = 'OPPO Pad Air2 / Neo'; Verified = $false },
+    @{ Match = @('Pad Air');   W = 2000; H = 1200; Label = 'OPPO Pad Air'; Verified = $false },
+    @{ Match = @('Pad SE');    W = 1920; H = 1200; Label = 'OPPO Pad SE'; Verified = $false },
+    @{ Match = @('Pad mini', 'Pad Mini'); W = 2520; H = 1680; Label = 'OPPO Pad Mini'; Verified = $true },
+    @{ Match = @('Pad 2');     W = 2800; H = 2000; Label = 'OPPO Pad 2'; Verified = $false },
+    @{ Match = @('Pad 3');     W = 2800; H = 2000; Label = 'OPPO Pad 3'; Verified = $true },
+    @{ Match = @('OPPO Pad');  W = 2560; H = 1600; Label = 'OPPO Pad（一代）'; Verified = $false },
+    # --- 一加平板（一代，兜底放最后） ---
+    @{ Match = @('OnePlus Pad', '一加平板');             W = 2800; H = 2000; Label = 'OnePlus Pad（一代）'; Verified = $true }
 )
 
 function Desired($dev) {
     foreach ($entry in $script:DeviceMap) {
         foreach ($pat in $entry.Match) {
-            if ($dev -and $dev -like ("*" + $pat + "*")) { return @{ W = $entry.W; H = $entry.H } }
+            if ($dev -and $dev -like ("*" + $pat + "*")) {
+                return @{ W = $entry.W; H = $entry.H; Label = $entry.Label; Verified = $entry.Verified }
+            }
         }
     }
     return $null
+}
+
+# 设备档案查询（供 Prepare-Remote/诊断工具复用）
+function Get-DeviceProfile($dev) {
+    if (-not $dev) { return $null }
+    return (Desired $dev)
 }

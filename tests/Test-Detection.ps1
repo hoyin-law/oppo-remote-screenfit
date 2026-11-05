@@ -131,7 +131,34 @@ foreach ($c in $preArmCases) {
     Check ($d -eq $c.expect) ("prearm:armed=" + $c.armed + ",state=" + $c.state + ",sess=" + $c.sess + ",viewer=" + $c.viewer + ",secs=" + $c.secs) ("expected=" + $c.expect + " got=" + $d)
 }
 
-Write-Host '== 6. 版本一致性 =='
+Write-Host '== 6. 设备档案（折叠屏 / OPPO 平板 / 一加平板） =='
+$deviceCases = @(
+    @{ name = 'OPPO Pad 5 Pro'; w = 3392; h = 2400 },
+    @{ name = 'OPPO Pad 3 Pro'; w = 3000; h = 2120 },
+    @{ name = 'OPPO Pad 5';     w = 3000; h = 2120 },
+    @{ name = 'OPPO Pad 6';     w = 3000; h = 2120 },
+    @{ name = 'OPPO Pad Mini';  w = 2520; h = 1680 },
+    @{ name = 'OPPO Pad Air5';  w = 2800; h = 1980 },
+    @{ name = 'OPPO Pad Air2';  w = 2408; h = 1720 },
+    @{ name = 'OPPO Pad 3';     w = 2800; h = 2000 },
+    @{ name = 'OPPO Find N6';   w = 2480; h = 2248 },
+    @{ name = 'OPPO Find N5';   w = 2480; h = 2248 },
+    @{ name = 'OPPO Find N3';   w = 2440; h = 2268 },
+    @{ name = 'OPPO Find N2';   w = 1920; h = 1792 },
+    @{ name = 'OnePlus Pad 3 Pro'; w = 3392; h = 2400 },
+    @{ name = '一加平板 2 Pro';  w = 3392; h = 2400 },
+    @{ name = '一加平板 Pro';    w = 3000; h = 2120 },
+    @{ name = 'OnePlus Pad Go 2'; w = 2800; h = 2000 },
+    @{ name = 'OnePlus Pad Go';  w = 2408; h = 1720 },
+    @{ name = '一加平板';         w = 2800; h = 2000 }
+)
+foreach ($c in $deviceCases) {
+    $p = Get-DeviceProfile $c.name
+    Check ($p -ne $null -and $p.W -eq $c.w -and $p.H -eq $c.h) ("device:" + $c.name) ("expected=" + $c.w + "x" + $c.h + " got=" + $(if($p){"$($p.W)x$($p.H)"}else{'null'}))
+}
+Check ($null -eq (Get-DeviceProfile 'Nintendo Switch')) 'device:unknown-returns-null'
+
+Write-Host '== 7. 版本一致性 =='
 $ver = Get-ScreenFitVersion
 Check ($ver -match '^\d+\.\d+\.\d+$') 'version-format' ("got=" + $ver)
 $verFile = Join-Path $RepoRoot 'VERSION'

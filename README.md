@@ -133,6 +133,33 @@ cd oppo-remote-screenfit
 
 ---
 
+## 设备表（唯一来源）
+
+设备清单与分辨率只维护在 `scripts\ScreenFit.Core.ps1` 的 `$script:DeviceCatalog`（27 个 Key，覆盖 OPPO 折叠屏、OPPO 平板、一加平板）。
+`TabletScreen.ps1`、`Prepare-Remote.ps1`、`Test-PreCreatedScreen.ps1` 都从它派生，`docs\devices.md` 也由它生成。
+
+```powershell
+pwsh -NoProfile -File scripts\Prepare-Remote.ps1 -List     # 查看全部设备 Key
+pwsh -NoProfile -File scripts\Prepare-Remote.ps1 -Device FindN6
+```
+
+## 事件驱动与 CPU
+
+Watcher 使用 `FileSystemWatcher`（OPPO 主日志 / agent 日志 / 安装目录标记）配合 `Wait-Event` 阻塞等待，不再固定 500ms 轮询；
+空闲时 CPU 约 0.6% 单核，每 10 分钟写一条存活心跳。
+
+## 显示模式修复（ToDesk 等第三方软件改分辨率后）
+
+`scripts\Repair-Display.ps1` 会把内屏恢复到原生（最大）分辨率，并确保外接屏为「扩展」。
+
+```powershell
+pwsh -NoProfile -File scripts\Repair-Display.ps1 -CheckOnly   # 只检查
+pwsh -NoProfile -File scripts\Repair-Display.ps1              # 修复
+```
+
+Watcher 在每次恢复布局时也会自动调用同样的校验（`EnsureNativeInternalMode`），防止内屏被改成 16:9 后留下上下黑边。
+
+---
 ## 预建屏（会话前就绪，v1.2.9 起推荐）
 
 OPPO 手机/平板端没有「屏幕扩展」按钮，且远控内核不支持会话中切换到新建的虚拟屏（DXGI 会 0x80004005 停帧）。

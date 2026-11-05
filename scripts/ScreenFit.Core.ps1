@@ -4,7 +4,7 @@
   不碰显示拓扑、不启动进程、不写状态文件。
 #>
 
-$script:ScreenFitVersion = '1.2.11'
+$script:ScreenFitVersion = '1.2.12'
 $script:ScreenFitLogDir = $null
 $script:ScreenFitStateDir = $null
 $script:logOffsets = @{}
@@ -14,6 +14,8 @@ $script:sessDevice = $null
 $script:sessStartTs = $null
 $script:sessLastEventTs = [datetime]::MinValue
 $script:sessLastEventType = ''
+$script:agentSnap = $null
+$script:agentSnapTs = [datetime]::MinValue
 
 function Get-ScreenFitVersion { return $script:ScreenFitVersion }
 
@@ -28,6 +30,8 @@ function Initialize-ScreenFit([string]$LogDir, [string]$StateDir) {
     $script:sessStartTs = $null
     $script:sessLastEventTs = [datetime]::MinValue
     $script:sessLastEventType = ''
+    $script:agentSnap = $null
+    $script:agentSnapTs = [datetime]::MinValue
 }
 
 function Get-ScreenFitLogDir {
@@ -79,6 +83,23 @@ function Read-NewLines([string]$path) {
     return @($parts[0..($parts.Count - 2)])
 }
 
+# 远程引擎状态快照（带 2 秒缓存）：Get-Process / 目录枚举是主循环里最贵的两步，
+# 每 500ms 调一次会把 CPU 拉到 10%+，缓存后空闲时接近 0。
+function Get-AgentSnapshot {
+    param([double]$TtlSeconds = 2)
+    if ($script:agentSnap -and ((Get-Date) - $script:agentSnapTs).TotalSeconds -lt $TtlSeconds) {
+        return $script:agentSnap
+    }
+    $logPath = $null; $logName = $null; $age = 9999
+    $a = Get-ChildItem (Join-Path (Get-ScreenFitLogDir) 'desktop_agent.*.log') -ErrorAction SilentlyContinue |
+        Sort-Object LastWriteTime -Descending | Select-Object -First 1
+    if ($a) { $logPath = $a.FullName; $logName = $a.Name; $age = ((Get-Date) - $a.LastWriteTime).TotalSeconds }
+    $running = @(Get-Process SLDesktopAgent -ErrorAction SilentlyContinue).Count -gt 0
+    $script:agentSnap = [pscustomobject]@{ LogPath = $logPath; LogName = $logName; AgeSec = $age; Running = $running }
+    $script:agentSnapTs = Get-Date
+    return $script:agentSnap
+}
+
 function Get-Session {
     $dir = Get-ScreenFitLogDir
     $files = Get-ChildItem (Join-Path $dir '*_main.log') -ErrorAction SilentlyContinue |
@@ -122,12 +143,8 @@ function Get-Session {
     # 若最近 120 秒内刚看到 stop，则不做兜底，避免刚结束时被重新判成活动。
     $stopRecently = ($script:sessLastEventType -eq 'stop' -and ((Get-Date) - $script:sessLastEventTs).TotalSeconds -lt 120)
     if (-not $active -and -not $stopRecently) {
-        $agentAge = 9999
-        $a = Get-ChildItem (Join-Path (Get-ScreenFitLogDir) 'desktop_agent.*.log') -ErrorAction SilentlyContinue |
-            Sort-Object LastWriteTime -Descending | Select-Object -First 1
-        if ($a) { $agentAge = ((Get-Date) - $a.LastWriteTime).TotalSeconds }
-        $agentRunning = @(Get-Process SLDesktopAgent -ErrorAction SilentlyContinue).Count -gt 0
-        if ($agentRunning -and $agentAge -lt 60 -and (Test-Path $devFile)) {
+        $snap = Get-AgentSnapshot
+        if ($snap.Running -and $snap.AgeSec -lt 60 -and (Test-Path $devFile)) {
             $dev = (Get-Content $devFile -Raw -ErrorAction SilentlyContinue).Trim()
             $active = $true
             $startTs = $null

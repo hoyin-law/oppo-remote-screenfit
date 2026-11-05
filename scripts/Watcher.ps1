@@ -774,7 +774,8 @@ $script:sessionCacheTs = [datetime]::MinValue
     }
 
     # 会话检测 1 秒缓存（空闲时减少日志解析压力；检测延迟最多 1 秒）
-    if (-not $script:sessionCache -or ((Get-Date) - $script:sessionCacheTs).TotalSeconds -ge 1) {
+    $sessionTtl = if ((GetState) -in @('on','prearmed','native')) { 1 } else { 2 }
+    if (-not $script:sessionCache -or ((Get-Date) - $script:sessionCacheTs).TotalSeconds -ge $sessionTtl) {
         $s = Get-Session
         $script:sessionCache = $s
         $script:sessionCacheTs = Get-Date

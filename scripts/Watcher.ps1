@@ -34,6 +34,36 @@ $NoViewerKillSec = 180       # 远程引擎存活但长时间无观看端 -> 只
 # 检测逻辑集中在 ScreenFit.Core.ps1（纯函数，tests\Test-Detection.ps1 用真实日志回放验证）
 . (Join-Path $Root 'ScreenFit.Core.ps1')
 Initialize-ScreenFit -StateDir $LogDir   # 日志目录用 Core 默认（OPPO devicespace），状态文件用本目录
+# ===== 事件驱动唤醒：OPPO 日志 / 安装目录标记有变化时立即处理，空闲时靠超时兜底 =====
+$script:sfWatchers = @()
+function Initialize-ScreenFitWatchers {
+    foreach ($spec in @(
+        @{ Dir = (Get-ScreenFitLogDir); Filter = '*_main*.log'; Id = 'ScreenFitMainLog' },
+        @{ Dir = (Get-ScreenFitLogDir); Filter = 'desktop_agent.*.log'; Id = 'ScreenFitAgentLog' },
+        @{ Dir = $Root; Filter = '*.txt'; Id = 'ScreenFitRootFlag' }
+    )) {
+        try {
+            if (-not (Test-Path $spec.Dir)) { continue }
+            $w = New-Object System.IO.FileSystemWatcher $spec.Dir, $spec.Filter
+            $w.NotifyFilter = [System.IO.NotifyFilters]::LastWrite -bor [System.IO.NotifyFilters]::FileName -bor [System.IO.NotifyFilters]::Size -bor [System.IO.NotifyFilters]::CreationTime
+            $w.EnableRaisingEvents = $true
+            Register-ObjectEvent -InputObject $w -EventName Changed -SourceIdentifier $spec.Id | Out-Null
+            $script:sfWatchers += $w
+        } catch { }
+    }
+}
+<# 阻塞等待文件事件或超时；返回 $true 表示有变化 #>
+function Wait-ScreenFitWake([int]$TimeoutMs = 2000) {
+    try {
+        $ev = Wait-Event -Timeout ([math]::Round($TimeoutMs / 1000.0, 2))
+        if ($ev) { Get-Event | Remove-Event -ErrorAction SilentlyContinue; return $true }
+        return $false
+    } catch {
+        Start-Sleep -Milliseconds $TimeoutMs
+        return $false
+    }
+}
+Initialize-ScreenFitWatchers
 
 Add-Type -TypeDefinition @'
 using System;using System.Runtime.InteropServices;
@@ -214,6 +244,38 @@ public static class ScreenFitTopo {
       list.Add(n);
     }
     return string.Join(",", list.ToArray());
+  }
+  [StructLayout(LayoutKind.Sequential, CharSet=CharSet.Unicode)] public struct DEVMODE {
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst=32)] public string dmDeviceName;
+    public short dmSpecVersion, dmDriverVersion, dmSize, dmDriverExtra; public int dmFields;
+    public int dmPositionX, dmPositionY, dmDisplayOrientation, dmDisplayFixedOutput;
+    public short dmColor, dmDuplex, dmYResolution, dmTTOption, dmCollate;
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst=32)] public string dmFormName;
+    public short dmLogPixels; public int dmBitsPerPel, dmPelsWidth, dmPelsHeight, dmDisplayFlags, dmDisplayFrequency;
+    public int dmICMMethod, dmICMIntent, dmMediaType, dmDitherType, dmReserved1, dmReserved2, dmPanningWidth, dmPanningHeight; }
+  [StructLayout(LayoutKind.Sequential, CharSet=CharSet.Unicode)] public struct SRCNAME { public HDR header; [MarshalAs(UnmanagedType.ByValTStr, SizeConst=32)] public string gdiDeviceName; }
+  [DllImport("user32.dll", CharSet=CharSet.Unicode)] static extern bool EnumDisplaySettings(string dev, int mode, ref DEVMODE dm);
+  [DllImport("user32.dll", CharSet=CharSet.Unicode)] static extern int ChangeDisplaySettingsEx(string dev, ref DEVMODE dm, IntPtr hwnd, uint flags, IntPtr param);
+  [DllImport("user32.dll", EntryPoint="DisplayConfigGetDeviceInfo", CharSet=CharSet.Unicode)] static extern int DisplayConfigGetDeviceInfoSrc(ref SRCNAME n);
+  public static string EnsureNativeInternalMode() {
+    string result = "";
+    foreach (var p in QueryActive()) {
+      if (p.targetInfo.outputTechnology != 0x80000000) continue;
+      var sn = new SRCNAME(); sn.header.type = 1; sn.header.size = (uint)Marshal.SizeOf(typeof(SRCNAME));
+      sn.header.adapterId = p.sourceInfo.adapterId; sn.header.id = p.sourceInfo.id;
+      if (DisplayConfigGetDeviceInfoSrc(ref sn) != 0) continue;
+      string dev = sn.gdiDeviceName;
+      int bw = 0, bh = 0, bf = 0; long area = 0;
+      for (int i = 0; i < 500; i++) { var dm = new DEVMODE(); dm.dmSize = (short)Marshal.SizeOf(typeof(DEVMODE)); if (!EnumDisplaySettings(dev, i, ref dm)) break; long a = (long)dm.dmPelsWidth * dm.dmPelsHeight; if (a > area || (a == area && dm.dmDisplayFrequency > bf)) { area = a; bw = dm.dmPelsWidth; bh = dm.dmPelsHeight; bf = dm.dmDisplayFrequency; } }
+      if (bw == 0) continue;
+      var cur = new DEVMODE(); cur.dmSize = (short)Marshal.SizeOf(typeof(DEVMODE)); if (!EnumDisplaySettings(dev, -1, ref cur)) continue;
+      if (cur.dmPelsWidth == bw && cur.dmPelsHeight == bh) { result = dev + " already " + bw + "x" + bh; continue; }
+      cur.dmPelsWidth = bw; cur.dmPelsHeight = bh; cur.dmDisplayFrequency = bf;
+      cur.dmFields = 0x00080000 | 0x00100000 | 0x00400000;
+      int r = ChangeDisplaySettingsEx(dev, ref cur, IntPtr.Zero, 0x1, IntPtr.Zero);
+      result = dev + " -> " + bw + "x" + bh + "@" + bf + " err=" + r;
+    }
+    return result;
   }
   public static string DeactivateVirtual() {
     uint np, nm; int e = GetDisplayConfigBufferSizes(2, out np, out nm); if (e != 0) return "buf=" + e;
@@ -550,6 +612,7 @@ function Restore-Layout {
     } elseif ($action -eq 'internal') {
         Set-OnlyInternal
     }
+    try { $nm = [ScreenFitTopo]::EnsureNativeInternalMode(); if ($nm) { WLog ("   内屏模式校验: " + $nm) } } catch { }
 
     Restore-WindowLayout | Out-Null
     if ([ScreenFitTopo]::VirtualPathExists()) { CleanDevice }
@@ -985,6 +1048,10 @@ $script:sessionCacheTs = [datetime]::MinValue
         $script:windowsMoved = $false
         $script:noViewerSince = $null
     }
-    Start-Sleep -Milliseconds 500
+    if (-not $s.Active -and (GetState) -eq 'off' -and -not (Test-Path $PreArmFile)) {
+        [void](Wait-ScreenFitWake 4000)
+    } else {
+        [void](Wait-ScreenFitWake 700)
+    }
 }
 

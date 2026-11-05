@@ -11,33 +11,29 @@
 
 [CmdletBinding()]
 param(
-    [ValidateSet(
-        'Pad5Pro', 'Pad4Pro', 'Pad5', 'Pad3Pro', 'Pad3', 'PadMini', 'PadAir5',
-        'FindN6',
-        'OnePlusPad3Pro', 'OnePlusPad2Pro', 'OnePlusPadPro', 'OnePlusPad2', 'OnePlusPad',
-        'Off', 'Status'
-    )]
     [string]$Device = 'Pad5Pro',
-    [switch]$KeepWindow
+    [switch]$KeepWindow,
+    [switch]$List
 )
 
 $ErrorActionPreference = 'Stop'
 $Tool = Join-Path $env:LOCALAPPDATA 'DeviceSpace\ext-service\OPVirtualDisplayDriver\OPDisplayDriverTool.exe'
 
-$Profiles = @{
-    'Pad5Pro'         = @{ W = 3392; H = 2400; Label = 'OPPO Pad 5 Pro (13.2" 3392x2400)' }
-    'Pad4Pro'         = @{ W = 3392; H = 2400; Label = 'OPPO Pad 4 Pro (13.2" 3392x2400)' }
-    'Pad5'            = @{ W = 3000; H = 2120; Label = 'OPPO Pad 5 (12.1" 3000x2120)' }
-    'Pad3Pro'         = @{ W = 3000; H = 2120; Label = 'OPPO Pad 3 Pro (12.1" 3000x2120)' }
-    'Pad3'            = @{ W = 2800; H = 2000; Label = 'OPPO Pad 3 (11.61" 2800x2000)' }
-    'PadMini'         = @{ W = 2520; H = 1680; Label = 'OPPO Pad Mini (8.8" 2520x1680)' }
-    'PadAir5'         = @{ W = 2800; H = 1980; Label = 'OPPO Pad Air5 (12.1" 2800x1980)' }
-    'FindN6'          = @{ W = 2480; H = 2248; Label = 'OPPO Find N6 内屏 (2480x2248)' }
-    'OnePlusPad3Pro'  = @{ W = 3392; H = 2400; Label = 'OnePlus Pad 3 Pro (13.2" 3392x2400)' }
-    'OnePlusPad2Pro'  = @{ W = 3392; H = 2400; Label = 'OnePlus Pad 2 Pro (13.2" 3392x2400)' }
-    'OnePlusPadPro'   = @{ W = 3000; H = 2120; Label = 'OnePlus Pad Pro (12.1" 3000x2120)' }
-    'OnePlusPad2'     = @{ W = 3000; H = 2120; Label = 'OnePlus Pad 2 (12.1" 3000x2120)' }
-    'OnePlusPad'      = @{ W = 2800; H = 2000; Label = 'OnePlus Pad (11.61" 2800x2000)' }
+# 设备表唯一来源：ScreenFit.Core.ps1
+$CorePath = Join-Path (Split-Path -Parent $PSCommandPath) 'ScreenFit.Core.ps1'
+if (-not (Test-Path $CorePath)) { $CorePath = Join-Path $env:LOCALAPPDATA 'OPPO-ScreenFit\ScreenFit.Core.ps1' }
+if (Test-Path $CorePath) { . $CorePath; Initialize-ScreenFit -StateDir $env:TEMP }
+$Catalog = if (Get-Command Get-DeviceCatalog -ErrorAction SilentlyContinue) { Get-DeviceCatalog } else { @() }
+$Profiles = @{}
+foreach ($e in $Catalog) { $Profiles[$e.Key] = @{ W = $e.W; H = $e.H; Label = $e.Label } }
+if ($List) {
+    foreach ($e in $Catalog) { Write-Host ("  " + $e.Key.PadRight(18) + $e.Label + "  " + $e.W + "x" + $e.H + $(if ($e.Verified) { '' } else { '  (规格未核实)' })) }
+    exit 0
+}
+if ($Device -notin @('Off', 'Status') -and -not $Profiles.ContainsKey($Device)) {
+    Write-Host ("无法识别设备: " + $Device) -ForegroundColor Red
+    Write-Host ('可用 Key: ' + (($Profiles.Keys | Sort-Object) -join ', ')) -ForegroundColor Yellow
+    exit 1
 }
 
 Add-Type -TypeDefinition @'

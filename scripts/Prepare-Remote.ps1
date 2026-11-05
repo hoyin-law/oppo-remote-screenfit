@@ -16,40 +16,21 @@
 
 [CmdletBinding()]
 param(
-    [ValidateSet(
-        'Pad5Pro', 'Pad4Pro', 'Pad5', 'Pad3Pro', 'Pad3', 'PadMini', 'PadAir5', 'Pad6',
-        'FindN6', 'FindN5', 'FindN3', 'FindN2',
-        'OnePlusPad3Pro', 'OnePlusPad2Pro', 'OnePlusPadPro', 'OnePlusPad2', 'OnePlusPad', 'OnePlusPadGo'
-    )]
     [string]$Device = 'Pad5Pro',
     [switch]$Cancel,
-    [switch]$Status
+    [switch]$Status,
+    [switch]$List
 )
 
 $ErrorActionPreference = 'Stop'
 $Dest = Join-Path $env:LOCALAPPDATA 'OPPO-ScreenFit'
 $Flag = Join-Path $Dest 'PREARM.txt'
 
-$Names = @{
-    'Pad5Pro'        = 'OPPO Pad 5 Pro'
-    'Pad4Pro'        = 'OPPO Pad 4 Pro'
-    'Pad5'           = 'OPPO Pad 5'
-    'Pad3Pro'        = 'OPPO Pad 3 Pro'
-    'Pad3'           = 'OPPO Pad 3'
-    'PadMini'        = 'OPPO Pad Mini'
-    'PadAir5'        = 'OPPO Pad Air5'
-    'Pad6'           = 'OPPO Pad 6'
-    'FindN6'         = 'OPPO Find N6'
-    'FindN5'         = 'OPPO Find N5'
-    'FindN3'         = 'OPPO Find N3'
-    'FindN2'         = 'OPPO Find N2'
-    'OnePlusPad3Pro' = 'OnePlus Pad 3 Pro'
-    'OnePlusPad2Pro' = 'OnePlus Pad 2 Pro'
-    'OnePlusPadPro'  = 'OnePlus Pad Pro'
-    'OnePlusPad2'    = 'OnePlus Pad 2'
-    'OnePlusPad'     = 'OnePlus Pad'
-    'OnePlusPadGo'   = 'OnePlus Pad Go'
-}
+# 设备表唯一来源：ScreenFit.Core.ps1（与本脚本同目录）
+$CorePath = Join-Path (Split-Path -Parent $PSCommandPath) 'ScreenFit.Core.ps1'
+if (-not (Test-Path $CorePath)) { $CorePath = Join-Path $Dest 'ScreenFit.Core.ps1' }
+if (Test-Path $CorePath) { . $CorePath; Initialize-ScreenFit -StateDir $env:TEMP }
+$Catalog = if (Get-Command Get-DeviceCatalog -ErrorAction SilentlyContinue) { Get-DeviceCatalog } else { @() }
 
 function Get-InstalledState {
     $stateFile = Join-Path $Dest 'logs\state.txt'
@@ -77,9 +58,22 @@ if (-not (Test-Path $Dest)) {
     exit 1
 }
 
-$name = $Names[$Device]
-Set-Content -Path $Flag -Value $name -Encoding UTF8
-Write-Host ('已请求预建屏: ' + $name) -ForegroundColor Green
+if ($List -or $Catalog.Count -eq 0) {
+    Write-Host '可用设备（-Device 用 Key）：' -ForegroundColor Cyan
+    foreach ($e in $Catalog) { Write-Host ("  " + $e.Key.PadRight(18) + $e.Label + "  " + $e.W + "x" + $e.H + $(if ($e.Verified) { '' } else { '  (规格未核实)' })) }
+    if ($Catalog.Count -eq 0) { Write-Host '未找到设备表（ScreenFit.Core.ps1）' -ForegroundColor Red; exit 1 }
+    exit 0
+}
+
+$prof = Get-DeviceProfile $Device
+if (-not $prof) {
+    Write-Host ("无法识别设备: " + $Device) -ForegroundColor Red
+    Write-Host '可用 Key：' -ForegroundColor Yellow
+    foreach ($e in $Catalog) { Write-Host ("  " + $e.Key.PadRight(18) + $e.Label) }
+    exit 1
+}
+Set-Content -Path $Flag -Value $prof.Key -Encoding UTF8
+Write-Host ('已请求预建屏: ' + $prof.Label + ' ' + $prof.W + 'x' + $prof.H) -ForegroundColor Green
 Write-Host '等待 2 秒让 Watcher 建屏…' -ForegroundColor Yellow
 Start-Sleep -Seconds 3
 $state = Get-InstalledState

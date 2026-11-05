@@ -158,6 +158,26 @@ foreach ($c in $deviceCases) {
 }
 Check ($null -eq (Get-DeviceProfile 'Nintendo Switch')) 'device:unknown-returns-null'
 
+Write-Host '== 6b. 设备目录（唯一来源） =='
+$catalog = Get-DeviceCatalog
+Check ($catalog.Count -ge 25) 'catalog-size' ("count=" + $catalog.Count)
+$keys = @($catalog | ForEach-Object { $_.Key })
+Check ((@($keys | Sort-Object -Unique)).Count -eq $keys.Count) 'catalog-keys-unique'
+Check (@($catalog | Where-Object { -not $_.W -or -not $_.H -or $_.W -le 0 -or $_.H -le 0 }).Count -eq 0) 'catalog-dims-positive'
+Check (@($catalog | Where-Object { -not $_.Label }).Count -eq 0) 'catalog-labels-present'
+Check (@($catalog | Where-Object { @($_.Aliases).Count -eq 0 }).Count -eq 0) 'catalog-aliases-present'
+Check ((Get-DeviceProfile 'pad5pro') -ne $null) 'catalog-key-case-insensitive'
+Check ((Get-DeviceProfile 'Pad5').W -eq 3000) 'catalog-precedence-pad5-not-pro'
+Check ((Get-DeviceProfile 'Pad3').W -eq 2800) 'catalog-precedence-pad3-not-pro'
+Check ((Get-DeviceProfile 'Pad 5 Pro').W -eq 3392) 'catalog-precedence-pad5pro'
+Check ((Get-DeviceProfile 'OnePlus Pad 3 Pro').W -eq 3392) 'catalog-precedence-oneplus3pro'
+Check ((Get-DeviceProfile 'Find N5').W -eq 2480) 'catalog-findn5-not-n3'
+foreach ($scriptName in @('Prepare-Remote.ps1', 'TabletScreen.ps1', 'Test-PreCreatedScreen.ps1')) {
+    $p = Join-Path $RepoRoot ('scripts\' + $scriptName)
+    $content = if (Test-Path $p) { Get-Content $p -Raw } else { '' }
+    Check ($content -match 'Get-DeviceCatalog') ('script-uses-catalog:' + $scriptName)
+}
+
 Write-Host '== 7. 版本一致性 =='
 $ver = Get-ScreenFitVersion
 Check ($ver -match '^\d+\.\d+\.\d+$') 'version-format' ("got=" + $ver)

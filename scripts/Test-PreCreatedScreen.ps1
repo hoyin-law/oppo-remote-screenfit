@@ -13,16 +13,11 @@
 
 [CmdletBinding()]
 param(
-    [ValidateSet(
-        'Pad5Pro', 'Pad4Pro', 'Pad5', 'Pad3Pro', 'Pad3', 'PadMini', 'PadAir5', 'Pad6',
-        'FindN6', 'FindN5', 'FindN3', 'FindN2',
-        'OnePlusPad3Pro', 'OnePlusPad2Pro', 'OnePlusPadPro', 'OnePlusPad2', 'OnePlusPad', 'OnePlusPadGo',
-        'Status'
-    )]
     [string]$Device = 'Pad5Pro',
     [int]$WaitMinutes = 10,
     [switch]$DryRun,
-    [switch]$RemoveAfter
+    [switch]$RemoveAfter,
+    [switch]$List
 )
 
 $ErrorActionPreference = 'Stop'
@@ -30,26 +25,21 @@ $Tool = Join-Path $env:LOCALAPPDATA 'DeviceSpace\ext-service\OPVirtualDisplayDri
 $LogDir = Join-Path $env:APPDATA 'O+Connect\devicespace'
 $TaskName = 'OPPO平板分辨率适配'
 
-# 设备 -> 横屏原生分辨率（与 docs/devices.md 保持一致；未验证型号标注 unverified）
-$Profiles = @{
-    'Pad5Pro'        = @{ W = 3392; H = 2400; Label = 'OPPO Pad 5 Pro' }
-    'Pad4Pro'        = @{ W = 3392; H = 2400; Label = 'OPPO Pad 4 Pro' }
-    'Pad5'           = @{ W = 3000; H = 2120; Label = 'OPPO Pad 5' }
-    'Pad3Pro'        = @{ W = 3000; H = 2120; Label = 'OPPO Pad 3 Pro' }
-    'Pad3'           = @{ W = 2800; H = 2000; Label = 'OPPO Pad 3' }
-    'PadMini'        = @{ W = 2520; H = 1680; Label = 'OPPO Pad Mini' }
-    'PadAir5'        = @{ W = 2800; H = 1980; Label = 'OPPO Pad Air5' }
-    'Pad6'           = @{ W = 3000; H = 2120; Label = 'OPPO Pad 6 (unverified)' }
-    'FindN6'         = @{ W = 2480; H = 2248; Label = 'OPPO Find N6 内屏' }
-    'FindN5'         = @{ W = 2480; H = 2248; Label = 'OPPO Find N5 内屏' }
-    'FindN3'         = @{ W = 2440; H = 2268; Label = 'OPPO Find N3 内屏 (unverified)' }
-    'FindN2'         = @{ W = 1920; H = 1792; Label = 'OPPO Find N2 内屏 (unverified)' }
-    'OnePlusPad3Pro' = @{ W = 3392; H = 2400; Label = 'OnePlus Pad 3 Pro' }
-    'OnePlusPad2Pro' = @{ W = 3392; H = 2400; Label = 'OnePlus Pad 2 Pro' }
-    'OnePlusPadPro'  = @{ W = 3000; H = 2120; Label = 'OnePlus Pad Pro' }
-    'OnePlusPad2'    = @{ W = 3000; H = 2120; Label = 'OnePlus Pad 2' }
-    'OnePlusPad'     = @{ W = 2800; H = 2000; Label = 'OnePlus Pad' }
-    'OnePlusPadGo'   = @{ W = 2408; H = 1720; Label = 'OnePlus Pad Go (unverified)' }
+# 设备表唯一来源：ScreenFit.Core.ps1
+$CorePath = Join-Path (Split-Path -Parent $PSCommandPath) 'ScreenFit.Core.ps1'
+if (-not (Test-Path $CorePath)) { $CorePath = Join-Path $env:LOCALAPPDATA 'OPPO-ScreenFit\ScreenFit.Core.ps1' }
+if (Test-Path $CorePath) { . $CorePath; Initialize-ScreenFit -StateDir $env:TEMP }
+$Catalog = if (Get-Command Get-DeviceCatalog -ErrorAction SilentlyContinue) { Get-DeviceCatalog } else { @() }
+$Profiles = @{}
+foreach ($e in $Catalog) { $Profiles[$e.Key] = @{ W = $e.W; H = $e.H; Label = $e.Label } }
+if ($List) {
+    foreach ($e in $Catalog) { Write-Host ("  " + $e.Key.PadRight(18) + $e.Label + "  " + $e.W + "x" + $e.H + $(if ($e.Verified) { '' } else { '  (规格未核实)' })) }
+    exit 0
+}
+if ($Device -ne 'Status' -and -not $Profiles.ContainsKey($Device)) {
+    Write-Host ("无法识别设备: " + $Device) -ForegroundColor Red
+    Write-Host ('可用 Key: ' + (($Profiles.Keys | Sort-Object) -join ', ')) -ForegroundColor Yellow
+    exit 1
 }
 
 Add-Type -TypeDefinition @'

@@ -4,7 +4,7 @@
   不碰显示拓扑、不启动进程、不写状态文件。
 #>
 
-$script:ScreenFitVersion = '1.2.15'
+$script:ScreenFitVersion = '1.3.0'
 $script:ScreenFitLogDir = $null
 $script:ScreenFitStateDir = $null
 $script:logOffsets = @{}
@@ -396,53 +396,65 @@ function Get-RestoreAction {
     return 'none'
 }
 
-# 设备原生分辨率（横屏）。匹配顺序：越具体的型号必须越靠前。
-# Verified=false 表示规格未经官方页面逐项核实，仅作候选（不影响已核实型号）。
-$script:DeviceMap = @(
-    # --- OPPO 折叠屏（内屏横屏） ---
-    @{ Match = @('Find N6'); W = 2480; H = 2248; Label = 'OPPO Find N6'; Verified = $true },
-    @{ Match = @('Find N5'); W = 2480; H = 2248; Label = 'OPPO Find N5'; Verified = $true },
-    @{ Match = @('Find N3 Flip', 'Find N2 Flip'); W = 2520; H = 1080; Label = 'OPPO Find N 折叠竖屏机型'; Verified = $false },
-    @{ Match = @('Find N3'); W = 2440; H = 2268; Label = 'OPPO Find N3'; Verified = $false },
-    @{ Match = @('Find N2'); W = 1920; H = 1792; Label = 'OPPO Find N2'; Verified = $false },
-    @{ Match = @('Find N');  W = 1920; H = 1792; Label = 'OPPO Find N（一代）'; Verified = $false },
-    # --- 一加平板（必须排在 OPPO Pad 规则之前，否则 "OnePlus Pad 3 Pro" 会被 "Pad 3 Pro" 抢先匹配） ---
-    @{ Match = @('OnePlus Pad 3 Pro', '一加平板 3 Pro'); W = 3392; H = 2400; Label = 'OnePlus Pad 3 Pro'; Verified = $true },
-    @{ Match = @('OnePlus Pad 2 Pro', '一加平板 2 Pro'); W = 3392; H = 2400; Label = 'OnePlus Pad 2 Pro'; Verified = $true },
-    @{ Match = @('OnePlus Pad Pro', '一加平板 Pro');     W = 3000; H = 2120; Label = 'OnePlus Pad Pro'; Verified = $true },
-    @{ Match = @('OnePlus Pad 2', '一加平板 2');         W = 3000; H = 2120; Label = 'OnePlus Pad 2'; Verified = $true },
-    @{ Match = @('OnePlus Pad Go 2', '一加平板 Go 2');   W = 2800; H = 2000; Label = 'OnePlus Pad Go 2'; Verified = $false },
-    @{ Match = @('OnePlus Pad Go', '一加平板 Go');       W = 2408; H = 1720; Label = 'OnePlus Pad Go'; Verified = $false },
-    # --- OPPO 平板 ---
-    @{ Match = @('Pad 5 Pro', 'Pad 4 Pro', 'Pad 5Pro', 'Pad 4Pro'); W = 3392; H = 2400; Label = 'OPPO Pad 5 Pro / Pad 4 Pro'; Verified = $true },
-    @{ Match = @('Pad 3 Pro'); W = 3000; H = 2120; Label = 'OPPO Pad 3 Pro'; Verified = $true },
-    @{ Match = @('Pad 5');     W = 3000; H = 2120; Label = 'OPPO Pad 5'; Verified = $true },
-    @{ Match = @('Pad 6');     W = 3000; H = 2120; Label = 'OPPO Pad 6'; Verified = $false },
-    @{ Match = @('Pad Air5');  W = 2800; H = 1980; Label = 'OPPO Pad Air5'; Verified = $true },
-    @{ Match = @('Pad Air2', 'Pad Air 2', 'Pad Neo'); W = 2408; H = 1720; Label = 'OPPO Pad Air2 / Neo'; Verified = $false },
-    @{ Match = @('Pad Air');   W = 2000; H = 1200; Label = 'OPPO Pad Air'; Verified = $false },
-    @{ Match = @('Pad SE');    W = 1920; H = 1200; Label = 'OPPO Pad SE'; Verified = $false },
-    @{ Match = @('Pad mini', 'Pad Mini'); W = 2520; H = 1680; Label = 'OPPO Pad Mini'; Verified = $true },
-    @{ Match = @('Pad 2');     W = 2800; H = 2000; Label = 'OPPO Pad 2'; Verified = $false },
-    @{ Match = @('Pad 3');     W = 2800; H = 2000; Label = 'OPPO Pad 3'; Verified = $true },
-    @{ Match = @('OPPO Pad');  W = 2560; H = 1600; Label = 'OPPO Pad（一代）'; Verified = $false },
-    # --- 一加平板（一代，兜底放最后） ---
-    @{ Match = @('OnePlus Pad', '一加平板');             W = 2800; H = 2000; Label = 'OnePlus Pad（一代）'; Verified = $true }
+# ===== 设备目录（唯一来源）=====
+# Key     : 脚本参数用的稳定标识（Prepare-Remote / TabletScreen / Test-PreCreatedScreen）
+# Aliases : 匹配 OPPO 互联日志 deviceName 的别名（中英文），越具体的条目越靠前
+# Verified: 规格是否经官方页面核实；false 仅作候选，不参与自动决策时可回退
+$script:DeviceCatalog = @(
+    @{ Key = 'FindN6';        Aliases = @('Find N6'); W = 2480; H = 2248; Label = 'OPPO Find N6（内屏）'; Verified = $true },
+    @{ Key = 'FindN5';        Aliases = @('Find N5'); W = 2480; H = 2248; Label = 'OPPO Find N5（内屏）'; Verified = $true },
+    @{ Key = 'FindN3Flip';    Aliases = @('Find N3 Flip', 'Find N2 Flip'); W = 2520; H = 1080; Label = 'OPPO Find N3/N2 Flip（内屏）'; Verified = $false },
+    @{ Key = 'FindN3';        Aliases = @('Find N3'); W = 2440; H = 2268; Label = 'OPPO Find N3（内屏）'; Verified = $false },
+    @{ Key = 'FindN2';        Aliases = @('Find N2'); W = 1920; H = 1792; Label = 'OPPO Find N2（内屏）'; Verified = $false },
+    @{ Key = 'FindN1';        Aliases = @('Find N');  W = 1920; H = 1792; Label = 'OPPO Find N（一代，内屏）'; Verified = $false },
+
+    @{ Key = 'OnePlusPad3Pro'; Aliases = @('OnePlus Pad 3 Pro', '一加平板 3 Pro'); W = 3392; H = 2400; Label = 'OnePlus Pad 3 Pro'; Verified = $true },
+    @{ Key = 'OnePlusPad2Pro'; Aliases = @('OnePlus Pad 2 Pro', '一加平板 2 Pro'); W = 3392; H = 2400; Label = 'OnePlus Pad 2 Pro'; Verified = $true },
+    @{ Key = 'OnePlusPadPro';  Aliases = @('OnePlus Pad Pro', '一加平板 Pro');     W = 3000; H = 2120; Label = 'OnePlus Pad Pro'; Verified = $true },
+    @{ Key = 'OnePlusPad2';    Aliases = @('OnePlus Pad 2', '一加平板 2');         W = 3000; H = 2120; Label = 'OnePlus Pad 2'; Verified = $true },
+    @{ Key = 'OnePlusPadGo2';  Aliases = @('OnePlus Pad Go 2', '一加平板 Go 2');   W = 2800; H = 2000; Label = 'OnePlus Pad Go 2'; Verified = $false },
+    @{ Key = 'OnePlusPadGo';   Aliases = @('OnePlus Pad Go', '一加平板 Go');       W = 2408; H = 1720; Label = 'OnePlus Pad Go'; Verified = $false },
+
+    @{ Key = 'Pad5Pro'; Aliases = @('Pad 5 Pro', 'Pad 5Pro'); W = 3392; H = 2400; Label = 'OPPO Pad 5 Pro'; Verified = $true },
+    @{ Key = 'Pad4Pro'; Aliases = @('Pad 4 Pro', 'Pad 4Pro'); W = 3392; H = 2400; Label = 'OPPO Pad 4 Pro'; Verified = $true },
+    @{ Key = 'Pad3Pro'; Aliases = @('Pad 3 Pro'); W = 3000; H = 2120; Label = 'OPPO Pad 3 Pro'; Verified = $true },
+    @{ Key = 'Pad5';    Aliases = @('Pad 5');     W = 3000; H = 2120; Label = 'OPPO Pad 5'; Verified = $true },
+    @{ Key = 'Pad6';    Aliases = @('Pad 6');     W = 3000; H = 2120; Label = 'OPPO Pad 6'; Verified = $false },
+    @{ Key = 'PadAir5'; Aliases = @('Pad Air5');  W = 2800; H = 1980; Label = 'OPPO Pad Air5'; Verified = $true },
+    @{ Key = 'PadAir2'; Aliases = @('Pad Air2', 'Pad Air 2'); W = 2408; H = 1720; Label = 'OPPO Pad Air2'; Verified = $false },
+    @{ Key = 'PadNeo';  Aliases = @('Pad Neo');   W = 2408; H = 1720; Label = 'OPPO Pad Neo'; Verified = $false },
+    @{ Key = 'PadAir';  Aliases = @('Pad Air');   W = 2000; H = 1200; Label = 'OPPO Pad Air'; Verified = $false },
+    @{ Key = 'PadSE';   Aliases = @('Pad SE');    W = 1920; H = 1200; Label = 'OPPO Pad SE'; Verified = $false },
+    @{ Key = 'PadMini'; Aliases = @('Pad mini', 'Pad Mini'); W = 2520; H = 1680; Label = 'OPPO Pad Mini'; Verified = $true },
+    @{ Key = 'Pad2';    Aliases = @('Pad 2');     W = 2800; H = 2000; Label = 'OPPO Pad 2'; Verified = $false },
+    @{ Key = 'Pad3';    Aliases = @('Pad 3');     W = 2800; H = 2000; Label = 'OPPO Pad 3'; Verified = $true },
+    @{ Key = 'OPPOPad1'; Aliases = @('OPPO Pad'); W = 2560; H = 1600; Label = 'OPPO Pad（一代）'; Verified = $false },
+
+    @{ Key = 'OnePlusPad1'; Aliases = @('OnePlus Pad', '一加平板'); W = 2800; H = 2000; Label = 'OnePlus Pad（一代）'; Verified = $true }
 )
 
-function Desired($dev) {
-    foreach ($entry in $script:DeviceMap) {
-        foreach ($pat in $entry.Match) {
-            if ($dev -and $dev -like ("*" + $pat + "*")) {
-                return @{ W = $entry.W; H = $entry.H; Label = $entry.Label; Verified = $entry.Verified }
-            }
+<# 设备目录（唯一来源）：所有脚本都从这里取设备清单与分辨率 #>
+function Get-DeviceCatalog { return $script:DeviceCatalog }
+
+<# 设备 Key 列表（供脚本参数校验） #>
+function Get-DeviceKeys { return @($script:DeviceCatalog | ForEach-Object { $_.Key }) }
+
+<#
+  Get-DeviceProfile —— 接受设备 Key（大小写不敏感）或 deviceName 片段，返回
+  @{ Key; W; H; Label; Verified }；无法识别返回 $null。
+#>
+function Get-DeviceProfile($dev) {
+    if (-not $dev) { return $null }
+    $d = [string]$dev
+    foreach ($entry in $script:DeviceCatalog) {
+        if ($entry.Key -and $entry.Key -ieq $d) { return $entry }
+    }
+    foreach ($entry in $script:DeviceCatalog) {
+        foreach ($pat in $entry.Aliases) {
+            if ($d -like ("*" + $pat + "*")) { return $entry }
         }
     }
     return $null
 }
 
-# 设备档案查询（供 Prepare-Remote/诊断工具复用）
-function Get-DeviceProfile($dev) {
-    if (-not $dev) { return $null }
-    return (Desired $dev)
-}
+function Desired($dev) { return (Get-DeviceProfile $dev) }

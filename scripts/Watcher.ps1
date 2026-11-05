@@ -836,6 +836,15 @@ $script:sessionCacheTs = [datetime]::MinValue
         continue
     }
 
+    # 模式闸门：NO_REMOTE_ADAPT 存在且当前无预建/会话状态时，完全不需要解析远控会话，
+    # 只保留原生扩展守护（上面已检查）与预建请求（会由 .txt 文件事件立即唤醒）。
+    $adaptiveDisabled = Test-Path (Join-Path $Root 'NO_REMOTE_ADAPT.txt')
+    $armedNow = Test-Path $PreArmFile
+    if ($adaptiveDisabled -and -not $armedNow -and (GetState) -eq 'off') {
+        [void](Wait-ScreenFitWake 4000)
+        continue
+    }
+
     # 会话检测 1 秒缓存（空闲时减少日志解析压力；检测延迟最多 1 秒）
     $sessionTtl = if ((GetState) -in @('on','prearmed','native')) { 1 } else { 4 }
     if (-not $script:sessionCache -or ((Get-Date) - $script:sessionCacheTs).TotalSeconds -ge $sessionTtl) {

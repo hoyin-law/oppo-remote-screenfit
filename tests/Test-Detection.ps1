@@ -121,6 +121,7 @@ $preArmCases = @(
     @{ armed = $true;  state = 'off';      sess = $false; viewer = $false; secs = $null; expect = 'arm' },
     @{ armed = $true;  state = 'prearmed'; sess = $false; viewer = $false; secs = 10;    expect = 'wait' },
     @{ armed = $true;  state = 'prearmed'; sess = $true;  viewer = $true;  secs = 30;    expect = 'promote' },
+    @{ armed = $true;  state = 'on';        sess = $true;  viewer = $true;  secs = 30;    expect = 'promote' },
     @{ armed = $true;  state = 'prearmed'; sess = $true;  viewer = $false; secs = 30;    expect = 'wait' },
     @{ armed = $true;  state = 'prearmed'; sess = $false; viewer = $false; secs = 1000;  expect = 'restore' },
     @{ armed = $false; state = 'prearmed'; sess = $false; viewer = $false; secs = $null; expect = 'restore' },

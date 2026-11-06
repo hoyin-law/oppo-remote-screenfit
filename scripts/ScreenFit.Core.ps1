@@ -4,7 +4,7 @@
   不碰显示拓扑、不启动进程、不写状态文件。
 #>
 
-$script:ScreenFitVersion = '1.4.0'
+$script:ScreenFitVersion = '1.4.1'
 $script:ScreenFitLogDir = $null
 $script:ScreenFitStateDir = $null
 $script:logOffsets = @{}
@@ -248,9 +248,11 @@ function Get-PreArmAction {
         [double]$ArmTimeoutSeconds = 900
     )
     if (-not $Armed) {
-        if ($State -eq 'prearmed') { return 'restore' }
+        if ($State -eq 'prearmed' -or $State -eq 'on') { return 'restore' }
         return 'idle'
     }
+    # 已经处于会话中：不要再重复建屏（否则会与 OPPO 的自动重连互相触发，导致反复切换）
+    if ($State -eq 'on') { return 'promote' }
     if ($State -ne 'prearmed') { return 'arm' }
     if ($SessionActive -and $ViewerActive) { return 'promote' }
     if ($SecondsSinceArm -ne $null -and $SecondsSinceArm -ge $ArmTimeoutSeconds) { return 'restore' }

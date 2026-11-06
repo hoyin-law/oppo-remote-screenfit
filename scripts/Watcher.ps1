@@ -881,8 +881,10 @@ $script:sessionCacheTs = [datetime]::MinValue
                 continue
             }
             'promote' {
-                WLog '预建屏检测到远控会话且观看端在消费 -> 进入会话模式'
-                SetState 'on'
+                if ((GetState) -ne 'on') {
+                    WLog '预建屏检测到远控会话且观看端在消费 -> 进入会话模式'
+                    SetState 'on'
+                }
                 # 继续往下走正常会话分支
             }
             'wait' {
@@ -899,7 +901,7 @@ $script:sessionCacheTs = [datetime]::MinValue
                 continue
             }
         }
-    } elseif ((GetState) -eq 'prearmed') {
+    } elseif ((GetState) -eq 'prearmed' -or (GetState) -eq 'on') {
         WLog '预建标记消失（已撤防）-> 恢复物理扩展布局'
         Restore-Layout | Out-Null
         if ([ScreenFitTopo]::VirtualPathExists()) { CleanDevice }

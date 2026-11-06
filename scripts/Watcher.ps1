@@ -725,6 +725,8 @@ $script:remoteDisabledLogged = $false
 $script:nativeCache = $null
 $script:lastNativeCheck = [datetime]::MinValue
 $script:lastAliveLog = Get-Date
+$script:prearmWaitLogged = $false
+$script:prearmWaitLogged = $false
 $script:stateCacheValue = $null
 $script:stateCacheTs = [datetime]::MinValue
 $script:sharingCache = $false
@@ -773,6 +775,8 @@ while ($true) {
     # 每 10 分钟写一次存活心跳，便于判断进程是否还在正常工作
     if (((Get-Date) - $script:lastAliveLog).TotalSeconds -ge 600) {
         $script:lastAliveLog = Get-Date
+$script:prearmWaitLogged = $false
+$script:prearmWaitLogged = $false
 $script:stateCacheValue = $null
 $script:stateCacheTs = [datetime]::MinValue
 $script:sharingCache = $false
@@ -918,7 +922,13 @@ $script:sessionCacheTs = [datetime]::MinValue
     if ($s.Active) {
         $live = Get-RemoteLiveness
         if (-not $live.AgentRunning) {
-            # 远程引擎进程已消失 = 会话确实结束；只恢复布局，不做任何 kill
+            if (Test-Path $PreArmFile) {
+                if ((GetState) -eq 'on') { SetState 'prearmed' }
+                try { (Get-Item $PreArmFile).LastWriteTime = Get-Date } catch { }
+                WLog '远程引擎已退出 -> 预建屏保持就绪，等待重连（物理屏保持虚拟屏）'
+                Start-Sleep -Milliseconds 500
+                continue
+            }
             if (Restore-Layout) { WLog '远程引擎已退出 -> 已恢复原布局' }
             Start-Sleep -Milliseconds 500
             continue
@@ -937,6 +947,14 @@ $script:sessionCacheTs = [datetime]::MinValue
         if ($script:noViewerSince) { $noViewerSec = ((Get-Date) - $script:noViewerSince).TotalSeconds }
         $decision = Get-ScreenFitDecision -SessionActive $true -ViewerActive $viewer.Active -State (GetState) -NoViewerSeconds $noViewerSec -ViewerGraceSeconds $ViewerGraceSec
         if ($decision -eq 'restore') {
+            if (Test-Path $PreArmFile) {
+                WLog ("无观看端已 " + [math]::Round($noViewerSec) + "s -> 预建屏保持就绪，等待重连")
+                SetState 'prearmed'
+                try { (Get-Item $PreArmFile).LastWriteTime = Get-Date } catch { }
+                $script:noViewerSince = $null
+                Start-Sleep -Milliseconds 700
+                continue
+            }
             WLog ("无观看端已 " + [math]::Round($noViewerSec) + "s -> 恢复原布局（避免物理屏被锁在虚拟屏）")
             Restore-Layout | Out-Null
             Start-Sleep -Milliseconds 500
@@ -1040,8 +1058,17 @@ $script:sessionCacheTs = [datetime]::MinValue
             }
         }
     } else {
-        # 会话结束（或本来就没有会话）：统一走 Restore-Layout，含窗口位置回搬
-        if (Restore-Layout) { WLog '远程结束 -> 已恢复连接前屏幕布局' }
+        # 会话结束（或本来就没有会话）
+        if ((Test-Path $PreArmFile) -and ((GetState) -eq 'on' -or (GetState) -eq 'prearmed')) {
+            if ((GetState) -eq 'on') { SetState 'prearmed' }
+            try { (Get-Item $PreArmFile).LastWriteTime = Get-Date } catch { }
+            if (-not $script:prearmWaitLogged) {
+                WLog '远控已断开 -> 保持虚拟屏等待重连（15 分钟内重连将从虚拟屏开始）'
+                $script:prearmWaitLogged = $true
+            }
+        } else {
+            if (Restore-Layout) { WLog '远程结束 -> 已恢复连接前屏幕布局' }
+        }
         # 恢复后 30 秒内持续盯外接屏：OPPO 或系统可能再次把外接屏关掉（用户要求断开后保持扩展）
         if ($script:postRestoreUntil -and (Get-Date) -lt $script:postRestoreUntil -and
             ((Get-Date) - $script:lastGuardExtend).TotalSeconds -ge 3) {

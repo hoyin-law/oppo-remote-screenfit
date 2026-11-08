@@ -630,6 +630,8 @@ function Restore-Layout {
     $script:snapshotTried = $false
     $script:windowsMoved = $false
     $script:noViewerSince = $null
+    $script:topoState = 'off'
+    $script:prearmWaitLogged = $false
     Remove-Item (Join-Path $Root 'PREARM.txt') -Force -ErrorAction SilentlyContinue
     return $true
 }

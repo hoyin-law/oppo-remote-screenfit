@@ -947,7 +947,7 @@ $script:sessionCacheTs = [datetime]::MinValue
         }
         $noViewerSec = $null
         if ($script:noViewerSince) { $noViewerSec = ((Get-Date) - $script:noViewerSince).TotalSeconds }
-        $decision = Get-ScreenFitDecision -SessionActive $true -ViewerActive $viewer.Active -State (GetState) -NoViewerSeconds $noViewerSec -ViewerGraceSeconds $ViewerGraceSec
+        $decision = Get-ScreenFitDecision -SessionActive $true -ViewerActive $true -State (GetState) -NoViewerSeconds $noViewerSec -ViewerGraceSeconds $ViewerGraceSec
         if ($decision -eq 'restore') {
             if (Test-Path $PreArmFile) {
                 WLog ("无观看端已 " + [math]::Round($noViewerSec) + "s -> 预建屏保持就绪，等待重连")

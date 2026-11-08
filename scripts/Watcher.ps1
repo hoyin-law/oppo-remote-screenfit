@@ -901,7 +901,7 @@ $script:sessionCacheTs = [datetime]::MinValue
                 continue
             }
         }
-    } elseif ((GetState) -eq 'prearmed' -or (GetState) -eq 'on') {
+    } elseif ((GetState) -eq 'prearmed') {
         WLog '预建标记消失（已撤防）-> 恢复物理扩展布局'
         Restore-Layout | Out-Null
         if ([ScreenFitTopo]::VirtualPathExists()) { CleanDevice }

@@ -4,7 +4,7 @@
   不碰显示拓扑、不启动进程、不写状态文件。
 #>
 
-$script:ScreenFitVersion = '1.5.2'
+$script:ScreenFitVersion = '1.5.3'
 $script:ScreenFitLogDir = $null
 $script:ScreenFitStateDir = $null
 $script:logOffsets = @{}
@@ -18,6 +18,60 @@ $script:agentSnap = $null
 $script:agentSnapTs = [datetime]::MinValue
 
 function Get-ScreenFitVersion { return $script:ScreenFitVersion }
+
+# ================= 可配置项（settings.json / 环境变量） =================
+# 默认值即推荐配置；settings.json 只需写想覆盖的键。
+# 配置文件查找顺序：
+#   1) 环境变量 SCREENFIT_CONFIG 指向的 json
+#   2) <脚本目录>\..\settings.json（仓库根目录，便于开发）
+#   3) %LOCALAPPDATA%\OPPO-ScreenFit\settings.json（安装目录）
+$script:ScreenFitConfigDefaults = @{
+    OppoLogDir              = $null   # OPPO 互联日志目录，默认 %APPDATA%\O+Connect\devicespace
+    StateDir                = $null   # 插件状态/日志目录，默认安装目录\logs
+    VirtualDisplayTool      = $null   # OPPO 虚拟显示器工具路径，默认 %LOCALAPPDATA%\DeviceSpace\ext-service\OPVirtualDisplayDriver\OPDisplayDriverTool.exe
+    DefaultDevice           = $null   # 设备名识别失败时的兜底设备 Key/名称，例如 'Pad5Pro'
+    ViewerWindowSeconds     = 30      # 最近多少秒内有 send>0 帧才视为“观看端在消费”
+    ViewerGraceSeconds      = 60      # 切屏后连续多少秒无观看端 -> 自动恢复
+    NoViewerKillSeconds     = 180     # 引擎存活但长时间无观看端 -> 恢复布局
+    ArmTimeoutSeconds       = 900     # 预建屏等待超时
+    SwitchOnSession         = $true   # true=检测到远控会话即切虚拟屏；false=等观看端帧再切
+    EnsureNativeInternalMode= $true   # 恢复布局时把内屏纠正回原生（最大）分辨率
+}
+$script:ScreenFitConfig = $null
+$script:ScreenFitConfigPath = $null
+
+function Get-ScreenFitConfigPath {
+    if ($env:SCREENFIT_CONFIG -and (Test-Path $env:SCREENFIT_CONFIG)) { return $env:SCREENFIT_CONFIG }
+    $candidates = @(
+        (Join-Path (Split-Path -Parent $PSScriptRoot) 'settings.json'),
+        (Join-Path $env:LOCALAPPDATA 'OPPO-ScreenFit\settings.json')
+    )
+    foreach ($p in $candidates) { if ($p -and (Test-Path $p)) { return $p } }
+    return $null
+}
+
+function Get-ScreenFitConfig {
+    if ($script:ScreenFitConfig) { return $script:ScreenFitConfig }
+    $cfg = @{} + $script:ScreenFitConfigDefaults
+    $path = Get-ScreenFitConfigPath
+    $script:ScreenFitConfigPath = $path
+    if ($path) {
+        try {
+            $json = Get-Content $path -Raw -ErrorAction Stop | ConvertFrom-Json
+            foreach ($p in $json.PSObject.Properties) {
+                if ($script:ScreenFitConfigDefaults.ContainsKey($p.Name)) { $cfg[$p.Name] = $p.Value }
+            }
+        } catch { }
+    }
+    $script:ScreenFitConfig = $cfg
+    return $cfg
+}
+
+function Get-ScreenFitSetting([string]$Name) {
+    $cfg = Get-ScreenFitConfig
+    if ($cfg.ContainsKey($Name)) { return $cfg[$Name] }
+    return $null
+}
 
 function Initialize-ScreenFit([string]$LogDir, [string]$StateDir) {
     if ($LogDir) { $script:ScreenFitLogDir = $LogDir }
@@ -38,6 +92,8 @@ function Get-ScreenFitLogDir {
     # 测试钩子：设置 SCREENFIT_LOG_DIR 可让 Watcher/Diagnose 指向伪造的日志目录，用于集成测试
     if ($env:SCREENFIT_LOG_DIR) { return $env:SCREENFIT_LOG_DIR }
     if ($script:ScreenFitLogDir) { return $script:ScreenFitLogDir }
+    $cfg = Get-ScreenFitSetting 'OppoLogDir'
+    if ($cfg) { return [string]$cfg }
     return (Join-Path $env:APPDATA 'O+Connect\devicespace')
 }
 

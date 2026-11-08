@@ -107,7 +107,7 @@ PC 端 app.asar 里也有完整文案：`EX_EXTEND_SCREEN_CONFIRM_TITLE`（要�
 
 ## 3. 当前机器状态与后续实验
 
-- 自动切屏已停用（`%LOCALAPPDATA%\OPPO-ScreenFit\STOP.txt` 存在），物理屏保持"内屏 + ExternalMonitor 扩展"；
+- 自动切屏已停用（`%LOCALAPPDATA%\OPPO-ScreenFit\STOP.txt` 存在），物理屏保持"内屏 + 外接屏扩展"；
 - 插件版本 1.2.7；
 - 建议的下一步实验（按优先级）：
   1. 在平板端确认「屏幕扩展」入口是否可用：若可用，记录完整日志（`screenshare.exe` + `castScreenStatusChanged`），据此把插件改为原生扩展守护；
@@ -132,7 +132,7 @@ PC 端 app.asar 里也有完整文案：`EX_EXTEND_SCREEN_CONFIRM_TITLE`（要�
 - 单测 52/52 通过（新增 5 条原生决策 + 3 条 cast 状态解析）；
 - 集成冒烟（伪造 cast 状态 + 真实 `screenshare.exe` 进程 + 沙箱 Watcher）：
   `检测到 OPPO 原生屏幕扩展/镜像（screenshare=True）-> 原生模式，插件不自行建屏`，且全程无「已切到」日志；
-- 部署后实测未改动显示拓扑：`active=2（InternalPanel + ExternalMonitor）`。
+- 部署后实测未改动显示拓扑：`active=2（内屏 + 外接屏）`。
 
 ### 还需的真实会话验证
 
@@ -140,7 +140,7 @@ PC 端 app.asar 里也有完整文案：`EX_EXTEND_SCREEN_CONFIRM_TITLE`（要�
 
 1. `pwsh scripts\Probe-OPPO-Pipeline.ps1 -Last 3` 应看到 `castMirrorScreenStatus` 非 0 时段；
 2. `%LOCALAPPDATA%\OPPO-ScreenFit\logs\watcher.log` 应出现「原生模式」→ 结束后「已恢复扩展布局」；
-3. 结束扩展后 2 秒内物理屏应保持内屏 + ExternalMonitor 扩展。
+3. 结束扩展后 2 秒内物理屏应保持内屏 + 外接屏扩展。
 ---
 
 ## 5. 无原生「屏幕扩展」入口时的可行路线（2026-11-05 确认）

@@ -1,0 +1,12 @@
+{
+  "OppoLogDir": null,
+  "StateDir": null,
+  "VirtualDisplayTool": null,
+  "DefaultDevice": null,
+  "ViewerWindowSeconds": 30,
+  "ViewerGraceSeconds": 60,
+  "NoViewerKillSeconds": 180,
+  "ArmTimeoutSeconds": 900,
+  "SwitchOnSession": true,
+  "EnsureNativeInternalMode": true
+}

@@ -22,6 +22,7 @@ param(
 
 $ErrorActionPreference = 'Stop'
 $Tool = Join-Path $env:LOCALAPPDATA 'DeviceSpace\ext-service\OPVirtualDisplayDriver\OPDisplayDriverTool.exe'
+$cfgTool = Get-ScreenFitSetting 'VirtualDisplayTool'; if ($cfgTool) { $Tool = [string]$cfgTool }
 $LogDir = Join-Path $env:APPDATA 'O+Connect\devicespace'
 $TaskName = 'OPPO平板分辨率适配'
 

@@ -18,6 +18,7 @@ param(
 
 $ErrorActionPreference = 'Stop'
 $Tool = Join-Path $env:LOCALAPPDATA 'DeviceSpace\ext-service\OPVirtualDisplayDriver\OPDisplayDriverTool.exe'
+$cfgTool = Get-ScreenFitSetting 'VirtualDisplayTool'; if ($cfgTool) { $Tool = [string]$cfgTool }
 
 # 设备表唯一来源：ScreenFit.Core.ps1
 $CorePath = Join-Path (Split-Path -Parent $PSCommandPath) 'ScreenFit.Core.ps1'

@@ -4,7 +4,8 @@
   行为：
     - 只在检测到 OPPO 互联「远程控制」会话开始时才建虚拟屏并切换；
     - 设备普通连接/断开不会自动切换屏幕（避免日常打扰）；
-    - 必须有观看端在消费画面（最近 30 秒内有 send>0 的帧）才切屏；
+    - 默认检测到远控会话就切屏（SwitchOnSession=true）；
+      设为 false 时改为：最近 30 秒内有 send>0 帧才切；
       切屏后连续 60 秒没有观看端则自动恢复原布局，避免把物理屏锁死；
     - 远程开始时保存“连接前”的屏幕布局（扩展/复制/仅某屏）与窗口位置，退出时原样恢复；
     - 切换后校验确实只剩一块活动屏，失败自动重试/重建。
@@ -34,6 +35,16 @@ $NoViewerKillSec = 180       # 远程引擎存活但长时间无观看端 -> 只
 # 检测逻辑集中在 ScreenFit.Core.ps1（纯函数，tests\Test-Detection.ps1 用真实日志回放验证）
 . (Join-Path $Root 'ScreenFit.Core.ps1')
 Initialize-ScreenFit -StateDir $LogDir   # 日志目录用 Core 默认（OPPO devicespace），状态文件用本目录
+
+# ===== 读取 settings.json / 环境变量覆盖默认值（见 docs/configuration.md） =====
+$cfgTool = Get-ScreenFitSetting 'VirtualDisplayTool'
+if ($cfgTool) { $Tool = [string]$cfgTool }
+$cfgArm = Get-ScreenFitSetting 'ArmTimeoutSeconds';        if ($null -ne $cfgArm) { $ArmTimeoutSec = [int]$cfgArm }
+$cfgVw  = Get-ScreenFitSetting 'ViewerWindowSeconds';      if ($null -ne $cfgVw)  { $ViewerWindowSec = [int]$cfgVw }
+$cfgVg  = Get-ScreenFitSetting 'ViewerGraceSeconds';       if ($null -ne $cfgVg)  { $ViewerGraceSec = [int]$cfgVg }
+$cfgNv  = Get-ScreenFitSetting 'NoViewerKillSeconds';      if ($null -ne $cfgNv)  { $NoViewerKillSec = [int]$cfgNv }
+$SwitchOnSession = [bool](Get-ScreenFitSetting 'SwitchOnSession')
+$EnsureNativeInternalMode = [bool](Get-ScreenFitSetting 'EnsureNativeInternalMode')
 # ===== 事件驱动唤醒：OPPO 日志 / 安装目录标记有变化时立即处理，空闲时靠超时兜底 =====
 $script:sfWatchers = @()
 function Initialize-ScreenFitWatchers {
@@ -612,7 +623,7 @@ function Restore-Layout {
     } elseif ($action -eq 'internal') {
         Set-OnlyInternal
     }
-    try { $nm = [ScreenFitTopo]::EnsureNativeInternalMode(); if ($nm) { WLog ("   内屏模式校验: " + $nm) } } catch { }
+    if ($EnsureNativeInternalMode) { try { $nm = [ScreenFitTopo]::EnsureNativeInternalMode(); if ($nm) { WLog ("   内屏模式校验: " + $nm) } } catch { } }
 
     Restore-WindowLayout | Out-Null
     if ([ScreenFitTopo]::VirtualPathExists()) { CleanDevice }
@@ -949,7 +960,7 @@ $script:sessionCacheTs = [datetime]::MinValue
         }
         $noViewerSec = $null
         if ($script:noViewerSince) { $noViewerSec = ((Get-Date) - $script:noViewerSince).TotalSeconds }
-        $decision = Get-ScreenFitDecision -SessionActive $true -ViewerActive $true -State (GetState) -NoViewerSeconds $noViewerSec -ViewerGraceSeconds $ViewerGraceSec
+        $decision = Get-ScreenFitDecision -SessionActive $true -ViewerActive ($(if ($SwitchOnSession) { $true } else { $viewer.Active })) -State (GetState) -NoViewerSeconds $noViewerSec -ViewerGraceSeconds $ViewerGraceSec
         if ($decision -eq 'restore') {
             if (Test-Path $PreArmFile) {
                 WLog ("无观看端已 " + [math]::Round($noViewerSec) + "s -> 预建屏保持就绪，等待重连")
@@ -974,6 +985,20 @@ $script:sessionCacheTs = [datetime]::MinValue
         }
 
         $t = Desired $s.Device
+        if (-not $t) {
+            $cfgDev = Get-ScreenFitSetting 'DefaultDevice'
+            if ($cfgDev) {
+                $t = Desired ([string]$cfgDev)
+                if ($t) { WLog ("设备名未识别，使用配置 DefaultDevice: " + $cfgDev) }
+            }
+        }
+        if (-not $t) {
+            $devFile = Join-Path $LogDir 'last-device.txt'
+            if (Test-Path $devFile) {
+                $dLast = (Get-Content $devFile -Raw -ErrorAction SilentlyContinue).Trim()
+                if ($dLast) { $t = Desired $dLast; if ($t) { WLog ("设备名未识别，回退到上次设备: " + $dLast) } }
+            }
+        }
         $bounds = [ScreenFitTopo]::ActiveBounds()
         $resOk = ($t -and $bounds -like ("$($t.W),$($t.H),*"))
         # 已经是“目标分辨率 + 仅虚拟屏 + 只有 1 块屏”时直接跳过
@@ -1028,7 +1053,7 @@ $script:sessionCacheTs = [datetime]::MinValue
                     [ScreenFitTopo]::Extend() | Out-Null
                 } elseif (((Get-Date) - $lastCreateTry).TotalSeconds -ge 15) {
                     $lastCreateTry = Get-Date
-                    Set-Content -Path (Join-Path $LogDir 'last-device.txt') -Value $s.Device -Encoding UTF8
+                    if ($s.Device) { Set-Content -Path (Join-Path $LogDir 'last-device.txt') -Value $s.Device -Encoding UTF8 }
                     WLog ('检测到远程会话 -> 建屏 ' + $s.Device + ' ' + $t.W + 'x' + $t.H)
                     CleanDevice
                     Start-Create $t.W $t.H | Out-Null

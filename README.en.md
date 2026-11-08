@@ -41,7 +41,7 @@ via `scripts/devices.json` without touching code.
 1. `Watcher.ps1` (elevated scheduled task, starts at logon) reads OPPO Connect's own logs to detect **remote-control session start/end**:
    - `start remote control: ... "deviceName":"OPPO Find N6" ...`
    - `stop remote control: ...`
-2. **Viewer gate**: OPPO's "remote-control state = true" only means a device connected, not that anyone is watching. The watcher switches only when the `desktop_agent` log shows `[CSingleDesktop] ... send>0` (frames actually consumed by a viewer) within the last 30 seconds. If the layout was already switched and no viewer appears for 60 seconds, it restores the original layout so the physical screen cannot stay locked on the virtual display.
+2. **When it switches**: by default (`SwitchOnSession=true`) it switches as soon as a remote-control session is detected, without waiting for viewer frames. Set `SwitchOnSession` to `false` to require `send>0` frames within the last 30 seconds (old behaviour). If no viewer appears for 60 seconds after switching, the original layout is restored so the physical screen cannot stay locked on the virtual display.
 3. On session start it calls OPPO's bundled `OPDisplayDriverTool.exe` to create a virtual display at the device's native resolution.
 4. The same watcher switches the display topology to **"show only on the virtual display"**, so the remote side only sees one screen; it keeps checking and re-applies within 2 seconds if a physical display comes back, and moves stranded windows onto the virtual screen (window positions are snapshotted before switching).
 5. When the session ends it restores the exact layout you had before connecting (extend / duplicate / single screen) and moves windows back, then removes the virtual display.

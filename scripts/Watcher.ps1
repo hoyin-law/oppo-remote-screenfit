@@ -698,6 +698,8 @@ $script:remoteDisabledLogged = $false
 $script:nativeCache = $null
 $script:lastNativeCheck = [datetime]::MinValue
 $script:lastAliveLog = Get-Date
+$script:switchSuppressedUntil = [datetime]::MinValue
+$script:suppressLogDone = $false
 $script:prearmWaitLogged = $false
 $script:prearmWaitLogged = $false
 $script:stateCacheValue = $null
@@ -748,6 +750,8 @@ while ($true) {
     # 每 10 分钟写一次存活心跳，便于判断进程是否还在正常工作
     if (((Get-Date) - $script:lastAliveLog).TotalSeconds -ge 600) {
         $script:lastAliveLog = Get-Date
+$script:switchSuppressedUntil = [datetime]::MinValue
+$script:suppressLogDone = $false
 $script:prearmWaitLogged = $false
 $script:prearmWaitLogged = $false
 $script:stateCacheValue = $null
@@ -922,7 +926,11 @@ $script:sessionCacheTs = [datetime]::MinValue
         if ($script:noViewerSince) { $noViewerSec = ((Get-Date) - $script:noViewerSince).TotalSeconds }
         # 已切开后必须用真实观看端状态判断，否则无观看端兜底永远不会触发（会把物理屏锁在冻结的虚拟屏上）
         $allowSwitch = $viewer.Active
-        if ($SwitchOnSession -and (GetState) -ne 'on') { $allowSwitch = $true }
+        if ($SwitchOnSession -and (GetState) -ne 'on' -and (Get-Date) -ge $script:switchSuppressedUntil) { $allowSwitch = $true }
+        if ($SwitchOnSession -and (GetState) -ne 'on' -and (Get-Date) -lt $script:switchSuppressedUntil -and -not $script:suppressLogDone) {
+            WLog '本会话已因无观看端恢复过 -> 抑制自动切屏（10 分钟或会话结束）'
+            $script:suppressLogDone = $true
+        }
         $decision = Get-ScreenFitDecision -SessionActive $true -ViewerActive $allowSwitch -State (GetState) -NoViewerSeconds $noViewerSec -ViewerGraceSeconds $ViewerGraceSec
         if ($decision -eq 'restore') {
             if (Test-Path $PreArmFile) {
@@ -934,6 +942,7 @@ $script:sessionCacheTs = [datetime]::MinValue
                 continue
             }
             WLog ("无观看端已 " + [math]::Round($noViewerSec) + "s -> 恢复原布局（避免物理屏被锁在虚拟屏）")
+            if ($SwitchOnSession) { $script:switchSuppressedUntil = (Get-Date).AddMinutes(10) }
             Restore-Layout | Out-Null
             Start-Sleep -Milliseconds 500
             continue
@@ -1050,7 +1059,9 @@ $script:sessionCacheTs = [datetime]::MinValue
             }
         }
     } else {
-        # 会话结束（或本来就没有会话）
+        # 会话结束（或本来就没有会话）：重置抑制，下次会话可正常自动切屏
+        $script:switchSuppressedUntil = [datetime]::MinValue
+        $script:suppressLogDone = $false
         if ((Test-Path $PreArmFile) -and ((GetState) -eq 'on' -or (GetState) -eq 'prearmed')) {
             if ((GetState) -eq 'on') { SetState 'prearmed' }
             try { (Get-Item $PreArmFile).LastWriteTime = Get-Date } catch { }

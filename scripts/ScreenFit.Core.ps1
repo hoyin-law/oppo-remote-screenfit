@@ -4,7 +4,7 @@
   不碰显示拓扑、不启动进程、不写状态文件。
 #>
 
-$script:ScreenFitVersion = '1.5.4'
+$script:ScreenFitVersion = '1.5.5'
 $script:ScreenFitLogDir = $null
 $script:ScreenFitStateDir = $null
 $script:logOffsets = @{}

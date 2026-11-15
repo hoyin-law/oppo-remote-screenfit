@@ -179,6 +179,12 @@ foreach ($scriptName in @('Prepare-Remote.ps1', 'TabletScreen.ps1', 'Test-PreCre
     Check ($content -match 'Get-DeviceCatalog') ('script-uses-catalog:' + $scriptName)
 }
 
+Write-Host '== 6c. 无观看端恢复（防止锁死虚拟屏） =='
+Check ((Get-ScreenFitDecision -SessionActive $true -ViewerActive $false -State 'on' -NoViewerSeconds 61 -ViewerGraceSeconds 60) -eq 'restore') 'decision-no-viewer-restore'
+Check ((Get-ScreenFitDecision -SessionActive $true -ViewerActive $false -State 'on' -NoViewerSeconds 30 -ViewerGraceSeconds 60) -eq 'stay') 'decision-no-viewer-wait'
+Check ((Get-ScreenFitDecision -SessionActive $true -ViewerActive $false -State 'off' -NoViewerSeconds 600 -ViewerGraceSeconds 60) -eq 'stay') 'decision-no-viewer-off-stay'
+Check ((Get-ScreenFitDecision -SessionActive $false -ViewerActive $false -State 'on') -eq 'restore') 'decision-session-end-restore'
+
 Write-Host '== 7. 版本一致性 =='
 $ver = Get-ScreenFitVersion
 Check ($ver -match '^\d+\.\d+\.\d+$') 'version-format' ("got=" + $ver)

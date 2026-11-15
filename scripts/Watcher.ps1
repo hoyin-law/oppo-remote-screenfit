@@ -22,15 +22,12 @@ New-Item -ItemType Directory -Force $LogDir | Out-Null
 $LogFile = Join-Path $LogDir 'watcher.log'
 $StateFile = Join-Path $LogDir 'state.txt'
 $Tool = Join-Path $env:LOCALAPPDATA 'DeviceSpace\ext-service\OPVirtualDisplayDriver\OPDisplayDriverTool.exe'
-$PollSec = 1
-$GraceSec = 90
 $SnapshotFile = Join-Path $LogDir 'topology.snapshot'
 $WindowSnapshotFile = Join-Path $LogDir 'window.snapshot.txt'
 $PreArmFile = Join-Path $Root 'PREARM.txt'
 $ArmTimeoutSec = 900
 $ViewerWindowSec = 30        # 最近 30 秒内有 send>0 的帧，才认为有观看端在消费画面
 $ViewerGraceSec = 60         # 切屏后连续 60 秒无观看端 -> 自动恢复原布局
-$NoViewerKillSec = 180       # 远程引擎存活但长时间无观看端 -> 只恢复布局，不杀引擎
 
 # 检测逻辑集中在 ScreenFit.Core.ps1（纯函数，tests\Test-Detection.ps1 用真实日志回放验证）
 . (Join-Path $Root 'ScreenFit.Core.ps1')
@@ -42,7 +39,6 @@ if ($cfgTool) { $Tool = [string]$cfgTool }
 $cfgArm = Get-ScreenFitSetting 'ArmTimeoutSeconds';        if ($null -ne $cfgArm) { $ArmTimeoutSec = [int]$cfgArm }
 $cfgVw  = Get-ScreenFitSetting 'ViewerWindowSeconds';      if ($null -ne $cfgVw)  { $ViewerWindowSec = [int]$cfgVw }
 $cfgVg  = Get-ScreenFitSetting 'ViewerGraceSeconds';       if ($null -ne $cfgVg)  { $ViewerGraceSec = [int]$cfgVg }
-$cfgNv  = Get-ScreenFitSetting 'NoViewerKillSeconds';      if ($null -ne $cfgNv)  { $NoViewerKillSec = [int]$cfgNv }
 $SwitchOnSession = [bool](Get-ScreenFitSetting 'SwitchOnSession')
 $EnsureNativeInternalMode = [bool](Get-ScreenFitSetting 'EnsureNativeInternalMode')
 # ===== 事件驱动唤醒：OPPO 日志 / 安装目录标记有变化时立即处理，空闲时靠超时兜底 =====
@@ -288,37 +284,7 @@ public static class ScreenFitTopo {
     }
     return result;
   }
-  public static string DeactivateVirtual() {
-    uint np, nm; int e = GetDisplayConfigBufferSizes(2, out np, out nm); if (e != 0) return "buf=" + e;
-    var paths = new PATH[np]; var modes = new MODE[nm];
-    e = QueryDisplayConfig(2, ref np, paths, ref nm, modes, IntPtr.Zero); if (e != 0) return "query=" + e;
-    var kept = new System.Collections.Generic.List<PATH>();
-    for (int i = 0; i < np; i++) { if (!IsVirtualPath(paths[i])) kept.Add(paths[i]); }
-    if (kept.Count == 0) return "no-physical";
-    int minX = int.MaxValue, minY = int.MaxValue;
-    foreach (var p in kept) {
-      if (p.sourceInfo.modeInfoIdx != INVALID) {
-        var m = modes[p.sourceInfo.modeInfoIdx];
-        if (m.infoType == 1) { if (m.posX < minX) minX = m.posX; if (m.posY < minY) minY = m.posY; }
-      }
-    }
-    if (minX == int.MaxValue) { minX = 0; minY = 0; }
-    var keepP = new System.Collections.Generic.List<PATH>();
-    var keepM = new System.Collections.Generic.List<MODE>();
-    foreach (var q0 in kept) {
-      var q = q0;
-      if (q.sourceInfo.modeInfoIdx != INVALID) {
-        var m = modes[q.sourceInfo.modeInfoIdx];
-        if (m.infoType == 1) { m.posX -= minX; m.posY -= minY; }
-        keepM.Add(m); q.sourceInfo.modeInfoIdx = (uint)(keepM.Count - 1);
-      }
-      if (q.targetInfo.modeInfoIdx != INVALID) {
-        keepM.Add(modes[q.targetInfo.modeInfoIdx]); q.targetInfo.modeInfoIdx = (uint)(keepM.Count - 1);
-      }
-      keepP.Add(q);
-    }
-    return "err=" + SetDisplayConfig((uint)keepP.Count, keepP.ToArray(), (uint)keepM.Count, keepM.ToArray(), USE | APPLY);
-  }
+
   static PATH[] sPaths = null;
   static byte[] sModes = null;
   static uint sNp = 0, sNm = 0;
@@ -689,12 +655,6 @@ function Set-OnlyInternal {
     $r = [ScreenFitTopo]::OnlyInternal()
     if ($r -eq 'err=0') { WLog "恢复仅内屏: $r"; $script:topoState = 'internal' }
 }
-
-$prebuildStableSec = 20
-$lastPrebuildTry = [datetime]::MinValue
-$devConnectedSince = $null
-
-
 function Get-ActiveCount {
     try { return [ScreenFitTopo]::ActiveCount() } catch { return 99 }
 }
@@ -960,7 +920,10 @@ $script:sessionCacheTs = [datetime]::MinValue
         }
         $noViewerSec = $null
         if ($script:noViewerSince) { $noViewerSec = ((Get-Date) - $script:noViewerSince).TotalSeconds }
-        $decision = Get-ScreenFitDecision -SessionActive $true -ViewerActive ($(if ($SwitchOnSession) { $true } else { $viewer.Active })) -State (GetState) -NoViewerSeconds $noViewerSec -ViewerGraceSeconds $ViewerGraceSec
+        # 已切开后必须用真实观看端状态判断，否则无观看端兜底永远不会触发（会把物理屏锁在冻结的虚拟屏上）
+        $allowSwitch = $viewer.Active
+        if ($SwitchOnSession -and (GetState) -ne 'on') { $allowSwitch = $true }
+        $decision = Get-ScreenFitDecision -SessionActive $true -ViewerActive $allowSwitch -State (GetState) -NoViewerSeconds $noViewerSec -ViewerGraceSeconds $ViewerGraceSec
         if ($decision -eq 'restore') {
             if (Test-Path $PreArmFile) {
                 WLog ("无观看端已 " + [math]::Round($noViewerSec) + "s -> 预建屏保持就绪，等待重连")

@@ -113,6 +113,29 @@ function CleanDevice {
     Start-Sleep -Seconds 3
 }
 
+<#
+  Remove-GhostDisplays —— 清理 OPPO 远控遗留的「幽灵」虚拟显示器实例（DISPLAY\DELD0E6\*，Present=False）。
+  O+ Connect 每次远控都会新建一个实例且从不回收；不清理会持续堆积、拖慢显示子系统。
+  只删幽灵，不动活动实例；计划任务以最高权限运行，pnputil 可用。返回成功删除数。
+#>
+function Remove-GhostDisplays {
+    try {
+        $devs = @(Get-PnpDevice -ErrorAction SilentlyContinue | Where-Object { $_.InstanceId -like 'DISPLAY\DELD0E6\*' })
+        $ghosts = @(Select-GhostDisplayInstances -Devices $devs)
+        if ($ghosts.Count -eq 0) { return 0 }
+        $ok = 0
+        foreach ($id in $ghosts) {
+            & pnputil /remove-device $id 2>$null | Out-Null
+            if ($LASTEXITCODE -eq 0) { $ok++ }
+        }
+        WLog ("   清理幽灵显示器: " + $ok + "/" + $ghosts.Count)
+        return $ok
+    } catch {
+        WLog ("   清理幽灵显示器失败: " + $_.Exception.Message)
+        return 0
+    }
+}
+
 function HasRes($w, $h) {
     $b = [ScreenFitTopo]::ActiveBounds()
     return ($b -like ("$w,$h,*"))
@@ -593,6 +616,7 @@ function Restore-Layout {
 
     Restore-WindowLayout | Out-Null
     if ([ScreenFitTopo]::VirtualPathExists()) { CleanDevice }
+    Remove-GhostDisplays | Out-Null
 
     # 拆除虚拟屏后 Windows 可能再次塌缩成单屏：做一次收尾校验
     Start-Sleep -Milliseconds 500

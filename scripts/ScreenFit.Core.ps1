@@ -4,7 +4,7 @@
   不碰显示拓扑、不启动进程、不写状态文件。
 #>
 
-$script:ScreenFitVersion = '1.5.5'
+$script:ScreenFitVersion = '1.5.6'
 $script:ScreenFitLogDir = $null
 $script:ScreenFitStateDir = $null
 $script:logOffsets = @{}
@@ -514,3 +514,28 @@ function Get-DeviceProfile($dev) {
 }
 
 function Desired($dev) { return (Get-DeviceProfile $dev) }
+
+<#
+  Select-GhostDisplayInstances —— 从设备快照中挑出「幽灵」虚拟显示器实例：
+  OPPO 远控用的虚拟屏显示器（DISPLAY\DELD0E6\*）在当前系统里已不存在（Present=False）的实例。
+
+  背景：O+ Connect 每次远控都会新建一个 OPExtScreen 实例且从不回收，长期累积会让
+  显示子系统越来越慢。本函数只做筛选，不删设备；删除由 Watcher.ps1 用 pnputil 完成
+  （计划任务以最高权限运行，pnputil 可用）。
+
+  入参：Devices = @{ InstanceId; Present } 数组（可直接传 Get-PnpDevice 的输出）。
+  返回：需要清理的 InstanceId 字符串数组（可能为空）。
+#>
+function Select-GhostDisplayInstances {
+    param([object[]]$Devices)
+    $out = @()
+    foreach ($d in @($Devices)) {
+        if (-not $d) { continue }
+        $id = [string]$d.InstanceId
+        if (-not $id) { continue }
+        if ($id -notlike 'DISPLAY\DELD0E6\*') { continue }
+        if ($d.Present) { continue }
+        $out += $id
+    }
+    return $out
+}

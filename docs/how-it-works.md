@@ -94,6 +94,15 @@ Stop-Process -Name OPDisplayDriverTool -Force
 pnputil /remove-device "SWD\OPDISPLAYDRIVER\OPDISPLAYDRIVER"
 ```
 
+### 7b. 幽灵显示器实例会持续堆积（v1.5.6）
+
+`pnputil /remove-device` 只删除驱动根设备 `SWD\OPDISPLAYDRIVER`，不会删除它创建出来的显示器实例
+`DISPLAY\DELD0E6\...`。O+ Connect 每次远控都会新建一个实例且从不回收，长期使用后系统里会积累
+数百个 `Present=False` 的幽灵显示器，拖慢显示子系统。
+
+修复：`Restore-Layout` 结束时调用 `Remove-GhostDisplays`，用 `Select-GhostDisplayInstances`
+筛出当前不存在的 `DISPLAY\DELD0E6\*` 实例并逐个 `pnputil /remove-device`。只删幽灵，不动活动实例。
+
 ## 8. DPI 的副作用
 
 远程 SDK 在缩放 ≠100% 时会按 DIP 重建抓屏缓冲，例如 2560×1600 @125% 会被编码成 2048×1280。

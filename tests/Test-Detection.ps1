@@ -185,6 +185,22 @@ Check ((Get-ScreenFitDecision -SessionActive $true -ViewerActive $false -State '
 Check ((Get-ScreenFitDecision -SessionActive $true -ViewerActive $false -State 'off' -NoViewerSeconds 600 -ViewerGraceSeconds 60) -eq 'stay') 'decision-no-viewer-off-stay'
 Check ((Get-ScreenFitDecision -SessionActive $false -ViewerActive $false -State 'on') -eq 'restore') 'decision-session-end-restore'
 
+Write-Host '== 6d. 断开后清理幽灵显示器（纯筛选） =='
+$ghostInput = @(
+    @{ InstanceId = 'DISPLAY\DELD0E6\1&3416C83D&0&UID256'; Present = $false },
+    @{ InstanceId = 'DISPLAY\DELD0E6\1&3416C83D&1&UID256'; Present = $true },
+    @{ InstanceId = 'DISPLAY\TMA0803\5&2a56f61f&0&UID256'; Present = $false },
+    @{ InstanceId = 'SWD\OPDISPLAYDRIVER\OPDISPLAYDRIVER'; Present = $false }
+)
+$ghosts = @(Select-GhostDisplayInstances -Devices $ghostInput)
+Check ($ghosts.Count -eq 1) 'ghost-count' ("got=" + $ghosts.Count)
+Check ($ghosts[0] -eq 'DISPLAY\DELD0E6\1&3416C83D&0&UID256') 'ghost-target-only' ("got=" + ($ghosts -join ','))
+# 哨兵：输入里确有 3 个 Present=false、其中 1 个属于 DELD0E6，证明结论来自过滤而不是空输入
+Check (@($ghostInput | Where-Object { -not $_.Present }).Count -eq 3) 'ghost-sentinel-absent-input'
+Check (@($ghostInput | Where-Object { -not $_.Present -and $_.InstanceId -like 'DISPLAY\DELD0E6\*' }).Count -eq 1) 'ghost-sentinel-matching-absent'
+Check (@(Select-GhostDisplayInstances -Devices @()).Count -eq 0) 'ghost-empty-input'
+Check (@(Select-GhostDisplayInstances -Devices @(@{ InstanceId = 'DISPLAY\DELD0E6\X'; Present = $true })).Count -eq 0) 'ghost-live-excluded'
+
 Write-Host '== 7. 版本一致性 =='
 $ver = Get-ScreenFitVersion
 Check ($ver -match '^\d+\.\d+\.\d+$') 'version-format' ("got=" + $ver)

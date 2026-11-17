@@ -51,7 +51,7 @@ New-Item -ItemType Directory -Force $Stage | Out-Null
 New-Item -ItemType Directory -Force (Join-Path $Stage 'scripts') | Out-Null
 New-Item -ItemType Directory -Force (Join-Path $Stage 'docs') | Out-Null
 
-$rootFiles = @('README.md', 'README.en.md', 'LICENSE', 'VERSION', '一键安装.cmd', '一键卸载.cmd')
+$rootFiles = @('README.md', 'README.en.md', 'LICENSE', 'VERSION', 'CHANGELOG.md', '一键安装.cmd', '一键卸载.cmd')
 foreach ($f in $rootFiles) {
     $p = Join-Path $Repo $f
     if (Test-Path $p) { Copy-Item $p (Join-Path $Stage $f) -Force } else { Fail ("缺少文件 " + $f) }

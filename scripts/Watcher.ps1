@@ -25,6 +25,7 @@ $Tool = Join-Path $env:LOCALAPPDATA 'DeviceSpace\ext-service\OPVirtualDisplayDri
 $SnapshotFile = Join-Path $LogDir 'topology.snapshot'
 $WindowSnapshotFile = Join-Path $LogDir 'window.snapshot.txt'
 $PreArmFile = Join-Path $Root 'PREARM.txt'
+$SuppressFile = Join-Path $LogDir 'suppress-until.txt'
 $ArmTimeoutSec = 900
 $ViewerWindowSec = 30        # 最近 30 秒内有 send>0 的帧，才认为有观看端在消费画面
 $ViewerGraceSec = 60         # 切屏后连续 60 秒无观看端 -> 自动恢复原布局
@@ -953,7 +954,10 @@ $script:sessionCacheTs = [datetime]::MinValue
         if ($script:noViewerSince) { $noViewerSec = ((Get-Date) - $script:noViewerSince).TotalSeconds }
         # 已切开后必须用真实观看端状态判断，否则无观看端兜底永远不会触发（会把物理屏锁在冻结的虚拟屏上）
         $allowSwitch = $viewer.Active
-        if ($SwitchOnSession -and (GetState) -ne 'on' -and (Get-Date) -ge $script:switchSuppressedUntil) { $allowSwitch = $true }
+        if ($SwitchOnSession -and (GetState) -ne 'on') {
+            if ((Get-Date) -lt $script:switchSuppressedUntil) { $allowSwitch = $false }
+            else { $allowSwitch = $true }
+        }
         if ($SwitchOnSession -and (GetState) -ne 'on' -and (Get-Date) -lt $script:switchSuppressedUntil -and -not $script:suppressLogDone) {
             WLog '本会话已因无观看端恢复过 -> 抑制自动切屏（10 分钟或会话结束）'
             $script:suppressLogDone = $true
@@ -981,7 +985,10 @@ $script:sessionCacheTs = [datetime]::MinValue
                 continue
             }
             WLog ("无观看端已 " + [math]::Round($noViewerSec) + "s -> 恢复原布局（避免物理屏被锁在虚拟屏）")
-            if ($SwitchOnSession) { $script:switchSuppressedUntil = (Get-Date).AddMinutes(10) }
+            if ($SwitchOnSession) {
+                $script:switchSuppressedUntil = (Get-Date).AddMinutes(10)
+                try { Set-Content -Path $SuppressFile -Value $script:switchSuppressedUntil.ToString('o') -Encoding UTF8 } catch { }
+            }
             Restore-Layout | Out-Null
             Start-Sleep -Milliseconds 500
             continue

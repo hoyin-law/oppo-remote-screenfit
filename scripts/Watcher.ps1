@@ -728,13 +728,19 @@ $script:switchSuppressedUntil = [datetime]::MinValue
 $script:captureFailLogged = $false
 $script:suppressLogDone = $false
 $script:prearmWaitLogged = $false
-$script:prearmWaitLogged = $false
 $script:stateCacheValue = $null
 $script:stateCacheTs = [datetime]::MinValue
 $script:sharingCache = $false
 $script:sharingCacheTs = [datetime]::MinValue
 $script:sessionCache = $null
 $script:sessionCacheTs = [datetime]::MinValue
+# 抑制自动切屏的截止时间持久化：重启后仍生效，避免同一坏会话被反复切换
+if (Test-Path $SuppressFile) {
+    try {
+        $script:switchSuppressedUntil = [datetime]::Parse((Get-Content $SuppressFile -Raw).Trim())
+        $script:suppressLogDone = $true
+    } catch { }
+}
 # 日志清理：只保留最近 40 个工具输出，watcher.log 超过 5MB 截断
 try {
     Get-ChildItem $LogDir -Filter 'tool_*' | Sort-Object LastWriteTime -Descending |
@@ -777,17 +783,6 @@ while ($true) {
     # 每 10 分钟写一次存活心跳，便于判断进程是否还在正常工作
     if (((Get-Date) - $script:lastAliveLog).TotalSeconds -ge 600) {
         $script:lastAliveLog = Get-Date
-$script:switchSuppressedUntil = [datetime]::MinValue
-$script:captureFailLogged = $false
-$script:suppressLogDone = $false
-$script:prearmWaitLogged = $false
-$script:prearmWaitLogged = $false
-$script:stateCacheValue = $null
-$script:stateCacheTs = [datetime]::MinValue
-$script:sharingCache = $false
-$script:sharingCacheTs = [datetime]::MinValue
-$script:sessionCache = $null
-$script:sessionCacheTs = [datetime]::MinValue
         try {
             $aliveNative = if ($script:nativeCache) { $script:nativeCache.Active } else { '?' }
             WLog ("存活：state=" + (GetState) + " native=" + $aliveNative + " 活动屏=" + [ScreenFitTopo]::ActiveCount() + " 虚拟屏=" + [ScreenFitTopo]::VirtualActive())
@@ -958,6 +953,7 @@ $script:sessionCacheTs = [datetime]::MinValue
             if ((Get-Date) -lt $script:switchSuppressedUntil) { $allowSwitch = $false }
             else { $allowSwitch = $true }
         }
+        if ($SwitchOnSession -and (GetState) -ne 'on' -and (Get-Date) -ge $script:switchSuppressedUntil) { $allowSwitch = $true }
         if ($SwitchOnSession -and (GetState) -ne 'on' -and (Get-Date) -lt $script:switchSuppressedUntil -and -not $script:suppressLogDone) {
             WLog '本会话已因无观看端恢复过 -> 抑制自动切屏（10 分钟或会话结束）'
             $script:suppressLogDone = $true

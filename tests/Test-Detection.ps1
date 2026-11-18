@@ -201,6 +201,25 @@ Check (@($ghostInput | Where-Object { -not $_.Present -and $_.InstanceId -like '
 Check (@(Select-GhostDisplayInstances -Devices @()).Count -eq 0) 'ghost-empty-input'
 Check (@(Select-GhostDisplayInstances -Devices @(@{ InstanceId = 'DISPLAY\DELD0E6\X'; Present = $true })).Count -eq 0) 'ghost-live-excluded'
 
+Write-Host '== 6d. 抓帧失败检测（提前恢复） =='
+$cfTmp = Join-Path $env:TEMP ('sf-cf-' + [guid]::NewGuid().ToString('N').Substring(0,8))
+New-Item -ItemType Directory -Force $cfTmp | Out-Null
+try {
+    $cfLog = Join-Path $cfTmp 'desktop_agent.test.log'
+    $now = Get-Date
+    $recent = '[1]`t' + $now.ToString('yyyy-MM-dd HH:mm:ss') + '.000`t- Info  -`t[DXGI] Failed to get duplicate output in DUPLICATIONMANAGER hr 80004005'
+    $old = '[1]`t' + $now.AddMinutes(-10).ToString('yyyy-MM-dd HH:mm:ss') + '.000`t- Info  -`t[DXGI] Failed to acquire next frame in DUPLICATIONMANAGER hr 887a0026'
+    [System.IO.File]::WriteAllText($cfLog, $old + "`r`n" + $recent + "`r`n", (New-Object System.Text.UTF8Encoding($false)))
+    $cf1 = Get-CaptureFailureEvidence -LogPath $cfLog -WindowSeconds 30
+    Check ($cf1.Failed -eq $true) 'capture-failure-recent-detected'
+    [System.IO.File]::WriteAllText($cfLog, $old + "`r`n", (New-Object System.Text.UTF8Encoding($false)))
+    $cf2 = Get-CaptureFailureEvidence -LogPath $cfLog -WindowSeconds 30
+    Check ($cf2.Failed -eq $false) 'capture-failure-old-ignored'
+    [System.IO.File]::WriteAllText($cfLog, "no failure here`r`n", (New-Object System.Text.UTF8Encoding($false)))
+    $cf3 = Get-CaptureFailureEvidence -LogPath $cfLog -WindowSeconds 30
+    Check ($cf3.Failed -eq $false) 'capture-failure-absent'
+} finally { Remove-Item $cfTmp -Recurse -Force -ErrorAction SilentlyContinue }
+
 Write-Host '== 7. 版本一致性 =='
 $ver = Get-ScreenFitVersion
 Check ($ver -match '^\d+\.\d+\.\d+$') 'version-format' ("got=" + $ver)

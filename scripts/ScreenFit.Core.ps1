@@ -31,6 +31,7 @@ $script:ScreenFitConfigDefaults = @{
     DefaultDevice           = $null   # 设备名识别失败时的兜底设备 Key/名称，例如 'Pad5Pro'
     ViewerWindowSeconds     = 30      # 最近多少秒内有 send>0 帧才视为“观看端在消费”
     ViewerGraceSeconds      = 60      # 切屏后连续多少秒无观看端 -> 自动恢复
+    CaptureFailureGraceSeconds = 10   # 检测到 OPPO 抓帧失败时，缩短为多少秒就恢复（0=不启用）
     ArmTimeoutSeconds       = 900     # 预建屏等待超时
     SwitchOnSession         = $true   # true=检测到远控会话即切虚拟屏；false=等观看端帧再切
     EnsureNativeInternalMode= $true   # 恢复布局时把内屏纠正回原生（最大）分辨率
@@ -139,6 +140,33 @@ function Read-NewLines([string]$path) {
 
 # 远程引擎状态快照（带 2 秒缓存）：Get-Process / 目录枚举是主循环里最贵的两步，
 # 每 500ms 调一次会把 CPU 拉到 10%+，缓存后空闲时接近 0。
+<#
+  Get-CaptureFailureEvidence —— 判断 OPPO 采集端是否在最近窗口内报过“抓帧失败”。
+  依据 desktop_agent 日志：
+    [DXGI] Failed to get duplicate output in DUPLICATIONMANAGER hr 80004005
+    [DXGI] Failed to acquire next frame in DUPLICATIONMANAGER hr 887a0026
+    [DXGI] InitDxgiCapture, get output fail
+  用于：切到自建虚拟屏后若抓帧已失败，尽快恢复物理布局，而不是等满 ViewerGraceSeconds。
+#>
+function Get-CaptureFailureEvidence {
+    param([string]$LogPath, [int]$WindowSeconds = 30, [int]$TailLines = 400)
+    $r = [pscustomobject]@{ Failed = $false; LastSecondsAgo = $null; LastLine = $null }
+    if (-not $LogPath -or -not (Test-Path $LogPath)) { return $r }
+    foreach ($l in (Get-Content $LogPath -Tail $TailLines -ErrorAction SilentlyContinue)) {
+        if ($l -notmatch 'Failed to get duplicate output|Failed to acquire next frame|InitDxgiCapture, get output fail') { continue }
+        $sec = $null
+        $m = [regex]::Match($l, '(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})')
+        if ($m.Success) {
+            try { $sec = ((Get-Date) - [datetime]::ParseExact($m.Groups[1].Value, 'yyyy-MM-dd HH:mm:ss', $null)).TotalSeconds } catch { }
+        }
+        $r.Failed = $true
+        $r.LastSecondsAgo = $sec
+        $r.LastLine = $l.Trim()
+    }
+    if ($r.Failed -and $r.LastSecondsAgo -ne $null -and $r.LastSecondsAgo -gt $WindowSeconds) { $r.Failed = $false }
+    return $r
+}
+
 function Get-AgentSnapshot {
     param([double]$TtlSeconds = 2)
     if ($script:agentSnap -and ((Get-Date) - $script:agentSnapTs).TotalSeconds -lt $TtlSeconds) {

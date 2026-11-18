@@ -4,6 +4,7 @@
   "DefaultDevice": null,
   "ViewerWindowSeconds": 30,
   "ViewerGraceSeconds": 60,
+  "CaptureFailureGraceSeconds": 10,
   "ArmTimeoutSeconds": 900,
   "SwitchOnSession": true,
   "EnsureNativeInternalMode": true

@@ -39,6 +39,7 @@ if ($cfgTool) { $Tool = [string]$cfgTool }
 $cfgArm = Get-ScreenFitSetting 'ArmTimeoutSeconds';        if ($null -ne $cfgArm) { $ArmTimeoutSec = [int]$cfgArm }
 $cfgVw  = Get-ScreenFitSetting 'ViewerWindowSeconds';      if ($null -ne $cfgVw)  { $ViewerWindowSec = [int]$cfgVw }
 $cfgVg  = Get-ScreenFitSetting 'ViewerGraceSeconds';       if ($null -ne $cfgVg)  { $ViewerGraceSec = [int]$cfgVg }
+$CaptureFailureGraceSec = [int](Get-ScreenFitSetting 'CaptureFailureGraceSeconds')
 $SwitchOnSession = [bool](Get-ScreenFitSetting 'SwitchOnSession')
 $EnsureNativeInternalMode = [bool](Get-ScreenFitSetting 'EnsureNativeInternalMode')
 # ===== 事件驱动唤醒：OPPO 日志 / 安装目录标记有变化时立即处理，空闲时靠超时兜底 =====
@@ -723,6 +724,7 @@ $script:nativeCache = $null
 $script:lastNativeCheck = [datetime]::MinValue
 $script:lastAliveLog = Get-Date
 $script:switchSuppressedUntil = [datetime]::MinValue
+$script:captureFailLogged = $false
 $script:suppressLogDone = $false
 $script:prearmWaitLogged = $false
 $script:prearmWaitLogged = $false
@@ -775,6 +777,7 @@ while ($true) {
     if (((Get-Date) - $script:lastAliveLog).TotalSeconds -ge 600) {
         $script:lastAliveLog = Get-Date
 $script:switchSuppressedUntil = [datetime]::MinValue
+$script:captureFailLogged = $false
 $script:suppressLogDone = $false
 $script:prearmWaitLogged = $false
 $script:prearmWaitLogged = $false
@@ -955,7 +958,19 @@ $script:sessionCacheTs = [datetime]::MinValue
             WLog '本会话已因无观看端恢复过 -> 抑制自动切屏（10 分钟或会话结束）'
             $script:suppressLogDone = $true
         }
-        $decision = Get-ScreenFitDecision -SessionActive $true -ViewerActive $allowSwitch -State (GetState) -NoViewerSeconds $noViewerSec -ViewerGraceSeconds $ViewerGraceSec
+        # 抓帧失败（0x80004005 / 887a0026）时不要等满 60 秒：尽快恢复，减少“画面冻结且点击无效”的窗口
+        $effectiveGrace = $ViewerGraceSec
+        if ($CaptureFailureGraceSec -gt 0 -and (GetState) -eq 'on') {
+            $capFail = Get-CaptureFailureEvidence -LogPath (Get-AgentSnapshot).LogPath -WindowSeconds 30
+            if ($capFail.Failed) {
+                $effectiveGrace = [Math]::Min($ViewerGraceSec, $CaptureFailureGraceSec)
+                if (-not $script:captureFailLogged) {
+                    WLog ("检测到 OPPO 抓帧失败（" + $capFail.LastLine + "）-> 缩短恢复等待到 " + $effectiveGrace + "s")
+                    $script:captureFailLogged = $true
+                }
+            }
+        }
+        $decision = Get-ScreenFitDecision -SessionActive $true -ViewerActive $allowSwitch -State (GetState) -NoViewerSeconds $noViewerSec -ViewerGraceSeconds $effectiveGrace
         if ($decision -eq 'restore') {
             if (Test-Path $PreArmFile) {
                 WLog ("无观看端已 " + [math]::Round($noViewerSec) + "s -> 预建屏保持就绪，等待重连")
@@ -1085,6 +1100,7 @@ $script:sessionCacheTs = [datetime]::MinValue
     } else {
         # 会话结束（或本来就没有会话）：重置抑制，下次会话可正常自动切屏
         $script:switchSuppressedUntil = [datetime]::MinValue
+$script:captureFailLogged = $false
         $script:suppressLogDone = $false
         if ((Test-Path $PreArmFile) -and ((GetState) -eq 'on' -or (GetState) -eq 'prearmed')) {
             if ((GetState) -eq 'on') { SetState 'prearmed' }

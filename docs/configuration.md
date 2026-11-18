@@ -15,6 +15,7 @@
 | `DefaultDevice` | 空 | 会话里识别不到设备名时的兜底设备 Key（如 `Pad5Pro`） |
 | `ViewerWindowSeconds` | 30 | 最近多少秒有 `send>0` 才算观看端在消费 |
 | `ViewerGraceSeconds` | 60 | 切屏后连续多少秒无观看端则自动恢复 |
+| `CaptureFailureGraceSeconds` | 10 | 检测到 OPPO 抓帧失败（80004005/887a0026）时缩短为多少秒恢复；0=不启用 |
 | `ArmTimeoutSeconds` | 900 | 预建屏等待超时 |
 | `SwitchOnSession` | true | true=检测到远控会话立即切虚拟屏；false=等观看端出帧再切 |
 | `EnsureNativeInternalMode` | true | 恢复布局时把内屏纠正回原生（最大）分辨率 |
